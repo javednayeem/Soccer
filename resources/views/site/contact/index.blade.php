@@ -1,4 +1,6 @@
 @extends('layouts.site')
+@section('title', 'Contact')
+@section('subtitle', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, molestias repudiandae pariatur.')
 
 @section('content')
 
