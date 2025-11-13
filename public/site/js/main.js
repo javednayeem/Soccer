@@ -253,7 +253,7 @@ jQuery(document).ready(function($) {
 
 	var siteCountDown = function() {
 
-		$('#date-countdown, #date-countdown2').countdown('2033/10/10', function(event) {
+		$('#date-countdown').countdown('2033/10/10', function(event) {
 		  var $this = $(this).html(event.strftime(''
 		    + '<span class="countdown-block"><span class="label">%w</span> weeks </span>'
 		    + '<span class="countdown-block"><span class="label">%d</span> days </span>'
@@ -263,7 +263,30 @@ jQuery(document).ready(function($) {
 		});
 				
 	};
+
+    var matchCountDown = function() {
+
+        var $countdown = $('#date-countdown2');
+
+        if ($countdown.length) {
+            var targetDate = $countdown.data('countdown'); // read date from attribute
+
+            // Initialize countdown using the dynamic date
+            $countdown.countdown(targetDate, function(event) {
+                $(this).html(event.strftime(''
+                    + '<span class="countdown-block"><span class="label">%w</span> weeks </span>'
+                    + '<span class="countdown-block"><span class="label">%d</span> days </span>'
+                    + '<span class="countdown-block"><span class="label">%H</span> hr </span>'
+                    + '<span class="countdown-block"><span class="label">%M</span> min </span>'
+                    + '<span class="countdown-block"><span class="label">%S</span> sec</span>'
+                ));
+            });
+        }
+
+    };
+
 	siteCountDown();
+    matchCountDown();
 
 	var siteDatePicker = function() {
 

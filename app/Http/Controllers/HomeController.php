@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Carbon\Carbon;
+
 use App\Models\Match;
 use App\Models\LeagueStanding;
 use App\Models\Team;
+use App\Models\Player;
 
 class HomeController extends Controller {
 
@@ -44,8 +47,29 @@ class HomeController extends Controller {
 
     public function match() {
 
-        return view('site.match.index', [
+        $recentMatches = Match::with(['homeTeam', 'awayTeam'])
+            ->where('match_date', '<', now())
+            ->where('status', 'completed')
+            ->orderBy('match_date', 'desc')
+            ->take(5)
+            ->get();
 
+        $nextMatch = Match::with(['homeTeam', 'awayTeam'])
+            ->where('match_date', '>', now())
+            ->where('status', 'scheduled')
+            ->orderBy('match_date', 'asc')
+            ->first();
+
+        $upcomingMatches = Match::with(['homeTeam', 'awayTeam'])
+            ->where('match_date', '>', now())
+            ->where('status', 'scheduled')
+            ->orderBy('match_date', 'asc')
+            ->get();
+
+        return view('site.match.index', [
+            'recentMatches' => $recentMatches,
+            'nextMatch' => $nextMatch,
+            'upcomingMatches' => $upcomingMatches,
         ]);
 
     }
@@ -53,8 +77,29 @@ class HomeController extends Controller {
 
     public function player() {
 
-        return view('site.player.index', [
+        $teams = Team::with(['players' => function($query) {
+            $query->orderBy('jersey_number');
+        }])->get();
 
+        return view('site.player.index', [
+            'teams' => $teams,
+        ]);
+
+    }
+
+
+    public function getPlayerDetails($id) {
+
+        $player = Player::with('team')->findOrFail($id);
+        $age = NULL;
+
+        if ($player->date_of_birth) {
+            $age = Carbon::parse($player->date_of_birth)->age;
+        }
+
+        return view('site.player.modal-content', [
+            'player' => $player,
+            'age' => $age,
         ]);
 
     }

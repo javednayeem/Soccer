@@ -55,7 +55,7 @@ class PlayerSeeder extends Seeder {
                 'height' => $this->getRandomHeight(),
                 'weight' => $this->getRandomWeight(),
                 'date_of_birth' => $this->getRandomBirthDate(),
-                'photo' => $player->user_image,
+                #'photo' => $player->user_image,
                 'created_at' => $player->created_at,
                 'updated_at' => $player->updated_at,
             ];

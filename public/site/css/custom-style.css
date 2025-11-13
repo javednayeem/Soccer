@@ -1,0 +1,119 @@
+.player-modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  position: relative;
+  border-radius: 0;
+}
+
+.player-number-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.2);
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.player-content {
+  padding: 2rem;
+}
+
+.player-image-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.player-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #f8f9fa;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.player-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #495057;
+}
+
+.stats-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.stats-header h2 {
+  color: #495057;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stats-table {
+  overflow-x: auto;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #e9ecef;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 5px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 0.875rem;
+}
+
+.table-cell {
+  display: flex;
+  align-items: center;
+}
+
+.player-detail-btn {
+  cursor: pointer;
+}
+
+.player-detail-btn:hover {
+  text-decoration: none;
+}

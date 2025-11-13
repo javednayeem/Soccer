@@ -17,3 +17,7 @@
 <link rel="stylesheet" href="/site/css/aos.css">
 
 <link rel="stylesheet" href="/site/css/style.css">
+<link rel="stylesheet" href="/site/css/custom-style.css">
+
+<script src="site/js/jquery-3.3.1.min.js"></script>
+<script src="/site/js/application.js"></script>

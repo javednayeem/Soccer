@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder {
             LeagueSeeder::class,
             PlayerSeeder::class,
             MatchSeeder::class,
+            MatchEventSeeder::class,
             LeagueStandingSeeder::class,
             PlayerStatisticSeeder::class,
-            MatchEventSeeder::class,
         ]);
 
     }

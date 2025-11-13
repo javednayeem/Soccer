@@ -12,7 +12,7 @@
                         <span class="score">{{ $liveMatch->home_team_score }}-{{ $liveMatch->away_team_score }}</span>
                         <div class="team-1 w-50">
                             <div class="team-details w-100 text-center">
-                                <img src="{{ $liveMatch->homeTeam->logo ? asset('storage/' . $liveMatch->homeTeam->logo) : '/site/images/logo_1.png' }}" alt="{{ $liveMatch->homeTeam->name }}" class="img-fluid" style="max-height: 80px;">
+                                <img src="/site/images/teams/{{ $liveMatch->homeTeam->logo }}" alt="{{ $liveMatch->homeTeam->name }}" class="img-fluid" style="max-height: 80px;">
                                 <h3>{{ $liveMatch->homeTeam->name }} <span>({{ $liveMatch->home_team_score > $liveMatch->away_team_score ? 'win' : ($liveMatch->home_team_score == $liveMatch->away_team_score ? 'draw' : 'loss') }})</span></h3>
                                 <ul class="list-unstyled">
                                     @foreach($liveMatch->events->where('team_id', $liveMatch->home_team_id)->where('type', 'goal')->take(4) as $event)
@@ -26,7 +26,7 @@
                         </div>
                         <div class="team-2 w-50">
                             <div class="team-details w-100 text-center">
-                                <img src="{{ $liveMatch->awayTeam->logo ? asset('storage/' . $liveMatch->awayTeam->logo) : '/site/images/logo_2.png' }}" alt="{{ $liveMatch->awayTeam->name }}" class="img-fluid" style="max-height: 80px;">
+                                <img src="/site/images/teams/{{ $liveMatch->awayTeam->logo }}" alt="{{ $liveMatch->awayTeam->name }}" class="img-fluid" style="max-height: 80px;">
                                 <h3>{{ $liveMatch->awayTeam->name }} <span>({{ $liveMatch->away_team_score > $liveMatch->home_team_score ? 'win' : ($liveMatch->away_team_score == $liveMatch->home_team_score ? 'draw' : 'loss') }})</span></h3>
                                 <ul class="list-unstyled">
                                     @foreach($liveMatch->events->where('team_id', $liveMatch->away_team_id)->where('type', 'goal')->take(4) as $event)
@@ -138,14 +138,14 @@
                                 <div class="widget-vs">
                                     <div class="d-flex align-items-center justify-content-around justify-content-between w-100">
                                         <div class="team-1 text-center">
-                                            <img src="{{ $nextMatch->homeTeam->logo ? asset('storage/' . $nextMatch->homeTeam->logo) : '/site/images/logo_1.png' }}" alt="{{ $nextMatch->homeTeam->name }}" style="max-height: 60px;">
+                                            <img src="/site/images/teams/{{ $nextMatch->homeTeam->logo }}" alt="{{ $nextMatch->homeTeam->name }}" style="max-height: 60px;">
                                             <h3>{{ $nextMatch->homeTeam->name }}</h3>
                                         </div>
                                         <div>
                                             <span class="vs"><span>VS</span></span>
                                         </div>
                                         <div class="team-2 text-center">
-                                            <img src="{{ $nextMatch->awayTeam->logo ? asset('storage/' . $nextMatch->awayTeam->logo) : '/site/images/logo_2.png' }}" alt="{{ $nextMatch->awayTeam->name }}" style="max-height: 60px;">
+                                            <img src="/site/images/teams/{{ $nextMatch->awayTeam->logo }}" alt="{{ $nextMatch->awayTeam->name }}" style="max-height: 60px;">
                                             <h3>{{ $nextMatch->awayTeam->name }}</h3>
                                         </div>
                                     </div>

@@ -21,7 +21,7 @@ class Players extends Migration {
             $table->decimal('height', 5, 2)->nullable();
             $table->decimal('weight', 5, 2)->nullable();
             $table->date('date_of_birth');
-            $table->string('photo')->nullable();
+            $table->string('photo')->default('default_player.jpg');
 
             $table->timestamps();
 

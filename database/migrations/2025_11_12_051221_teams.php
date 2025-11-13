@@ -19,7 +19,7 @@ class Teams extends Migration {
             $table->string('manager_email')->nullable();
             $table->string('manager_phone')->nullable();
 
-            $table->string('logo')->nullable();
+            $table->string('logo')->default('default_team.png');
             $table->string('team_image')->default('default_team_image.png');
 
             $table->text('note')->nullable();

@@ -1,4 +1,4 @@
-<script src="site/js/jquery-3.3.1.min.js"></script>
+{{--<script src="site/js/jquery-3.3.1.min.js"></script>--}}
 <script src="site/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="site/js/jquery-ui.js"></script>
 <script src="site/js/popper.min.js"></script>

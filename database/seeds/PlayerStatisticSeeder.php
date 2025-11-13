@@ -1,8 +1,8 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
 use DB;
 
 class PlayerStatisticSeeder extends Seeder {
@@ -11,6 +11,7 @@ class PlayerStatisticSeeder extends Seeder {
 
         $statistics = [];
 
+        // Get ACTUAL players and their match events
         $players = DB::table('players')->get();
 
         if ($players->isEmpty()) {
@@ -19,12 +20,34 @@ class PlayerStatisticSeeder extends Seeder {
         }
 
         foreach ($players as $player) {
+            // Count actual goals from match_events
+            $goals = DB::table('match_events')
+                ->where('player_id', $player->id)
+                ->where('type', 'goal')
+                ->count();
 
-            $goals = rand(0, 10);
-            $assists = rand(0, 8);
-            $yellowCards = rand(0, 3);
-            $redCards = rand(0, 1);
-            $appearances = rand(3, 8);
+            // Count actual assists from match_events
+            $assists = DB::table('match_events')
+                ->where('player_id', $player->id)
+                ->where('type', 'assist')
+                ->count();
+
+            // Count actual cards from match_events
+            $yellowCards = DB::table('match_events')
+                ->where('player_id', $player->id)
+                ->where('type', 'yellow_card')
+                ->count();
+
+            $redCards = DB::table('match_events')
+                ->where('player_id', $player->id)
+                ->where('type', 'red_card')
+                ->count();
+
+            // Count appearances (played in matches)
+            $appearances = DB::table('match_events')
+                ->where('player_id', $player->id)
+                ->distinct('match_id')
+                ->count('match_id');
 
             $statistics[] = [
                 'player_id' => $player->id,
@@ -43,8 +66,7 @@ class PlayerStatisticSeeder extends Seeder {
         }
 
         DB::table('player_statistics')->insert($statistics);
-        $this->command->info('Created ' . count($statistics) . ' player statistics.');
-
+        $this->command->info('Created ' . count($statistics) . ' player statistics with REAL data.');
     }
 
 }
