@@ -24,16 +24,16 @@
                     <h1 class="text-white">@yield('title')</h1>
                     <p>@yield('subtitle')</p>
                     <div id="date-countdown"></div>
-                    <p>
-                        <a href="#" class="btn btn-primary py-3 px-4 mr-3">Book Ticket</a>
-                        <a href="#" class="more light">Learn More</a>
-                    </p>
+                    {{--<p>--}}
+                    {{--<a href="#" class="btn btn-primary py-3 px-4 mr-3">Book Ticket</a>--}}
+                    {{--<a href="#" class="more light">Learn More</a>--}}
+                    {{--</p>--}}
                 </div>
             </div>
         </div>
     </div>
 
-@else
+@elseif(Route::current()->getName() != 'login')
 
     <div class="hero overlay" style="background-image: url('site/images/bg_3.jpg');">
         <div class="container">

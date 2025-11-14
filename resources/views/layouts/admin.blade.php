@@ -1,26 +1,60 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
 
 <head>
-    @include('scoreboard.partials.meta')
 
-    @include('scoreboard.partials.pre-scripts')
+    @include('admin.partials.meta')
+
+    @include('admin.partials.pre-scripts')
+
 </head>
 
-<body class="game_info" data-spy="scroll" data-target=".header">
+<body>
 
-{{--<div id="preloader">--}}
-    {{--<img class="preloader" src="{{ env('APP_PATH') }}/images/loading-img.gif" alt="">--}}
-    {{--<img class="preloader" src="{{ env('APP_PATH') }}/images/favicon.ico" alt="">--}}
-{{--</div>--}}
 
-@include('scoreboard.partials.header')
+<div id="wrapper">
 
-@yield('content')
 
-@include('scoreboard.partials.footer')
+    @include('admin.partials.topbar')
 
-@include('scoreboard.partials.post-scripts')
+    @include('admin.partials.menu')
+
+
+    <div class="content-page">
+        <div class="content">
+
+            <div class="container-fluid">
+
+                @auth
+                <input type="hidden" id="id" value="{{ Auth::user()->id }}">
+                <input type="hidden" id="user_name" value="{{ Auth::user()->name }}">
+                @endauth
+
+                <input type="hidden" id="token" value="{{ csrf_token() }}">
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+
+                @include('admin.partials.page-title')
+
+                @yield('content')
+
+            </div>
+        </div>
+
+        @include('admin.partials.footer')
+
+    </div>
+
+</div>
+
+
+
+<div class="rightbar-overlay"></div>
+
+@include('admin.partials.post-scripts')
 
 </body>
+
 </html>
