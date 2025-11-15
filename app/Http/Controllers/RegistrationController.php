@@ -103,6 +103,8 @@ class RegistrationController extends Controller {
             'team_id' => $request->team_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'phone_no' => $request->phone_no,
+            'email' => $request->email,
             'nationality' => $request->nationality,
             'position' => $request->position,
             'jersey_number' => $request->jersey_number,
@@ -115,4 +117,5 @@ class RegistrationController extends Controller {
         return redirect()->back()->with('success', 'Player registered successfully!');
 
     }
+
 }

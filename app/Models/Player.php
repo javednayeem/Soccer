@@ -10,13 +10,16 @@ class Player extends Model {
         'team_id',
         'first_name',
         'last_name',
+        'phone_no',
+        'email',
         'nationality',
         'position',
         'jersey_number',
         'height',
         'weight',
         'date_of_birth',
-        'photo'
+        'photo',
+        'player_status',
     ];
 
     protected $casts = [

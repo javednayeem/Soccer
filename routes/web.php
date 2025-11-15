@@ -44,13 +44,14 @@ Route::group(['middleware'=> ['auth']],function ()  {
 
     Route::post('/change/team-status', 'TeamController@changeTeamStatus');
     Route::post('/update/team-active-status', 'TeamController@updateTeamActiveStatus');
-
+    Route::get('/team/{team}/players', 'TeamController@getTeamPlayers');
 
     /*
     * Player Routes
     */
 
     Route::get('/manage-players', 'PlayerController@index')->name('admin.player');
+    Route::post('/manage-players', 'PlayerController@searchPlayer')->name('admin.search.player');
 
     Route::post('/add/player', 'PlayerController@addPlayer')->name('admin.add.player');
     Route::post('/edit/player', 'PlayerController@editPlayer')->name('admin.edit.player');

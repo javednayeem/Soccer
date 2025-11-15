@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Team;
+use App\Models\Player;
 
 class TeamController extends Controller {
 
@@ -41,4 +42,28 @@ class TeamController extends Controller {
 
         return json_encode('success');
     }
+
+
+    public function getTeamPlayers($teamId) {
+
+        try {
+            $team = Team::findOrFail($teamId);
+            $players = Player::where('team_id', $teamId)
+                ->orderBy('first_name')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'teamName' => $team->name,
+                'players' => $players
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Team not found'
+            ], 404);
+        }
+    }
+
 }

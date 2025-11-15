@@ -46,16 +46,17 @@ class PlayerSeeder extends Seeder {
             $lastName = isset($nameParts[1]) ? $nameParts[1] : '';
 
             $playerData[] = [
-                'team_id' => $teamId,
+                #'team_id' => $teamId,
+                'team_id' => 1,
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'nationality' => $this->getNationality(),
-                'position' => isset($player->position) ? $player->position : $this->getRandomPosition(),
+                'position' => isset($player->position) ? ucfirst(strtolower($player->position)) : $this->getRandomPosition(),
                 'jersey_number' => $player->jersey_number ?: ($teamPlayerCounts[$teamId] + 1),
                 'height' => $this->getRandomHeight(),
                 'weight' => $this->getRandomWeight(),
                 'date_of_birth' => $this->getRandomBirthDate(),
-                #'photo' => $player->user_image,
+                'player_status' => '0',
                 'created_at' => $player->created_at,
                 'updated_at' => $player->updated_at,
             ];

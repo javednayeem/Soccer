@@ -48,10 +48,10 @@
                                 </td>
 
                                 <td>
-                                <div class="checkbox checkbox-success mb-2">
-                                    <input id="active_{{ $team->id }}" type="checkbox" {{ $team->active == '1' ? 'checked' : '' }} onchange="updateTeamActiveStatus({{ $team->id }});">
-                                    <label for="active_{{ $team->id }}">&nbsp;</label>
-                                </div>
+                                    <div class="checkbox checkbox-success mb-2">
+                                        <input id="active_{{ $team->id }}" type="checkbox" {{ $team->active == '1' ? 'checked' : '' }} onchange="updateTeamActiveStatus({{ $team->id }});">
+                                        <label for="active_{{ $team->id }}">&nbsp;</label>
+                                    </div>
                                 </td>
 
                                 <td>{{ formatDateTime($team->created_at, 12) }}</td>
@@ -68,6 +68,10 @@
                                         </button>
                                     @endif
 
+                                    <button type="button" class="btn btn-xs btn-primary waves-effect waves-light" onclick="viewTeamPlayer({{ $team->id }})">
+                                        <i class="mdi mdi-account-multiple mr-1"></i> View Team Players
+                                    </button>
+
                                 </td>
                             </tr>
                         @endforeach
@@ -77,6 +81,56 @@
 
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div id="view_team_players_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewTeamPlayersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="viewTeamPlayersModalLabel">Team Players</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center" id="loadingPlayers">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading players...</p>
+                    </div>
+
+                    <div id="teamPlayersContent" style="display: none;">
+                        <h5 class="text-center mb-4" id="teamNameTitle"></h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Player Name</th>
+                                    <th>Position</th>
+                                    <th>Jersey No.</th>
+                                    <th>Nationality</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody id="teamPlayersTable">
+                                <!-- Players will be loaded here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-center mt-3" id="noPlayersMessage" style="display: none;">
+                            <p class="text-muted">No players found for this team.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

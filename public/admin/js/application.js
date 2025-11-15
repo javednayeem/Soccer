@@ -5,6 +5,8 @@ $(document).ready(function() {
         var first_name = $('#first_name').val();
         var last_name = $('#last_name').val();
         var team_id = $('#team_id').val();
+        var phone_no = $('#phone_no').val();
+        var email = $('#email').val();
         var nationality = $('#nationality').val();
         var position = $('#position').val();
         var jersey_number = $('#jersey_number').val();
@@ -18,6 +20,8 @@ $(document).ready(function() {
             formData.append("first_name", first_name);
             formData.append("last_name", last_name);
             formData.append("team_id", team_id);
+            formData.append("phone_no", phone_no);
+            formData.append("email", email);
             formData.append("nationality", nationality);
             formData.append("position", position);
             formData.append("jersey_number", jersey_number);
@@ -58,26 +62,33 @@ $(document).ready(function() {
         var first_name = $('#edit_first_name').val();
         var last_name = $('#edit_last_name').val();
         var team_id = $('#edit_team_id').val();
+        var phone_no = $('#edit_phone_no').val();
+        var email = $('#edit_email').val();
         var nationality = $('#edit_nationality').val();
         var position = $('#edit_position').val();
         var jersey_number = $('#edit_jersey_number').val();
         var height = $('#edit_height').val();
         var weight = $('#edit_weight').val();
         var date_of_birth = $('#edit_date_of_birth').val();
+        var player_status = $('#edit_player_status').val();
 
-        if (first_name != "" && last_name != "" && team_id != "" && nationality != "" && position != "" && date_of_birth != "") {
+        if (first_name != "" && team_id != "" && nationality != "" && position != "" && date_of_birth != "") {
 
             var formData = new FormData();
+
             formData.append("id", player_id);
             formData.append("first_name", first_name);
             formData.append("last_name", last_name);
             formData.append("team_id", team_id);
+            formData.append("phone_no", phone_no);
+            formData.append("email", email);
             formData.append("nationality", nationality);
             formData.append("position", position);
             formData.append("jersey_number", jersey_number);
             formData.append("height", height);
             formData.append("weight", weight);
             formData.append("date_of_birth", date_of_birth);
+            formData.append("player_status", player_status);
             formData.append("photo", $('#edit_photo')[0].files[0]);
 
             showProcessingNotification();
@@ -108,16 +119,22 @@ $(document).ready(function() {
 });
 
 function editPlayer(button) {
+
     $("#player_id").val(button.getAttribute('data-id'));
     $("#edit_first_name").val(button.getAttribute('data-first-name'));
     $("#edit_last_name").val(button.getAttribute('data-last-name'));
     $("#edit_team_id").val(button.getAttribute('data-team-id'));
+    $("#edit_phone_no").val(button.getAttribute('data-phone-no') || '');
+    $("#edit_email").val(button.getAttribute('data-email') || '');
     $("#edit_nationality").val(button.getAttribute('data-nationality'));
     $("#edit_position").val(button.getAttribute('data-position'));
-    $("#edit_jersey_number").val(button.getAttribute('data-jersey-number'));
-    $("#edit_height").val(button.getAttribute('data-height'));
-    $("#edit_weight").val(button.getAttribute('data-weight'));
-    $("#edit_date_of_birth").val(button.getAttribute('data-date-of-birth'));
+    $("#edit_jersey_number").val(button.getAttribute('data-jersey-number') || '');
+    $("#edit_height").val(button.getAttribute('data-height') || '');
+    $("#edit_weight").val(button.getAttribute('data-weight') || '');
+
+    var dateOfBirth = button.getAttribute('data-date-of-birth');
+    $("#edit_date_of_birth").val(dateOfBirth);
+    $("#edit_player_status").val(button.getAttribute('data-player-status'));
 
     var photoPath = button.getAttribute('data-photo');
     $("#edit_player_photo").attr("src", photoPath ? '/' + photoPath : '/site/images/players/default_player.jpg');
@@ -127,6 +144,7 @@ function editPlayer(button) {
 
 
 function deletePlayer(player_id) {
+
     swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -257,4 +275,78 @@ function showErrorNotification(message) {
 
 function reloadCurrentPage() {
     window.location = window.location.pathname;
+}
+
+
+function viewTeamPlayer(teamId) {
+    // Show loading state
+    $('#loadingPlayers').show();
+    $('#teamPlayersContent').hide();
+    $('#noPlayersMessage').hide();
+
+    // Show modal
+    $('#view_team_players_modal').modal('show');
+
+    // Fetch team players via AJAX
+    $.ajax({
+        url: '/team/' + teamId + '/players',
+        type: 'GET',
+        headers: {
+            'X-CSRF-TOKEN': $('#token').val()
+        },
+        success: function(response) {
+            // Hide loading
+            $('#loadingPlayers').hide();
+            $('#teamPlayersContent').show();
+
+            if (response.success) {
+                // Update team name in title
+                $('#teamNameTitle').text('Players of ' + response.teamName);
+
+                // Clear previous data
+                $('#teamPlayersTable').empty();
+
+                if (response.players.length > 0) {
+                    // Populate players table
+                    $.each(response.players, function(index, player) {
+                        var statusBadge = player.player_status == '1'
+                            ? '<span class="badge badge-success">Active</span>'
+                            : '<span class="badge badge-danger">Inactive</span>';
+
+                        var playerRow = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="/${player.photo}" alt="${player.first_name}" 
+                                             class="rounded-circle mr-2" width="35" height="35" 
+                                             onerror="this.onerror=null; this.src='/site/images/players/default_player.jpg'">
+                                        <div>
+                                            ${player.first_name} ${player.last_name}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${player.position}</td>
+                                <td>${player.jersey_number || 'N/A'}</td>
+                                <td>${player.nationality}</td>
+                                <td>${player.phone_no || 'N/A'}</td>
+                                <td>${player.email || 'N/A'}</td>
+                                <td>${statusBadge}</td>
+                            </tr>
+                        `;
+                        $('#teamPlayersTable').append(playerRow);
+                    });
+                } else {
+                    $('#noPlayersMessage').show();
+                }
+            } else {
+                showErrorNotification('Failed to load players');
+            }
+        },
+        error: function(error) {
+            $('#loadingPlayers').hide();
+            showErrorNotification('Error loading players');
+            console.error('Error:', error);
+        }
+    });
 }

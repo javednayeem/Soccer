@@ -33,7 +33,7 @@
         </div>
     </div>
 
-@elseif(Route::current()->getName() != 'login')
+@elseif(!in_array(Route::current()->getName(), ['login', 'team.registration', 'team.store', 'player.registration', 'player.store']))
 
     <div class="hero overlay" style="background-image: url('site/images/bg_3.jpg');">
         <div class="container">

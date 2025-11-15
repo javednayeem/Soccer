@@ -6,19 +6,59 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card-box p-2">
-
                 <div class="row">
                     <div class="col-md-12">
 
-                        <div class="text-right">
-                            <button type="button" class="btn btn-dark waves-effect waves-light m-b-30" data-toggle="modal" data-target="#add_player_modal">
-                                <i class="md md-add"></i> Add New Player
-                            </button>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <form id="searchPlayer" class="form-inline" role="form" action="{{ route('admin.search.player') }}" method="post">
+                                    @csrf
+
+                                    <div class="form-group mr-2">
+                                        <input type="text" class="form-control" name="player_name" id="player_name"
+                                               placeholder="Search player name" value="{{ isset($search_player_name) ? $search_player_name : '' }}">
+                                    </div>
+
+                                    <div class="form-group mr-2">
+                                        <select class="form-control" id="team_id" name="team_id">
+                                            <option value="all">All Teams</option>
+                                            @foreach($teams as $team)
+                                                <option value="{{ $team->id }}" {{ (isset($search_team_id) ? $search_team_id : '') == $team->id ? 'selected' : '' }}>
+                                                    {{ $team->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mr-2">
+                                        <select class="form-control" id="player_status" name="player_status">
+                                            <option value="all">All Status</option>
+                                            <option value="1" {{ (isset($search_player_status) ? $search_player_status : '') == '1' ? 'selected' : '' }}>Active</option>
+                                            <option value="0" {{ (isset($search_player_status) ? $search_player_status : '') == '0' ? 'selected' : '' }}>Inactive</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary mr-2">
+                                        <i class="fa fa-search"></i> Search
+                                    </button>
+
+                                    <a href="{{ route('admin.player') }}" class="btn btn-secondary">
+                                        <i class="fa fa-refresh"></i> Reset
+                                    </a>
+                                </form>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-dark waves-effect waves-light m-b-30" data-toggle="modal" data-target="#add_player_modal">
+                                        <i class="md md-add"></i> Add New Player
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="table-responsive">
                             <table class="table table-sm table-hover mt-3">
-
                                 <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
@@ -28,15 +68,15 @@
                                     <th>Jersey No.</th>
                                     <th>Nationality</th>
                                     <th>Date of Birth</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
 
                                 <tbody id="player_table">
-
                                 @foreach($players as $player)
                                     <tr id="player_{{ $player->id }}">
-                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ ($players->currentPage() - 1) * $players->perPage() + $loop->iteration }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <img src="{{ asset($player->photo) }}" alt="{{ $player->first_name }}" class="rounded-circle mr-2" width="40" height="40" onerror="this.onerror=null; this.src='/site/images/players/default_player.jpg'">
@@ -45,11 +85,18 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ isset($player->team->name) ? $player->team->name :'N/A' }}</td>
+                                        <td>{{ isset($player->team->name) ? $player->team->name : 'N/A' }}</td>
                                         <td>{{ ucfirst($player->position) }}</td>
                                         <td>{{ isset($player->jersey_number) ? $player->jersey_number : 'N/A' }}</td>
                                         <td>{{ $player->nationality }}</td>
                                         <td>{{ \Carbon\Carbon::parse($player->date_of_birth)->format('M d, Y') }}</td>
+                                        <td>
+                                            @if($player->player_status == '1')
+                                                <span class="badge badge-success">Active</span>
+                                            @else
+                                                <span class="badge badge-danger">Inactive</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-xs btn-icon waves-effect waves-light btn-primary"
                                                     onclick="editPlayer(this)"
@@ -57,12 +104,15 @@
                                                     data-team-id="{{ $player->team_id }}"
                                                     data-first-name="{{ $player->first_name }}"
                                                     data-last-name="{{ $player->last_name }}"
+                                                    data-phone-no="{{ $player->phone_no }}"
+                                                    data-email="{{ $player->email }}"
                                                     data-nationality="{{ $player->nationality }}"
                                                     data-position="{{ $player->position }}"
                                                     data-jersey-number="{{ $player->jersey_number }}"
                                                     data-height="{{ $player->height }}"
                                                     data-weight="{{ $player->weight }}"
-                                                    data-date-of-birth="{{ $player->date_of_birth }}"
+                                                    data-date-of-birth="{{ date('Y-m-d', strtotime($player->date_of_birth)) }}"
+                                                    data-player-status="{{ $player->player_status }}"
                                                     data-photo="{{ $player->photo }}"
                                                     title="Edit Player">
                                                 <i class="fe-edit"></i>
@@ -74,14 +124,16 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
                                 </tbody>
                             </table>
+
+                            <div class="d-flex justify-content-center">
+                                {{ $players->links('pagination::bootstrap-4') }}
+                            </div>
                         </div>
 
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -116,7 +168,9 @@
                                 <select class="form-control" id="team_id">
                                     <option value="">Select Team</option>
                                     @foreach($teams as $team)
-                                        <option value="{{ $team->id }}">{{ $team->name }}</option>
+                                        @if($team->team_status == 'approved')
+                                            <option value="{{ $team->id }}">{{ $team->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -126,6 +180,20 @@
                             <div class="form-group">
                                 <label for="nationality" class="control-label">Nationality <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nationality" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone_no" class="control-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_no" autocomplete="off" placeholder="+358123456789">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email" class="control-label">Email</label>
+                                <input type="email" class="form-control" id="email" autocomplete="off" placeholder="player@example.com">
                             </div>
                         </div>
 
@@ -199,7 +267,6 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body p-4">
-
                     <input type="hidden" id="player_id" value="0">
 
                     <div class="row">
@@ -233,6 +300,20 @@
                             <div class="form-group">
                                 <label for="edit_nationality" class="control-label">Nationality <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="edit_nationality" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edit_phone_no" class="control-label">Phone Number</label>
+                                <input type="text" class="form-control" id="edit_phone_no" autocomplete="off" placeholder="+358123456789">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edit_email" class="control-label">Email</label>
+                                <input type="email" class="form-control" id="edit_email" autocomplete="off" placeholder="player@example.com">
                             </div>
                         </div>
 
@@ -274,6 +355,16 @@
                             <div class="form-group">
                                 <label for="edit_date_of_birth" class="control-label">Date of Birth <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="edit_date_of_birth">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edit_player_status" class="control-label">Status <span class="text-danger">*</span></label>
+                                <select class="form-control" id="edit_player_status">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
                             </div>
                         </div>
 

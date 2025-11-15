@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="team_id" class="">Team *</label>
+                                <label for="team_id" class="text-white">Team *</label>
                                 <select class="form-control" id="team_id" name="team_id" required>
                                     <option value="">Select Team</option>
                                     @foreach($teams as $team)
@@ -50,6 +50,27 @@
                                 @error('team_id')
                                 <small class="text-danger">{{ $message }}</small>
                                 @enderror
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phone_no" class="text-white">Phone Number</label>
+                                        <input type="text" class="form-control" id="phone_no" name="phone_no" value="{{ old('phone_no') }}" placeholder="+358123456789">
+                                        @error('phone_no')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="text-white">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="player@example.com">
+                                        @error('email')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">

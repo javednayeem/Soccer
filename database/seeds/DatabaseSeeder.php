@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+
+use Database\Seeders\UserSeeder;
 use Database\Seeders\TeamSeeder;
 use Database\Seeders\PlayerSeeder;
 use Database\Seeders\LeagueSeeder;
@@ -18,6 +20,7 @@ class DatabaseSeeder extends Seeder {
         #$this->call(PlayerSeeder::class);
 
         $this->call([
+            UserSeeder::class,
             TeamSeeder::class,
             LeagueSeeder::class,
             PlayerSeeder::class,
