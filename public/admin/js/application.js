@@ -14,7 +14,7 @@ $(document).ready(function() {
         var weight = $('#weight').val();
         var date_of_birth = $('#date_of_birth').val();
 
-        if (first_name != "" && last_name != "" && team_id != "" && nationality != "" && position != "" && date_of_birth != "") {
+        if (first_name != "" && team_id != "" && nationality != "" && position != "" && date_of_birth != "") {
 
             var formData = new FormData();
             formData.append("first_name", first_name);
