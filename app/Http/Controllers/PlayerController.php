@@ -65,7 +65,7 @@ class PlayerController extends Controller {
             'height' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
             'date_of_birth' => 'required|date|before:today',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            #'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $photoPath = 'site/images/players/default_player.jpg';

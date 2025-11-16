@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a8ca19a6-16f6-4d65-a404-dc0064cd4e50" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PlayerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PlayerController.php" afterDir="false" />
-    </list>
+    <list default="true" id="a8ca19a6-16f6-4d65-a404-dc0064cd4e50" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +155,7 @@
       <workItem from="1763201207150" duration="36000" />
       <workItem from="1763201361768" duration="14000" />
       <workItem from="1763201429123" duration="11012000" />
-      <workItem from="1763308455422" duration="1142000" />
+      <workItem from="1763308455422" duration="1383000" />
     </task>
     <servers />
   </component>
