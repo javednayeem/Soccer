@@ -14,14 +14,14 @@ class Players extends Migration {
 
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
             $table->string('phone_no')->nullable();
             $table->string('email')->nullable();
             $table->string('nationality');
             $table->string('position');
             $table->integer('jersey_number')->nullable();
-            $table->decimal('height', 5, 2)->nullable();
-            $table->decimal('weight', 5, 2)->nullable();
+            $table->double('height')->nullable();
+            $table->double('weight')->nullable();
             $table->date('date_of_birth');
             $table->string('photo')->default('default_player.jpg');
             $table->enum('player_status', ['0', '1'])->default('1');
