@@ -59,12 +59,11 @@ class PlayerController extends Controller {
         $request->validate([
             'team_id' => 'required|exists:teams,id',
             'first_name' => 'required|string|max:191',
-            'last_name' => 'required|string|max:191',
             'nationality' => 'required|string|max:100',
             'position' => 'required|string|in:Goalkeeper,Defender,Midfielder,Forward',
             'jersey_number' => 'nullable|integer|min:1|max:99',
-            'height' => 'nullable|numeric|min:1.50|max:2.20',
-            'weight' => 'nullable|numeric|min:40|max:120',
+            'height' => 'nullable|numeric',
+            'weight' => 'nullable|numeric',
             'date_of_birth' => 'required|date|before:today',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
