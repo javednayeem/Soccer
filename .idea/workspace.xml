@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a8ca19a6-16f6-4d65-a404-dc0064cd4e50" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PlayerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PlayerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2025_11_12_051509_players.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2025_11_12_051509_players.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -159,7 +157,7 @@
       <workItem from="1763201207150" duration="36000" />
       <workItem from="1763201361768" duration="14000" />
       <workItem from="1763201429123" duration="11012000" />
-      <workItem from="1763308455422" duration="233000" />
+      <workItem from="1763308455422" duration="520000" />
     </task>
     <servers />
   </component>

@@ -103,7 +103,6 @@ class PlayerController extends Controller {
             'id' => 'required|exists:players,id',
             'team_id' => 'required|exists:teams,id',
             'first_name' => 'required|string|max:191',
-            'last_name' => 'string|max:191',
             'nationality' => 'required|string|max:100',
             'position' => 'required|string|in:Goalkeeper,Defender,Midfielder,Forward',
             'jersey_number' => 'nullable|integer|min:1|max:99',
