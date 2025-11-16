@@ -24,7 +24,7 @@ class PlayerController extends Controller {
     }
 
 
-    public function renderPlayerLayout($player_name = null, $team_id = 0, $player_status = null) {
+    public function renderPlayerLayout($player_name = null, $team_id = 0, $player_status = '1') {
 
         $players = Player::with('team')
             ->when($player_name, function($query) use ($player_name) {
