@@ -4,7 +4,7 @@ $(document).ready(function() {
 
         var first_name = $('#first_name').val();
         var last_name = $('#last_name').val();
-        var team_id = $('#team_id').val();
+        var team_id = $('#create_team_id').val();
         var phone_no = $('#phone_no').val();
         var email = $('#email').val();
         var nationality = $('#nationality').val();

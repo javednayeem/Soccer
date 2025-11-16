@@ -164,8 +164,8 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="team_id" class="control-label">Team <span class="text-danger">*</span></label>
-                                <select class="form-control" id="team_id">
+                                <label for="create_team_id" class="control-label">Team <span class="text-danger">*</span></label>
+                                <select class="form-control" id="create_team_id">
                                     <option value="">Select Team</option>
                                     @foreach($teams as $team)
                                         @if($team->team_status == 'approved')
