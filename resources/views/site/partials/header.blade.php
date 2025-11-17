@@ -20,7 +20,7 @@
     <div class="hero overlay" style="background-image: url('site/images/bg_3.jpg');">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5 ml-auto">
+                <div class="col-lg-8 ml-auto">
                     <h1 class="text-white">@yield('title')</h1>
                     <p>@yield('subtitle')</p>
                     <div id="date-countdown"></div>
@@ -38,7 +38,7 @@
     <div class="hero overlay" style="background-image: url('site/images/bg_3.jpg');">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5 mx-auto text-center">
+                <div class="col-lg-8 mx-auto text-center">
                     <h1 class="text-white">@yield('title')</h1>
                     <p>@yield('subtitle')</p>
                 </div>

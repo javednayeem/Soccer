@@ -4,21 +4,21 @@
             <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}" class="nav-link">Home</a></li>
             <li class="{{ request()->routeIs('match') ? 'active' : '' }}"><a href="{{ route('match') }}" class="nav-link">Matches</a></li>
             <li class="{{ request()->routeIs('player') ? 'active' : '' }}"><a href="{{ route('player') }}" class="nav-link">Players</a></li>
-            <li class="{{ request()->routeIs('blog') ? 'active' : '' }}"><a href="{{ route('blog') }}" class="nav-link">Blog</a></li>
+{{--            <li class="{{ request()->routeIs('blog') ? 'active' : '' }}"><a href="{{ route('blog') }}" class="nav-link">Blog</a></li>--}}
             <li class="{{ request()->routeIs('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}" class="nav-link">Contact</a></li>
 
             @guest
-            <li class="{{ request()->routeIs('team.registration') ? 'active' : '' }}">
-                <a href="{{ route('team.registration') }}" class="nav-link">Team Registration</a>
-            </li>
+                {{--                <li class="{{ request()->routeIs('team.registration') ? 'active' : '' }}">--}}
+                {{--                    <a href="{{ route('team.registration') }}" class="nav-link">Team Registration</a>--}}
+                {{--                </li>--}}
 
-            <li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">
-                <a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>
-            </li>
+                <li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">
+                    <a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>
+                </li>
 
-            <li class="{{ request()->routeIs('login') ? 'active' : '' }}">
-                <a href="{{ route('login') }}" class="nav-link">Login</a>
-            </li>
+                <li class="{{ request()->routeIs('login') ? 'active' : '' }}">
+                    <a href="{{ route('login') }}" class="nav-link">Login</a>
+                </li>
             @endguest
         </ul>
     </nav>

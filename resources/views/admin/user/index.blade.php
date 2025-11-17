@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="card-box">
+            <div class="card-box p-2">
 
                 <div class="row">
                     <div class="col-md-12">
@@ -24,7 +24,6 @@
                                 <th>Username</th>
                                 <th>Name</th>
                                 <th>Role</th>
-                                <th>Designation</th>
                                 <th>Created At</th>
                                 <th>Action</th>
 
@@ -40,10 +39,9 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ ucfirst($user->role) }}</td>
-                                    <td>{{ ucfirst($user->designation) }}</td>
                                     <td>{{ formatDate($user->created_at) }}</td>
                                     <td>
-                                        <button class="btn btn-xs btn-icon waves-effect waves-light btn-primary" onclick="editUser('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->user_image }}', '{{ $user->role }}', '{{ $user->designation }}', '{{ $user->responsibility }}')"> <i class="fe-edit"></i> </button>
+                                        <button class="btn btn-xs btn-icon waves-effect waves-light btn-primary" onclick="editUser('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->user_image }}', '{{ $user->role }}')"> <i class="fe-edit"></i> </button>
                                         <button class="btn btn-xs btn-icon waves-effect waves-light btn-danger" onclick="deleteUser({{ $user->id }})"> <i class="fe-trash-2"></i> </button>
                                     </td>
 

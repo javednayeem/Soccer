@@ -752,15 +752,12 @@ function deleteMatch(match_id) {
 }
 
 
-function editUser(id, name, email, user_image, role, designation, responsibility) {
+function editUser(id, name, email, user_image, role) {
 
     $('#user_id').val(id);
     $('#edit_name').val(name);
     $('#edit_email').val(email);
     $('#edit_role').val(role);
-    $('#edit_designation').val(designation);
-    $('#edit_responsibility').val(responsibility);
-
     $("#update_user_image").attr("src", '/images/users/' + user_image);
 
     $('#edit_user_modal').modal('show');
@@ -867,9 +864,10 @@ function updateScore(matchId) {
 
 
 function saveScore() {
-    const matchId = $('#score_match_id').val();
-    const homeScore = $('#home_score').val();
-    const awayScore = $('#away_score').val();
+
+    var matchId = $('#score_match_id').val();
+    var homeScore = $('#home_score').val();
+    var awayScore = $('#away_score').val();
 
     showProcessingNotification();
 
@@ -908,12 +906,12 @@ function addEvent(matchId) {
 
 
 function saveEvent() {
-    const matchId = $('#event_match_id').val();
-    const playerId = $('#event_player_id').val();
-    const teamId = $('#event_team_id').val();
-    const type = $('#event_type').val();
-    const minute = $('#event_minute').val();
-    const description = $('#event_description').val();
+    var matchId = $('#event_match_id').val();
+    var playerId = $('#event_player_id').val();
+    var teamId = $('#event_team_id').val();
+    var type = $('#event_type').val();
+    var minute = $('#event_minute').val();
+    var description = $('#event_description').val();
 
     if (!playerId || !teamId || !minute) {
         showErrorNotification('Please fill all required fields!');
@@ -1064,8 +1062,174 @@ function finishMatch(matchId) {
 }
 
 
+
+function updateScore(matchId) {
+    // Fetch match details via AJAX to get current scores
+    showProcessingNotification();
+
+    $.ajax({
+        url: '/match/' + matchId + '/events',
+        type: 'GET',
+        success: function (response) {
+            if (response.success) {
+                var match = response.match;
+
+                $('#score_match_id').val(matchId);
+                $('#home_team_name').text(match.home_team.name);
+                $('#away_team_name').text(match.away_team.name);
+                $('#home_score').val(match.home_team_score ? match.home_team_score : 0);
+                $('#away_score').val(match.away_team_score ? match.away_team_score : 0);
+
+                $('#updateScoreModal').modal('show');
+            } else {
+                showErrorNotification('Failed to load match details');
+            }
+        },
+        error: function () {
+            showErrorNotification('Failed to load match details');
+        }
+    });
+}
+
+// Save Score Function
+function saveScore() {
+    var matchId = $('#score_match_id').val();
+    var homeScore = $('#home_score').val();
+    var awayScore = $('#away_score').val();
+
+    if (homeScore === '' || awayScore === '') {
+        showErrorNotification('Please enter both scores');
+        return;
+    }
+
+    showProcessingNotification();
+
+    $.ajax({
+        url: '/match/' + matchId + '/update-score',
+        type: 'POST',
+        data: {
+            home_team_score: parseInt(homeScore),
+            away_team_score: parseInt(awayScore),
+            "_token": $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            showSuccessNotification(response.message);
+            $('#updateScoreModal').modal('hide');
+            // Reload page to reflect changes
+            setTimeout(function() {
+                window.location.reload();
+            }, 1000);
+        },
+        error: function (xhr) {
+            var errorMessage = 'Failed to update score';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+            showErrorNotification(errorMessage);
+        }
+    });
+}
+
+// View Match Events Function
+function viewMatchEvents(matchId) {
+    $('#matchEventsModal').modal('show');
+    $('#eventsLoading').show();
+    $('#eventsContent').hide();
+    $('#noEvents').hide();
+
+    $.ajax({
+        url: '/match/' + matchId + '/events',
+        type: 'GET',
+        success: function (response) {
+            $('#eventsLoading').hide();
+
+            if (response.success && response.match) {
+                var match = response.match;
+
+                // Set match title and score
+                $('#matchTitle').text(match.home_team.name + ' vs ' + match.away_team.name);
+                $('#matchScore').text('Final Score: ' + (match.home_team_score || 0) + ' - ' + (match.away_team_score || 0));
+
+                // Display events
+                if (response.events && response.events.length > 0) {
+                    var eventsHtml = '';
+
+                    response.events.forEach(function(event) {
+                        var badgeClass = '';
+                        var iconClass = '';
+
+                        switch(event.type) {
+                            case 'goal':
+                                badgeClass = 'badge-success';
+                                iconClass = 'fe-target';
+                                break;
+                            case 'assist':
+                                badgeClass = 'badge-info';
+                                iconClass = 'fe-share-2';
+                                break;
+                            case 'yellow_card':
+                                badgeClass = 'badge-warning';
+                                iconClass = 'fe-alert-triangle';
+                                break;
+                            case 'red_card':
+                                badgeClass = 'badge-danger';
+                                iconClass = 'fe-alert-octagon';
+                                break;
+                            case 'substitution_in':
+                                badgeClass = 'badge-primary';
+                                iconClass = 'fe-log-in';
+                                break;
+                            case 'substitution_out':
+                                badgeClass = 'badge-secondary';
+                                iconClass = 'fe-log-out';
+                                break;
+                            default:
+                                badgeClass = 'badge-light';
+                                iconClass = 'fe-flag';
+                        }
+
+                        eventsHtml += `
+                                <div class="event-item mb-2 p-3 border rounded">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <span class="badge ${badgeClass} mb-1">
+                                                <i class="${iconClass} mr-1"></i>
+                                                ${event.type.replace('_', ' ').toUpperCase()}
+                                            </span>
+                                            <div>
+                                                <strong>${event.player.first_name} ${event.player.last_name || ''}</strong>
+                                                <small class="text-muted ml-2">(${event.minute}')</small>
+                                            </div>
+                                            ${event.description ? `<small class="text-muted d-block mt-1">${event.description}</small>` : ''}
+                                            <small class="text-muted d-block mt-1">
+                                                Team: ${event.team_id === match.home_team_id ? match.home_team.name : match.away_team.name}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    });
+
+                    $('#eventsList').html(eventsHtml);
+                    $('#eventsContent').show();
+                } else {
+                    $('#noEvents').show();
+                }
+            } else {
+                $('#noEvents').show();
+            }
+        },
+        error: function () {
+            $('#eventsLoading').hide();
+            showErrorNotification('Failed to load match events');
+        }
+    });
+}
+
+/*
 setInterval(function() {
     if (window.location.pathname.indexOf('live-matches') !== -1) {
         reloadCurrentPage();
     }
 }, 30000);
+*/

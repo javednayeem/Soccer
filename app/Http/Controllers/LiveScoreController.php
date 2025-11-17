@@ -49,6 +49,7 @@ class LiveScoreController extends Controller {
         return view('admin.live-score.finished-matches', [
             'finishedMatches' => $finishedMatches,
         ]);
+
     }
 
 
@@ -91,6 +92,7 @@ class LiveScoreController extends Controller {
 
 
     public function addMatchEvent(Request $request, $matchId) {
+
         $request->validate([
             'player_id' => 'required|exists:players,id',
             'team_id' => 'required|exists:teams,id',

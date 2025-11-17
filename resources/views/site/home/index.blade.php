@@ -1,6 +1,6 @@
 @extends('layouts.site')
-@section('title', 'World Cup Event')
-@section('subtitle', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, molestias repudiandae pariatur.')
+@section('title', 'Bangladesh Football League 2025 - 2026')
+@section('subtitle', 'Special One day league will conduct on 27.Dec.2025 from 14:00 - 18:00')
 
 @section('content')
 

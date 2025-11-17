@@ -77,7 +77,7 @@ Route::group(['middleware'=> ['auth']],function ()  {
     * Match Routes
     */
 
-    Route::get('/matches', 'MatchController@index')->name('admin.match');
+    Route::get('/manage/matches', 'MatchController@index')->name('admin.match');
 
     Route::post('/add/match', 'MatchController@addMatch')->name('admin.add.match');
     Route::post('/edit/match', 'MatchController@editMatch')->name('admin.edit.match');
