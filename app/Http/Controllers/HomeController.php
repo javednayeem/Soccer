@@ -10,17 +10,27 @@ use App\Models\Match;
 use App\Models\LeagueStanding;
 use App\Models\Team;
 use App\Models\Player;
+use App\Models\League;
 
 class HomeController extends Controller {
 
-
     public function index() {
+
+        $activeLeague = League::where('is_active', true)
+            ->latest()
+            ->first();
 
         $liveMatch = Match::with(['homeTeam', 'awayTeam', 'events.player'])
             ->where('status', 'live')
-            ->orWhere('status', 'finished')
             ->orderBy('match_date', 'desc')
             ->first();
+
+        if (!$liveMatch) {
+            $liveMatch = Match::with(['homeTeam', 'awayTeam', 'events.player'])
+                ->where('status', 'finished')
+                ->orderBy('match_date', 'desc')
+                ->first();
+        }
 
         $nextMatch = Match::with(['homeTeam', 'awayTeam'])
             ->where('status', 'scheduled')
@@ -36,12 +46,12 @@ class HomeController extends Controller {
         $teams = Team::where('team_status', 'approved')->get();
 
         return view('site.home.index', [
+            'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
             'nextMatch' => $nextMatch,
             'standings' => $standings,
             'teams' => $teams,
         ]);
-
     }
 
 

@@ -1,6 +1,6 @@
 @extends('layouts.site')
-@section('title', 'Bangladesh Football League 2025 - 2026')
-@section('subtitle', 'Special One day league will conduct on 27.Dec.2025 from 14:00 - 18:00')
+@section('title', $activeLeague ? $activeLeague->name : 'Football League')
+@section('subtitle', $activeLeague ? $activeLeague->subtitle : 'Latest Football League Updates')
 
 @section('content')
 
@@ -8,12 +8,32 @@
         <div class="row">
             <div class="col-lg-12">
                 @if($liveMatch)
+                    <div class="match-status-indicator mb-3">
+                        @if($liveMatch->status === 'live')
+                            <span class="badge badge-danger p-2">
+                        <i class="fas fa-circle text-white mr-1" style="font-size: 8px;"></i>
+                        LIVE NOW
+                    </span>
+                        @else
+                            <span class="badge badge-secondary p-2">
+                        <i class="fas fa-flag-checkered mr-1"></i>
+                        RECENT MATCH
+                    </span>
+                        @endif
+                    </div>
+
                     <div class="d-flex team-vs">
-                        <span class="score">{{ $liveMatch->home_team_score }}-{{ $liveMatch->away_team_score }}</span>
+                        <span class="score">{{ isset($liveMatch->home_team_score) ? $liveMatch->home_team_score : 0 }}-{{ isset($liveMatch->away_team_score) ? $liveMatch->away_team_score : 0 }}</span>
                         <div class="team-1 w-50">
                             <div class="team-details w-100 text-center">
                                 <img src="/site/images/teams/{{ $liveMatch->homeTeam->logo }}" alt="{{ $liveMatch->homeTeam->name }}" class="img-fluid" style="max-height: 80px;">
-                                <h3>{{ $liveMatch->homeTeam->name }} <span>({{ $liveMatch->home_team_score > $liveMatch->away_team_score ? 'win' : ($liveMatch->home_team_score == $liveMatch->away_team_score ? 'draw' : 'loss') }})</span></h3>
+                                <h3>{{ $liveMatch->homeTeam->name }}
+                                    @if($liveMatch->status === 'finished')
+                                        <span class="result-badge">
+                                    ({{ $liveMatch->home_team_score > $liveMatch->away_team_score ? 'win' : ($liveMatch->home_team_score == $liveMatch->away_team_score ? 'draw' : 'loss') }})
+                                </span>
+                                    @endif
+                                </h3>
                                 <ul class="list-unstyled">
                                     @foreach($liveMatch->events->where('team_id', $liveMatch->home_team_id)->where('type', 'goal')->take(4) as $event)
                                         <li>{{ $event->player->first_name }} {{ $event->player->last_name }} ({{ $event->minute }})</li>
@@ -27,7 +47,13 @@
                         <div class="team-2 w-50">
                             <div class="team-details w-100 text-center">
                                 <img src="/site/images/teams/{{ $liveMatch->awayTeam->logo }}" alt="{{ $liveMatch->awayTeam->name }}" class="img-fluid" style="max-height: 80px;">
-                                <h3>{{ $liveMatch->awayTeam->name }} <span>({{ $liveMatch->away_team_score > $liveMatch->home_team_score ? 'win' : ($liveMatch->away_team_score == $liveMatch->home_team_score ? 'draw' : 'loss') }})</span></h3>
+                                <h3>{{ $liveMatch->awayTeam->name }}
+                                    @if($liveMatch->status === 'finished')
+                                        <span class="result-badge">
+                                    ({{ $liveMatch->away_team_score > $liveMatch->home_team_score ? 'win' : ($liveMatch->away_team_score == $liveMatch->home_team_score ? 'draw' : 'loss') }})
+                                </span>
+                                    @endif
+                                </h3>
                                 <ul class="list-unstyled">
                                     @foreach($liveMatch->events->where('team_id', $liveMatch->away_team_id)->where('type', 'goal')->take(4) as $event)
                                         <li>{{ $event->player->first_name }} {{ $event->player->last_name }} ({{ $event->minute }})</li>
@@ -39,10 +65,21 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Match details footer -->
+                    <div class="match-details-footer text-center mt-3">
+                        <small class="text-muted">
+                            {{ isset($liveMatch->league->name) ? $liveMatch->league->name : 'Unknown League' }} •
+                            {{ \Carbon\Carbon::parse($liveMatch->match_date)->format('M d, Y H:i') }}
+                            @if($liveMatch->venue)
+                                • {{ $liveMatch->venue }}
+                            @endif
+                        </small>
+                    </div>
                 @else
                     <div class="text-center py-5">
-                        <h3>No Live Matches Currently</h3>
-                        <p>Check back later for live match updates.</p>
+                        <h3>No Matches Available</h3>
+                        <p>There are currently no live or recent matches to display.</p>
                     </div>
                 @endif
             </div>

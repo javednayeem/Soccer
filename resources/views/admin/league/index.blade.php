@@ -21,10 +21,11 @@
                                     <th>#</th>
                                     <th>League Name</th>
                                     <th>Season</th>
+                                    <th>Subtitle</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th class="text-center" style="width: 10%">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody id="league_table">
@@ -33,6 +34,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $league->name }}</td>
                                         <td>{{ $league->season }}</td>
+                                        <td>{{ $league->subtitle }}</td>
                                         <td>{{ \Carbon\Carbon::parse($league->start_date)->format('M d, Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($league->end_date)->format('M d, Y') }}</td>
                                         <td>
@@ -42,14 +44,15 @@
                                                 <span class="badge badge-danger">Inactive</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <button type="button" class="btn btn-xs btn-icon waves-effect waves-light btn-primary"
                                                     onclick="editLeague(this)"
                                                     data-id="{{ $league->id }}"
                                                     data-name="{{ $league->name }}"
                                                     data-season="{{ $league->season }}"
-                                                    data-start-date="{{ $league->start_date }}"
-                                                    data-end-date="{{ $league->end_date }}"
+                                                    data-subtitle="{{ $league->subtitle }}"
+                                                    data-start-date="{{ date('Y-m-d', strtotime($league->start_date)) }}"
+                                                    data-end-date="{{ date('Y-m-d', strtotime($league->end_date)) }}"
                                                     data-is-active="{{ $league->is_active }}"
                                                     title="Edit League">
                                                 <i class="fe-edit"></i>
@@ -90,6 +93,13 @@
                             <div class="form-group">
                                 <label for="season" class="control-label">Season <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="season" placeholder="e.g., 2024-2025">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="subtitle" class="control-label">Subtitle</label>
+                                <textarea class="form-control" id="subtitle"></textarea>
                             </div>
                         </div>
 
@@ -145,6 +155,13 @@
                             <div class="form-group">
                                 <label for="edit_season" class="control-label">Season <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="edit_season" placeholder="e.g., 2024-2025">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="edit_subtitle" class="control-label">Subtitle</label>
+                                <textarea class="form-control" id="edit_subtitle"></textarea>
                             </div>
                         </div>
 

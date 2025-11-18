@@ -4,7 +4,7 @@
             <ul class="metismenu" id="side-menu">
                 @if(Auth::user()->role == 'admin')
                     <li>
-                        <a href="javascript: void(0);">
+                        <a href="{{ route('dashboard') }}">
                             <i class="mdi mdi-view-dashboard mr-1"></i><span>Dashboard</span>
                         </a>
                     </li>

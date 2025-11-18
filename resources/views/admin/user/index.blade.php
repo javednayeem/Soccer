@@ -25,7 +25,7 @@
                                 <th>Name</th>
                                 <th>Role</th>
                                 <th>Created At</th>
-                                <th>Action</th>
+                                <th class="text-center">Action</th>
 
                             </tr>
                             </thead>
@@ -34,13 +34,13 @@
                             @foreach($users as $user)
                                 <tr id="user_{{ $user->id }}">
                                     <th scope="row">
-                                        <img src="/images/users/{{ $user->user_image }}" alt="image" class="img-fluid avatar-sm rounded-circle">
+                                        <img src="/admin/images/users/{{ $user->user_image }}" alt="image" class="img-fluid avatar-sm rounded-circle">
                                     </th>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ ucfirst($user->role) }}</td>
                                     <td>{{ formatDate($user->created_at) }}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <button class="btn btn-xs btn-icon waves-effect waves-light btn-primary" onclick="editUser('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->user_image }}', '{{ $user->role }}')"> <i class="fe-edit"></i> </button>
                                         <button class="btn btn-xs btn-icon waves-effect waves-light btn-danger" onclick="deleteUser({{ $user->id }})"> <i class="fe-trash-2"></i> </button>
                                     </td>

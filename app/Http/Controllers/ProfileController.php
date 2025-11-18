@@ -4,111 +4,94 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use DB;
 use Auth;
+use Hash;
 
 use App\User;
 
-
 class ProfileController extends Controller {
-
-    public function __construct() {
-        #$this->middleware('auth');
-    }
-
 
     public function index() {
 
-        $user_id = Auth::user()->id;
-
-        $user = User::find($user_id);
+        $user = Auth::user();
 
         return view('admin.profile.index', [
-            'user' => $user,
+            'user' => $user
         ]);
-
     }
 
 
     public function editProfile(Request $request) {
 
-        $user_id = Auth::user()->id;
+        $user = Auth::user();
 
         $request->validate([
             'name' => 'required|string|max:191',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'user_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
-        $user = User::find($user_id);
-
         if ($request->hasFile('user_image')) {
-
-            $this->validate($request, [
-                'user_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-            ]);
+            // Delete old image if it's not the default
+            if ($user->user_image !== 'default_user.png') {
+                $oldImagePath = public_path('admin/images/users/' . $user->user_image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
 
             $file = $request->file('user_image');
-            $user_img = 'user_' . $user_id . '.' .$file->getClientOriginalExtension();
-            $destinationPath = 'admin/images/users';
+            $user_img = 'user_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('admin/images/users');
 
             $file->move($destinationPath, $user_img);
             $user->user_image = $user_img;
-
         }
 
-        $data = $request->except('_token');
-
-        foreach ($data as $key => $value) {
-            if ($key != 'user_image') {
-                $user->$key = $value;
-            }
-        }
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
 
         $user->save();
 
-        return back()->with('status', 'success');
+        return back()->with('success', 'Profile updated successfully!');
     }
 
 
     public function editPassword(Request $request) {
 
-        $data = $request->input('params');
-        $user_id = Auth::user()->id;
-        $method = 'userPasswordChange';
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
 
-        $old_password = $data['old_password'];
-        $password = $data['new_password'];
+        $user = Auth::user();
 
-        $user = User::find($user_id);
-        $hashedPassword = $user->password;
-
-        if (Hash::check($old_password, $hashedPassword)) {
-
-            $user->password = Hash::make($password);
-            $user->save();
-
-            return json_encode('success');
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['error' => 'Current password is incorrect'], 422);
         }
 
-        else return json_encode('failure');
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json(['success' => 'Password changed successfully!']);
     }
 
 
     public function removeProfilePicture() {
 
-        $user_id = Auth::user()->id;
-        $destinationPath = '/admin/images/users/';
+        $user = Auth::user();
 
-        $user = User::find($user_id);
-
-        if ($user->user_image != 'default_user.png') {
-            $path = public_path($destinationPath . $user->user_image);
-            unlink($path);
+        if ($user->user_image !== 'default_user.png') {
+            $path = public_path('admin/images/users/' . $user->user_image);
+            if (file_exists($path)) unlink($path);
         }
 
         $user->user_image = 'default_user.png';
         $user->save();
 
-        return json_encode('success');
+        return response()->json(['success' => 'Profile picture removed successfully!']);
     }
 
 }

@@ -32,6 +32,7 @@ class LeagueController extends Controller {
         $league = League::create([
             'name' => $request->name,
             'season' => $request->season,
+            'subtitle' => $request->subtitle,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'is_active' => $request->is_active,
@@ -57,6 +58,7 @@ class LeagueController extends Controller {
         $league->update([
             'name' => $request->name,
             'season' => $request->season,
+            'subtitle' => $request->subtitle,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'is_active' => $request->is_active,

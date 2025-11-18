@@ -14,6 +14,7 @@ class Leagues extends Migration {
 
             $table->string('name');
             $table->string('season');
+            $table->text('subtitle')->nullable();
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('is_active')->default(true);

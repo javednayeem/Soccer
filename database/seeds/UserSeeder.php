@@ -10,34 +10,32 @@ class UserSeeder extends Seeder {
 
     public function run() {
 
-        $users = [
-            [
-                'name' => 'Javed Nayeem',
-                'email' => 'javednayeemavi@gmail.com',
-                'password' => '$2a$12$F8GVibPewClSbB5XyMMXye5rcQUhJk3dJLfcc6c4eAFFbGaS6lRw6',
-                'role' => 'admin',
-                'phone' => null,
-                'address' => null,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-                'name' => 'Masudul Haque',
-                'email' => 'masudulcse@gmail.com',
-                'password' => '$2a$12$OlmvG/Lpny9nL1NIWu8AHe0yixKPBRSGjwCZgkovNksKP.7m/9HM.',
-                'role' => 'admin',
-                'phone' => '+358503171679',
-                'address' => 'seliminkuja 2B',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]
-        ];
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $users = DB::connection('scoreboard')->table('users')->where('role', 'admin')->get();
 
         foreach ($users as $user) {
 
-            $existingUser = DB::table('users')->where('email', $user['email'])->first();
-            if (!$existingUser) DB::table('users')->insert($user);
+            $userData = [
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $user->password,
+                'role' => $user->role,
+                'phone' => isset($user->phone) ? $user->phone : null,
+                'address' => isset($user->address) ? $user->address : null,
+                'email_verified_at' => isset($user->email_verified_at) ? $user->email_verified_at : null,
+                'remember_token' => isset($user->remember_token) ? $user->remember_token : null,
+                'created_at' => isset($user->created_at) ? $user->created_at : date('Y-m-d H:i:s'),
+                'updated_at' => isset($user->updated_at) ? $user->updated_at : date('Y-m-d H:i:s'),
+            ];
 
+            $userData = array_filter($userData, function ($value) {
+                return $value !== null;
+            });
+
+            DB::table('users')->insert($userData);
         }
 
         $this->command->info('Admin users seeded successfully!');

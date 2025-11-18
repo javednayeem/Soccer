@@ -1,8 +1,67 @@
 @extends('layouts.site')
 @section('title', 'Login to Your Account')
 
-
 @section('content')
+
+    <style>
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .site-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .site-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .footer-section {
+            margin-top: auto;
+            background-color: #343a40;
+            color: white;
+            padding: 1.5rem 0;
+        }
+
+        .bg-light {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Make labels more visible */
+        .text-white {
+            color: #fff !important;
+            font-weight: 600;
+        }
+
+        /* Improve button styling */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-2px);
+        }
+    </style>
 
     <div class="site-section">
         <div class="container">

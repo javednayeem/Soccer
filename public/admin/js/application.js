@@ -118,13 +118,16 @@ $(document).ready(function() {
 
 
     $("#add_league_button").click(function(){
+
         var name = $('#name').val();
         var season = $('#season').val();
+        var subtitle = $('#subtitle').val();
         var start_date = $('#start_date').val();
         var end_date = $('#end_date').val();
         var is_active = $('#is_active').is(':checked') ? 1 : 0;
 
         if (name != "" && season != "" && start_date != "" && end_date != "") {
+
             showProcessingNotification();
 
             $.ajax({
@@ -133,6 +136,7 @@ $(document).ready(function() {
                 data: {
                     name: name,
                     season: season,
+                    subtitle: subtitle,
                     start_date: start_date,
                     end_date: end_date,
                     is_active: is_active,
@@ -153,10 +157,12 @@ $(document).ready(function() {
     });
 
 
-    $("#edit_league_button").click(function(){
+    $("#edit_league_button").click(function() {
+
         var league_id = $('#league_id').val();
         var name = $('#edit_name').val();
         var season = $('#edit_season').val();
+        var subtitle = $('#edit_subtitle').val();
         var start_date = $('#edit_start_date').val();
         var end_date = $('#edit_end_date').val();
         var is_active = $('#edit_is_active').is(':checked') ? 1 : 0;
@@ -171,6 +177,7 @@ $(document).ready(function() {
                     id: league_id,
                     name: name,
                     season: season,
+                    subtitle: subtitle,
                     start_date: start_date,
                     end_date: end_date,
                     is_active: is_active,
@@ -652,6 +659,7 @@ function editLeague(button) {
     $("#league_id").val(button.getAttribute('data-id'));
     $("#edit_name").val(button.getAttribute('data-name'));
     $("#edit_season").val(button.getAttribute('data-season'));
+    $("#edit_subtitle").val(button.getAttribute('data-subtitle'));
     $("#edit_start_date").val(button.getAttribute('data-start-date'));
     $("#edit_end_date").val(button.getAttribute('data-end-date'));
 
@@ -835,7 +843,7 @@ function removeProfilePicture() {
 }
 
 
-function updateScore(matchId) {
+function updateScore_old(matchId) {
 
     var matches = JSON.parse($('#live_matches_json').val());
     var match = null;
@@ -863,7 +871,7 @@ function updateScore(matchId) {
 }
 
 
-function saveScore() {
+function saveScore_old() {
 
     var matchId = $('#score_match_id').val();
     var homeScore = $('#home_score').val();
@@ -1062,7 +1070,6 @@ function finishMatch(matchId) {
 }
 
 
-
 function updateScore(matchId) {
     // Fetch match details via AJAX to get current scores
     showProcessingNotification();
@@ -1091,7 +1098,7 @@ function updateScore(matchId) {
     });
 }
 
-// Save Score Function
+
 function saveScore() {
     var matchId = $('#score_match_id').val();
     var homeScore = $('#home_score').val();
@@ -1130,7 +1137,7 @@ function saveScore() {
     });
 }
 
-// View Match Events Function
+
 function viewMatchEvents(matchId) {
     $('#matchEventsModal').modal('show');
     $('#eventsLoading').show();
@@ -1188,26 +1195,25 @@ function viewMatchEvents(matchId) {
                                 iconClass = 'fe-flag';
                         }
 
-                        eventsHtml += `
-                                <div class="event-item mb-2 p-3 border rounded">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="flex-grow-1">
-                                            <span class="badge ${badgeClass} mb-1">
-                                                <i class="${iconClass} mr-1"></i>
-                                                ${event.type.replace('_', ' ').toUpperCase()}
-                                            </span>
-                                            <div>
-                                                <strong>${event.player.first_name} ${event.player.last_name || ''}</strong>
-                                                <small class="text-muted ml-2">(${event.minute}')</small>
-                                            </div>
-                                            ${event.description ? `<small class="text-muted d-block mt-1">${event.description}</small>` : ''}
-                                            <small class="text-muted d-block mt-1">
-                                                Team: ${event.team_id === match.home_team_id ? match.home_team.name : match.away_team.name}
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
+                        eventsHtml +=
+                            '<div class="event-item mb-2 p-3 border rounded">' +
+                            '<div class="d-flex justify-content-between align-items-start">' +
+                            '<div class="flex-grow-1">' +
+                            '<span class="badge ' + badgeClass + ' mb-1">' +
+                            '<i class="' + iconClass + ' mr-1"></i>' +
+                            event.type.replace('_', ' ').toUpperCase() +
+                            '</span>' +
+                            '<div>' +
+                            '<strong>' + event.player.first_name + ' ' + (event.player.last_name || '') + '</strong>' +
+                            '<small class="text-muted ml-2">(' + event.minute + '\')</small>' +
+                            '</div>' +
+                            (event.description ? '<small class="text-muted d-block mt-1">' + event.description + '</small>' : '') +
+                            '<small class="text-muted d-block mt-1">' +
+                            'Team: ' + (event.team_id === match.home_team_id ? match.home_team.name : match.away_team.name) +
+                            '</small>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
                     });
 
                     $('#eventsList').html(eventsHtml);

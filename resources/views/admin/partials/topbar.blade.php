@@ -32,7 +32,7 @@
     <div class="logo-box">
         <a href="/" class="logo text-center">
                 <span class="logo-lg">
-                    <img src="/admin/images/logo.png" alt="" height="30">
+                    <img src="/admin/images/logo.png" alt="" height="50" style="border-radius: 10px">
                 </span>
 
             <span class="logo-sm">

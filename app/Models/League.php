@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class League extends Model {
 
     protected $fillable = [
-        'name', 'season', 'start_date', 'end_date', 'is_active'
+        'name',
+        'season',
+        'subtitle',
+        'start_date',
+        'end_date',
+        'is_active'
     ];
 
     protected $casts = [
