@@ -39,10 +39,6 @@ class LiveScoreController extends Controller {
 
         $finishedMatches = Match::with(['league', 'homeTeam', 'awayTeam'])
             ->where('status', 'finished')
-            ->where(function($query) {
-                $query->whereNull('home_team_score')
-                    ->orWhereNull('away_team_score');
-            })
             ->orderBy('match_date', 'desc')
             ->get();
 
@@ -102,9 +98,9 @@ class LiveScoreController extends Controller {
         ]);
 
         DB::transaction(function () use ($request, $matchId) {
+
             $match = Match::findOrFail($matchId);
 
-            // Create match event
             $event = MatchEvent::create([
                 'match_id' => $matchId,
                 'player_id' => $request->player_id,
@@ -114,13 +110,12 @@ class LiveScoreController extends Controller {
                 'description' => $request->description,
             ]);
 
-            // Update player statistics
             $this->updatePlayerStatistics($match, $event);
 
-            // If it's a goal, update match score automatically
             if ($request->type === 'goal') {
                 $this->updateGoalScore($match, $request->team_id);
             }
+
         });
 
         return response()->json(['success' => true, 'message' => 'Match event added successfully!']);
@@ -156,16 +151,18 @@ class LiveScoreController extends Controller {
     public function finishMatch(Request $request, $matchId) {
 
         DB::transaction(function () use ($matchId) {
+
             $match = Match::findOrFail($matchId);
 
-            // Update match status to finished
             $match->update(['status' => 'finished']);
 
-            // Update league standings
-            $this->updateLeagueStandings($match);
+            if ($match->home_team_score !== null && $match->away_team_score !== null) {
+                $this->updateLeagueStandings($match);
+            }
 
-            // Update player appearances
             $this->updatePlayerAppearances($match);
+            $this->updateAllPlayerStatistics($match);
+
         });
 
         return response()->json(['success' => true, 'message' => 'Match marked as finished!']);
@@ -189,16 +186,28 @@ class LiveScoreController extends Controller {
 
 
     private function updatePlayerStatistics($match, $event) {
-
         $season = $match->league->season;
 
-        $statistic = PlayerStatistic::firstOrCreate([
-            'player_id' => $event->player_id,
-            'league_id' => $match->league_id,
-            'team_id' => $event->team_id,
-            'season' => $season,
-        ]);
+        // Use updateOrCreate to handle both creation and update
+        $statistic = PlayerStatistic::updateOrCreate(
+            [
+                'player_id' => $event->player_id,
+                'league_id' => $match->league_id,
+                'season' => $season,
+            ],
+            [
+                'team_id' => $event->team_id,
+                // Initialize default values for new records
+                'goals' => 0,
+                'assists' => 0,
+                'yellow_cards' => 0,
+                'red_cards' => 0,
+                'minutes_played' => 0,
+                'appearances' => 0,
+            ]
+        );
 
+        // Update the specific statistics based on event type
         switch ($event->type) {
             case 'goal':
                 $statistic->increment('goals');
@@ -214,10 +223,13 @@ class LiveScoreController extends Controller {
                 break;
         }
 
+        // Update minutes played for relevant event types
         if (in_array($event->type, ['goal', 'assist', 'yellow_card', 'red_card'])) {
             $statistic->increment('minutes_played', 90);
         }
 
+        // Save the changes
+        $statistic->save();
     }
 
 
@@ -325,6 +337,17 @@ class LiveScoreController extends Controller {
 
             $statistic->increment('appearances');
         }
+    }
+
+
+    private function updateAllPlayerStatistics($match) {
+
+        $events = MatchEvent::where('match_id', $match->id)->get();
+
+        foreach ($events as $event) {
+            $this->updatePlayerStatistics($match, $event);
+        }
+
     }
 
 }

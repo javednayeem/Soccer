@@ -12,87 +12,118 @@ use App\User;
 
 class UserController extends Controller {
 
-    public function index() {
+    public function index(Request $request) {
 
-        $users = DB::table('users')
-            ->where('role', '<>', 'player')
-            ->get();
+        $query = User::where('role', '<>', 'player');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->has('role') && $request->role != '') {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->get();
+        $roles = ['admin', 'manager', 'staff'];
 
         return view('admin.user.index', [
-            'users' => $users
+            'users' => $users,
+            'roles' => $roles,
+            'filters' => $request->only(['search', 'role'])
         ]);
     }
 
 
     public function addUser(Request $request) {
 
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'role' => 'required|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+        ]);
+
         $user = new User();
-
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
-        $user->role = $request->input('role');
-        $user->designation = $request->input('designation');
-        $user->responsibility = $request->input('responsibility');
-
-        $user->save();
-        $id = $user->id;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->role = $request->role;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
 
         if ($request->hasFile('user_image')) {
-
             $destinationPath = 'images/users';
             $user_image = $request->file('user_image');
-            $imageName = 'user_' . $id . '.' . $user_image->getClientOriginalExtension();
+            $imageName = 'user_' . time() . '.' . $user_image->getClientOriginalExtension();
             $user_image->move($destinationPath, $imageName);
-
             $user->user_image = $imageName;
-            $user->save();
-
         }
 
+        $user->save();
 
-        return json_encode($id);
+        return response()->json(['success' => true, 'message' => 'User added successfully']);
     }
 
 
     public function editUser(Request $request) {
 
-        $id = $request->input('id');
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $request->id,
+            'role' => 'required|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+        ]);
 
-        $user = User::find($id);
-
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->role = $request->input('role');
-        $user->designation = $request->input('designation');
-        $user->responsibility = $request->input('responsibility');
+        $user = User::find($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
 
         if ($request->hasFile('user_image')) {
-
             $destinationPath = 'images/users';
             $user_image = $request->file('user_image');
-            $imageName = 'user_' . $id . '.' . $user_image->getClientOriginalExtension();
+            $imageName = 'user_' . $user->id . '_' . time() . '.' . $user_image->getClientOriginalExtension();
             $user_image->move($destinationPath, $imageName);
-
             $user->user_image = $imageName;
-            $user->save();
-
         }
 
         $user->save();
 
-        return json_encode('success');
+        return response()->json(['success' => true, 'message' => 'User updated successfully']);
+    }
+
+
+    public function changePassword(Request $request) {
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::find($request->user_id);
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'Password changed successfully!']);
     }
 
 
     public function deleteUser(Request $request) {
-
-        $data = $request->input('params');
-
-        $user = User::find($data['id']);
+        $user = User::find($request->params['id']);
         $user->delete();
 
-        return json_encode('success');
+        return response()->json(['success' => true, 'message' => 'User deleted successfully']);
     }
 
 }

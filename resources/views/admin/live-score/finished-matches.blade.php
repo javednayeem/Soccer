@@ -9,7 +9,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <h4 class="header-title">Finished Matches</h4>
-                        <p class="text-muted">Manage completed matches and update missing scores</p>
+                        <p class="text-muted">View all completed matches and manage scores</p>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@
                                         <th>League</th>
                                         <th>Date & Time</th>
                                         <th>Score</th>
-                                        <th>Status</th>
+                                        <th>Result</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
@@ -59,28 +59,44 @@
                                             <td>
                                                 @if($match->home_team_score !== null && $match->away_team_score !== null)
                                                     <span class="h5 mb-0">
-                                                            <strong>{{ $match->home_team_score }}</strong> - <strong>{{ $match->away_team_score }}</strong>
-                                                        </span>
+                                                    <strong>{{ $match->home_team_score }}</strong> - <strong>{{ $match->away_team_score }}</strong>
+                                                </span>
                                                 @else
                                                     <span class="text-warning">
-                                                            <i class="fe-alert-triangle mr-1"></i>Score Missing
-                                                        </span>
+                                                    <i class="fe-alert-triangle mr-1"></i>Score Missing
+                                                </span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <span class="badge badge-success">Finished</span>
+                                                @if($match->home_team_score !== null && $match->away_team_score !== null)
+                                                    @php
+                                                        $homeScore = $match->home_team_score;
+                                                        $awayScore = $match->away_team_score;
+                                                        $result = '';
+                                                        if($homeScore > $awayScore) {
+                                                            $result = '<span class="badge badge-success">Home Win</span>';
+                                                        } elseif($awayScore > $homeScore) {
+                                                            $result = '<span class="badge badge-success">Away Win</span>';
+                                                        } else {
+                                                            $result = '<span class="badge badge-info">Draw</span>';
+                                                        }
+                                                    @endphp
+                                                    {!! $result !!}
+                                                @else
+                                                    <span class="badge badge-warning">Pending</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    @if($match->home_team_score === null || $match->away_team_score === null)
-                                                        <button class="btn btn-sm btn-primary" onclick="updateScore({{ $match->id }})" title="Update Score">
-                                                            <i class="fe-edit-2 mr-1"></i>Add Score
-                                                        </button>
-                                                    @else
-                                                        <button class="btn btn-sm btn-outline-primary" onclick="viewMatchEvents({{ $match->id }})" title="View Events">
-                                                            <i class="fe-eye mr-1"></i>View Events
-                                                        </button>
-                                                    @endif
+                                                    <!-- Always show Update Score button for any match -->
+                                                    <button class="btn btn-sm btn-primary" onclick="updateScore({{ $match->id }})" title="Update Score">
+                                                        <i class="fe-edit-2 mr-1"></i>Update Score
+                                                    </button>
+
+                                                    <!-- Always show View Events button -->
+                                                    <button class="btn btn-sm btn-outline-info ml-1" onclick="viewMatchEvents({{ $match->id }})" title="View Events">
+                                                        <i class="fe-eye mr-1"></i>Events
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -92,7 +108,7 @@
                             <div class="text-center py-5">
                                 <i class="fe-check-circle display-4 text-muted"></i>
                                 <h4 class="text-muted mt-3">No Finished Matches</h4>
-                                <p class="text-muted">All finished matches have complete scores.</p>
+                                <p class="text-muted">There are no finished matches to display.</p>
                             </div>
                         @endif
                     </div>
@@ -101,9 +117,8 @@
         </div>
     </div>
 
-    <!-- Update Score Modal -->
     <div id="updateScoreModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Update Match Score</h4>
@@ -133,7 +148,6 @@
         </div>
     </div>
 
-    <!-- Match Events Modal -->
     <div id="matchEventsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -153,10 +167,24 @@
                             <div class="col-md-12">
                                 <h5 id="matchTitle" class="text-center"></h5>
                                 <h6 id="matchScore" class="text-center text-muted"></h6>
+                                <div id="matchResult" class="text-center"></div>
                             </div>
                         </div>
-                        <div id="eventsList" class="events-list" style="max-height: 400px; overflow-y: auto;">
-                            <!-- Events will be loaded here -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Minute</th>
+                                    <th>Team</th>
+                                    <th>Player</th>
+                                    <th>Event</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody id="eventsTableBody">
+                                <!-- Events will be loaded here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div id="noEvents" class="text-center py-4" style="display: none;">

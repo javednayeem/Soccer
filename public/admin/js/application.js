@@ -307,88 +307,136 @@ $(document).ready(function() {
 
 
     $("#add_user_button").click(function(){
-
-        var name = $('#name').val();
-        var email = $('#email').val();
+        var name = $('#name').val().trim();
+        var email = $('#email').val().trim();
         var password = $('#password').val();
         var role = $('#role').val();
-        var designation = $('#designation').val();
-        var responsibility = $('#responsibility').val();
 
-        if (name != "") {
-
-            var formData = new FormData();
-            formData.append("name", name);
-            formData.append("email", email);
-            formData.append("password", password);
-            formData.append("role", role);
-            formData.append("designation", designation);
-            formData.append("responsibility", responsibility);
-            formData.append("user_image", $('#user_image')[0].files[0]);
-
-            showProcessingNotification();
-
-            $.ajax({
-                url: '/add/user',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('#token').val()
-                },
-                success: function (response) {
-                    showSuccessNotification('New User Added!');
-                    reloadCurrentPage();
-                },
-                error: function (error) {
-                    showErrorNotification();
-                }
-            });
+        if (!name || !email || !password || !role) {
+            showErrorNotification('Please fill all required fields');
+            return;
         }
+
+        if (password.length < 6) {
+            showErrorNotification('Password must be at least 6 characters long');
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("role", role);
+        formData.append("phone", $('#phone').val().trim());
+        formData.append("address", $('#address').val().trim());
+        formData.append("user_image", $('#user_image')[0].files[0]);
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/add/user',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('#token').val()
+            },
+            success: function (response) {
+                showSuccessNotification(response.message);
+                $('#add_user_modal').modal('hide');
+                reloadCurrentPage();
+            },
+            error: function (xhr) {
+                showErrorNotification(error);
+            }
+        });
     });
 
 
     $("#edit_user_button").click(function(){
-
         var id = $('#user_id').val();
-        var name = $('#edit_name').val();
-        var email = $('#edit_email').val();
+        var name = $('#edit_name').val().trim();
+        var email = $('#edit_email').val().trim();
         var role = $('#edit_role').val();
-        var designation = $('#edit_designation').val();
-        var responsibility = $('#edit_responsibility').val();
 
-        if (name != "") {
-
-            var formData = new FormData();
-            formData.append("id", id);
-            formData.append("name", name);
-            formData.append("email", email);
-            formData.append("role", role);
-            formData.append("designation", designation);
-            formData.append("responsibility", responsibility);
-            formData.append("user_image", $('#edit_user_image')[0].files[0]);
-
-            showProcessingNotification();
-
-            $.ajax({
-                url: '/edit/user',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('#token').val()
-                },
-                success: function (response) {
-                    showSuccessNotification('User Updated!');
-                    reloadCurrentPage();
-                },
-                error: function (error) {
-                    showErrorNotification();
-                }
-            });
+        if (!name || !email || !role) {
+            showErrorNotification('Please fill all required fields');
+            return;
         }
+
+        var formData = new FormData();
+        formData.append("id", id);
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("role", role);
+        formData.append("phone", $('#edit_phone').val().trim());
+        formData.append("address", $('#edit_address').val().trim());
+        formData.append("user_image", $('#edit_user_image')[0].files[0]);
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/edit/user',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('#token').val()
+            },
+            success: function (response) {
+                showSuccessNotification(response.message);
+                $('#edit_user_modal').modal('hide');
+                reloadCurrentPage();
+            },
+            error: function (xhr) {
+                showErrorNotification(error);
+            }
+        });
+    });
+
+
+    $("#change_password_button").click(function(){
+
+        var userId = $('#password_user_id').val();
+        var newPassword = $('#new_password').val();
+        var confirmPassword = $('#new_password_confirmation').val();
+
+        if (!newPassword) {
+            showErrorNotification('Please enter a new password');
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            showErrorNotification('Password must be at least 6 characters long');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            showErrorNotification('Passwords do not match');
+            return;
+        }
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/change-password',
+            type: 'POST',
+            data: {
+                user_id: userId,
+                new_password: newPassword,
+                new_password_confirmation: confirmPassword,
+                "_token": $('#token').val()
+            },
+            success: function (response) {
+                showSuccessNotification(response.message);
+                $('#changePasswordModal').modal('hide');
+            },
+            error: function (xhr) {
+                showErrorNotification();
+            }
+        });
     });
 
 
@@ -1117,7 +1165,7 @@ function saveScore() {
         data: {
             home_team_score: parseInt(homeScore),
             away_team_score: parseInt(awayScore),
-            "_token": $('meta[name="csrf-token"]').attr('content')
+            "_token": $('#token').val()
         },
         success: function (response) {
             showSuccessNotification(response.message);
@@ -1139,6 +1187,7 @@ function saveScore() {
 
 
 function viewMatchEvents(matchId) {
+
     $('#matchEventsModal').modal('show');
     $('#eventsLoading').show();
     $('#eventsContent').hide();
@@ -1148,94 +1197,127 @@ function viewMatchEvents(matchId) {
         url: '/match/' + matchId + '/events',
         type: 'GET',
         success: function (response) {
+
             $('#eventsLoading').hide();
 
             if (response.success && response.match) {
+
                 var match = response.match;
 
-                // Set match title and score
                 $('#matchTitle').text(match.home_team.name + ' vs ' + match.away_team.name);
                 $('#matchScore').text('Final Score: ' + (match.home_team_score || 0) + ' - ' + (match.away_team_score || 0));
 
-                // Display events
+                var resultHtml = '';
+
+                if (match.home_team_score !== null && match.away_team_score !== null) {
+                    if (match.home_team_score > match.away_team_score) resultHtml = '<span class="badge badge-success">Home Win</span>';
+                    else if (match.away_team_score > match.home_team_score) resultHtml = '<span class="badge badge-success">Away Win</span>';
+                    else resultHtml = '<span class="badge badge-info">Draw</span>';
+                }
+
+                else resultHtml = '<span class="badge badge-warning">Score Pending</span>';
+
+                $('#matchResult').html(resultHtml);
+
                 if (response.events && response.events.length > 0) {
+
                     var eventsHtml = '';
 
                     response.events.forEach(function(event) {
+
                         var badgeClass = '';
-                        var iconClass = '';
+                        var eventText = '';
 
                         switch(event.type) {
                             case 'goal':
                                 badgeClass = 'badge-success';
-                                iconClass = 'fe-target';
+                                eventText = 'Goal';
                                 break;
                             case 'assist':
                                 badgeClass = 'badge-info';
-                                iconClass = 'fe-share-2';
+                                eventText = 'Assist';
                                 break;
                             case 'yellow_card':
                                 badgeClass = 'badge-warning';
-                                iconClass = 'fe-alert-triangle';
+                                eventText = 'Yellow Card';
                                 break;
                             case 'red_card':
                                 badgeClass = 'badge-danger';
-                                iconClass = 'fe-alert-octagon';
+                                eventText = 'Red Card';
                                 break;
                             case 'substitution_in':
                                 badgeClass = 'badge-primary';
-                                iconClass = 'fe-log-in';
+                                eventText = 'Sub In';
                                 break;
                             case 'substitution_out':
                                 badgeClass = 'badge-secondary';
-                                iconClass = 'fe-log-out';
+                                eventText = 'Sub Out';
                                 break;
                             default:
                                 badgeClass = 'badge-light';
-                                iconClass = 'fe-flag';
+                                eventText = event.type;
                         }
 
                         eventsHtml +=
-                            '<div class="event-item mb-2 p-3 border rounded">' +
-                            '<div class="d-flex justify-content-between align-items-start">' +
-                            '<div class="flex-grow-1">' +
-                            '<span class="badge ' + badgeClass + ' mb-1">' +
-                            '<i class="' + iconClass + ' mr-1"></i>' +
-                            event.type.replace('_', ' ').toUpperCase() +
-                            '</span>' +
-                            '<div>' +
-                            '<strong>' + event.player.first_name + ' ' + (event.player.last_name || '') + '</strong>' +
-                            '<small class="text-muted ml-2">(' + event.minute + '\')</small>' +
-                            '</div>' +
-                            (event.description ? '<small class="text-muted d-block mt-1">' + event.description + '</small>' : '') +
-                            '<small class="text-muted d-block mt-1">' +
-                            'Team: ' + (event.team_id === match.home_team_id ? match.home_team.name : match.away_team.name) +
-                            '</small>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
+                            '<tr>' +
+                            '<td>' + event.minute + '\'</td>' +
+                            '<td>' +
+                            (event.team_id === match.home_team_id ? match.home_team.name : match.away_team.name) +
+                            '</td>' +
+                            '<td>' + event.player.first_name + ' ' + (event.player.last_name || '') + '</td>' +
+                            '<td><span class="badge ' + badgeClass + '">' + eventText + '</span></td>' +
+                            '<td>' + (event.description || '-') + '</td>' +
+                            '</tr>';
                     });
 
-                    $('#eventsList').html(eventsHtml);
+                    $('#eventsTableBody').html(eventsHtml);
                     $('#eventsContent').show();
-                } else {
-                    $('#noEvents').show();
+
                 }
-            } else {
-                $('#noEvents').show();
+
+                else $('#noEvents').show();
+
             }
+
+            else $('#noEvents').show();
+
         },
+
         error: function () {
             $('#eventsLoading').hide();
             showErrorNotification('Failed to load match events');
         }
+
     });
 }
 
-/*
-setInterval(function() {
-    if (window.location.pathname.indexOf('live-matches') !== -1) {
-        reloadCurrentPage();
-    }
-}, 30000);
-*/
+
+function changePasswordModal(userId, userName) {
+    $('#password_user_id').val(userId);
+    $('#changePasswordModal .modal-title').text('Change Password - ' + userName);
+    $('#new_password').val('');
+    $('#new_password_confirmation').val('');
+    $('#changePasswordModal').modal('show');
+}
+
+
+function applyFilters() {
+    const search = $('#searchInput').val();
+    const role = $('#roleFilter').val();
+
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams(url.search);
+
+    if (search) params.set('search', search);
+    else params.delete('search');
+
+    if (role) params.set('role', role);
+    else params.delete('role');
+
+    window.location.href = url.pathname + '?' + params.toString();
+}
+
+
+function clearFilters() {
+    window.location.href = window.location.pathname;
+}
