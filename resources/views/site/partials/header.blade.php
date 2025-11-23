@@ -17,17 +17,13 @@
 
 @if(Route::current()->getName() == 'home')
 
-    <div class="hero overlay" style="background-image: url('site/images/bg_3.jpg');">
+    <div class="hero overlay" style="background-image: url('{{ asset('site/images/bg_3.jpg') }}');">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 ml-auto">
                     <h1 class="text-white">@yield('title')</h1>
                     <p>@yield('subtitle')</p>
-                    <div id="date-countdown"></div>
-                    {{--<p>--}}
-                    {{--<a href="#" class="btn btn-primary py-3 px-4 mr-3">Book Ticket</a>--}}
-                    {{--<a href="#" class="more light">Learn More</a>--}}
-                    {{--</p>--}}
+                    <div id="date-countdown" class="pb-1" data-countdown="{{ $activeLeague->start_date->format('Y/m/d 00:00:00') }}"></div>
                 </div>
             </div>
         </div>
@@ -35,7 +31,7 @@
 
 @elseif(!in_array(Route::current()->getName(), ['login', 'team.registration', 'team.store', 'player.registration', 'player.store']))
 
-    <div class="hero overlay" style="background-image: url('site/images/bg_3.jpg');">
+    <div class="hero overlay" style="background-image: url('{{ asset('site/images/bg_3.jpg') }}');">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 mx-auto text-center">

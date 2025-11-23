@@ -5,9 +5,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/matches', 'HomeController@match')->name('match');
 
-Route::get('/players', 'HomeController@player')->name('player');
+
+Route::prefix('matches')->name('matches.')->group(function () {
+
+    Route::get('/schedule', 'HomeController@schedule')->name('schedule');
+
+    Route::get('/result', 'HomeController@result')->name('result');
+
+    Route::get('/standing', 'HomeController@standing')->name('standing');
+
+    Route::get('/player', 'HomeController@player')->name('player');
+
+});
+
 Route::get('/player/{id}', 'HomeController@getPlayerDetails')->name('player.details');
 
 Route::get('/blog', 'HomeController@blog')->name('blog');

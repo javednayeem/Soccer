@@ -117,3 +117,80 @@
 .player-detail-btn:hover {
   text-decoration: none;
 }
+
+
+
+
+
+
+
+.scorer-card {
+    transition: .25s ease-in-out;
+    border-radius: 12px;
+}
+
+.scorer-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+}
+
+/* Rank Badge */
+.rank-badge {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-size: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+}
+
+/* Player Photo */
+.player-photo {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #eee;
+}
+
+/* Team Logo */
+.team-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Goals Styling */
+.goals-box {
+    background: #222;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.goals-number {
+    color: #ffcc00;
+    font-weight: bold;
+    font-size: 22px;
+    margin-right: 6px;
+}
+
+.goals-label {
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Text */
+.player-name {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.team-name {
+    font-size: 13px;
+    color: #777;
+}

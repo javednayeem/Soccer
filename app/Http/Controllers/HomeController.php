@@ -11,6 +11,7 @@ use App\Models\LeagueStanding;
 use App\Models\Team;
 use App\Models\Player;
 use App\Models\League;
+use App\Models\PlayerStatistic;
 
 class HomeController extends Controller {
 
@@ -47,41 +48,44 @@ class HomeController extends Controller {
 
         $teams = Team::where('team_status', 'approved')->get();
 
+        $player_statistics = PlayerStatistic::with('player','player.team')
+            ->orderBy('goals','desc')
+            ->take(10)
+            ->get();
+
         return view('site.home.index', [
             'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
             'nextMatch' => $nextMatch,
             'standings' => $standings,
             'teams' => $teams,
+            'player_statistics' => $player_statistics,
         ]);
     }
 
 
-    public function match() {
+    public function schedule() {
 
-        $recentMatches = Match::with(['homeTeam', 'awayTeam'])
+        $upcoming = Match::with(['homeTeam','awayTeam'])
+            ->where('match_date', '>', now())
+            ->where('status', 'scheduled')
+            ->orderBy('match_date', 'asc')
+            ->get();
+
+        $nextTwoMatches = $upcoming->take(2);
+        $otherUpcomingMatches = $upcoming->slice(2)->values();
+
+        $recentMatches = Match::with(['homeTeam','awayTeam'])
             ->where('match_date', '<', now())
-            ->where('status', 'completed')
+            ->where('status', 'finished')
             ->orderBy('match_date', 'desc')
             ->take(5)
             ->get();
 
-        $nextMatch = Match::with(['homeTeam', 'awayTeam'])
-            ->where('match_date', '>', now())
-            ->where('status', 'scheduled')
-            ->orderBy('match_date', 'asc')
-            ->first();
-
-        $upcomingMatches = Match::with(['homeTeam', 'awayTeam'])
-            ->where('match_date', '>', now())
-            ->where('status', 'scheduled')
-            ->orderBy('match_date', 'asc')
-            ->get();
-
-        return view('site.match.index', [
-            'recentMatches' => $recentMatches,
-            'nextMatch' => $nextMatch,
-            'upcomingMatches' => $upcomingMatches,
+        return view('site.schedule.index', [
+            'recentMatches'        => $recentMatches,
+            'nextTwoMatches'       => $nextTwoMatches,
+            'otherUpcomingMatches' => $otherUpcomingMatches,
         ]);
 
     }
@@ -130,6 +134,52 @@ class HomeController extends Controller {
 
         return view('site.contact.index', [
 
+        ]);
+
+    }
+
+
+    public function standing() {
+
+        $league = League::where('is_active', true)
+            ->with(['standings.team'])
+            ->first();
+
+        if ($league) {
+            foreach ($league->standings as $standing) {
+                $standing->next_match = Match::with(['homeTeam', 'awayTeam'])
+                    ->where('league_id', $league->id)
+                    ->where(function ($q) use ($standing) {
+                        $q->where('home_team_id', $standing->team_id)
+                            ->orWhere('away_team_id', $standing->team_id);
+                    })
+                    ->where('match_date', '>', now())
+                    ->where('status', 'scheduled')
+                    ->orderBy('match_date', 'asc')
+                    ->first();
+            }
+        }
+
+        return view('site.standing.index', [
+            'league' => $league
+        ]);
+
+    }
+
+
+    public function result() {
+
+        $matches = Match::with(['homeTeam', 'awayTeam', 'league'])
+            ->where('status', 'finished')
+            ->orderBy('match_date', 'desc')
+            ->get();
+
+        $groupedResults = $matches->groupBy(function ($match) {
+            return $match->match_date->format('F Y');
+        });
+
+        return view('site.result.index', [
+            'groupedResults' => $groupedResults,
         ]);
 
     }
