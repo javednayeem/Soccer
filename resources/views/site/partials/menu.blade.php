@@ -1,5 +1,5 @@
 <div class="ml-auto">
-    <nav class="site-navigation position-relative text-right" role="navigation">
+    <nav class="site-navigation position-relative text-right" role="navigation" style="z-index: 10">
         <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
 
             <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}" class="nav-link">Home</a></li>
@@ -21,6 +21,8 @@
                     </li>
                 </ul>
             </li>
+
+            <li class="{{ request()->routeIs('top.scorers') ? 'active' : '' }}"><a href="{{ route('top.scorers') }}" class="nav-link">Top Scorers</a></li>
 
             @guest
 

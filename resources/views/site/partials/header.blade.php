@@ -4,7 +4,7 @@
         <div class="d-flex align-items-center">
             <div class="site-logo">
                 <a href="/">
-                    <img src="/site/images/logo.png" alt="Logo">
+                    <img src="/site/images/logo.png" alt="Logo" style="border-radius: 10px">
                 </a>
             </div>
 
@@ -12,6 +12,8 @@
 
         </div>
     </div>
+
+    @include('site.partials.sub-menu')
 
 </header>
 

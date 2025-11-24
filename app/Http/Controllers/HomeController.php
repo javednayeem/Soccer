@@ -49,6 +49,7 @@ class HomeController extends Controller {
         $teams = Team::where('team_status', 'approved')->get();
 
         $player_statistics = PlayerStatistic::with('player','player.team')
+            ->where('goals', '>', 0)
             ->orderBy('goals','desc')
             ->take(10)
             ->get();
@@ -83,8 +84,8 @@ class HomeController extends Controller {
             ->get();
 
         return view('site.schedule.index', [
-            'recentMatches'        => $recentMatches,
-            'nextTwoMatches'       => $nextTwoMatches,
+            'recentMatches' => $recentMatches,
+            'nextTwoMatches' => $nextTwoMatches,
             'otherUpcomingMatches' => $otherUpcomingMatches,
         ]);
 
@@ -121,10 +122,20 @@ class HomeController extends Controller {
     }
 
 
-    public function blog() {
+    public function topScorers() {
 
-        return view('site.blog.index', [
+        $activeLeague = League::where('is_active', true)->first();
 
+        $playerStatistics = PlayerStatistic::with(['player.team'])
+            ->whereHas('player')
+            ->whereHas('team')
+            ->where('league_id', $activeLeague->id)
+            ->orderBy('goals', 'DESC')
+            ->get();
+
+        return view('site.top-scorers.index', [
+            'playerStatistics' => $playerStatistics,
+            'league' => $activeLeague,
         ]);
 
     }
