@@ -9,7 +9,22 @@ use App\Models\Player;
 
 class PlayerController extends Controller {
 
-    public function index() {
+    public function index(Request $request) {
+
+        if ($request->has('clear_session')) {
+            session()->forget(['player_search', 'team_search', 'status_search']);
+            return $this->renderPlayerLayout();
+        }
+
+        if (session()->has('player_search') || session()->has('team_search') || session()->has('status_search')) {
+
+            $player_name = session('player_search');
+            $team_id = session('team_search');
+            $player_status = session('status_search');
+
+            return $this->renderPlayerLayout($player_name, $team_id, $player_status);
+        }
+
         return $this->renderPlayerLayout();
     }
 
@@ -19,6 +34,12 @@ class PlayerController extends Controller {
         $player_name = $request->player_name;
         $team_id = $request->team_id;
         $player_status = $request->player_status;
+
+        session([
+            'player_search' => $player_name,
+            'team_search' => $team_id,
+            'status_search' => $player_status
+        ]);
 
         return $this->renderPlayerLayout($player_name, $team_id, $player_status);
     }
@@ -36,7 +57,7 @@ class PlayerController extends Controller {
             ->when($team_id && $team_id != 'all', function($query) use ($team_id) {
                 $query->where('team_id', $team_id);
             })
-            ->when($player_status && $player_status != 'all', function($query) use ($player_status) {
+            ->when(in_array($player_status, ['0', '1']), function($query) use ($player_status) {
                 $query->where('player_status', $player_status);
             })
             ->orderBy('first_name')

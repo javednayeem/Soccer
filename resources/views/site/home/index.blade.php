@@ -189,33 +189,25 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="scorer-card p-3 bg-white rounded shadow-sm position-relative">
 
-                            <!-- Rank Badge -->
                             <div class="rank-badge">
                                 {{ $index + 1 }}
                             </div>
 
-                            <!-- Player Info -->
                             <div class="d-flex align-items-center">
-                                <img src="/site/images/players/{{ $stat->player->photo }}"
-                                     class="player-photo"
-                                     onerror="this.src='/site/images/players/default_player.jpg'">
+
+                                <img src="/site/images/players/{{ $stat->player->photo }}" class="player-photo" onerror="this.src='/site/images/players/default_player.jpg'">
 
                                 <div class="ml-3">
                                     <h5 class="mb-1 player-name text-dark">
                                         {{ $stat->player->first_name }} {{ $stat->player->last_name }}
                                     </h5>
                                     <div class="d-flex align-items-center">
-                                        <img src="/site/images/teams/{{ $stat->player->team->logo ?? '' }}"
-                                             class="team-logo mr-2"
-                                             onerror="this.src='/site/images/teams/default_team.png'">
-                                        <span class="team-name">
-                                        {{ $stat->player->team->short_name ?? $stat->player->team->name }}
-                                    </span>
+                                        <img src="/site/images/teams/{{ $stat->player->team->logo ?? '' }}" class="team-logo mr-2" onerror="this.src='/site/images/teams/default_team.png'">
+                                        <span class="team-name">{{ $stat->player->team->short_name ?? $stat->player->team->name }}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Goals -->
                             <div class="goals-box mt-3">
                                 <span class="goals-number">{{ $stat->goals }}</span>
                                 <span class="goals-label">Goals</span>

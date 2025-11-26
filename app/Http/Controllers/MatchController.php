@@ -13,7 +13,7 @@ class MatchController extends Controller {
     public function index() {
 
         $matches = Match::with(['league', 'homeTeam', 'awayTeam'])
-            ->orderBy('match_date', 'desc')
+            ->orderBy('match_date')
             ->get();
 
         $leagues = League::where('is_active', true)->get();

@@ -32,7 +32,7 @@
 
                                     <div class="form-group mr-2">
                                         <select class="form-control" id="player_status" name="player_status">
-                                            <option value="all">All Status</option>
+                                            <option value="">All Status</option>
                                             <option value="1" {{ (isset($search_player_status) ? $search_player_status : '') == '1' ? 'selected' : '' }}>Active</option>
                                             <option value="0" {{ (isset($search_player_status) ? $search_player_status : '') == '0' ? 'selected' : '' }}>Inactive</option>
                                         </select>
@@ -42,7 +42,7 @@
                                         <i class="fa fa-search"></i> Search
                                     </button>
 
-                                    <a href="{{ route('admin.player') }}" class="btn btn-secondary">
+                                    <a href="{{ route('admin.player') }}?clear_session=1" class="btn btn-secondary">
                                         <i class="fa fa-refresh"></i> Reset
                                     </a>
                                 </form>

@@ -49,11 +49,11 @@ class HomeController extends Controller {
         $teams = Team::where('team_status', 'approved')->get();
 
         $player_statistics = PlayerStatistic::with('player','player.team')
-            ->where('goals', '>', 0)
+            #->where('goals', '>', 0)
             ->orderBy('goals','desc')
             ->take(10)
             ->get();
-
+        
         return view('site.home.index', [
             'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
