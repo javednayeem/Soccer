@@ -48,12 +48,14 @@ class HomeController extends Controller {
 
         $teams = Team::where('team_status', 'approved')->get();
 
-        $player_statistics = PlayerStatistic::with('player','player.team')
-            #->where('goals', '>', 0)
-            ->orderBy('goals','desc')
+        $player_statistics = PlayerStatistic::with(['player', 'player.team'])
+            ->whereHas('player', function($query) {
+                $query->where('player_status', '1');
+            })
+            ->orderBy('goals', 'desc')
             ->take(10)
             ->get();
-        
+
         return view('site.home.index', [
             'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
@@ -95,8 +97,11 @@ class HomeController extends Controller {
     public function player() {
 
         $teams = Team::with(['players' => function($query) {
-            $query->orderBy('jersey_number');
-        }])->get();
+            $query->where('player_status', '1')
+                ->orderBy('jersey_number');
+        }])
+            ->where('team_status', 'approved')
+            ->get();
 
         return view('site.player.index', [
             'teams' => $teams,
@@ -127,10 +132,13 @@ class HomeController extends Controller {
         $activeLeague = League::where('is_active', true)->first();
 
         $playerStatistics = PlayerStatistic::with(['player.team'])
-            ->whereHas('player')
+            ->whereHas('player', function($query) {
+                $query->where('player_status', '1');
+            })
             ->whereHas('team')
             ->where('league_id', $activeLeague->id)
             ->orderBy('goals', 'DESC')
+            ->take(10)
             ->get();
 
         return view('site.top-scorers.index', [

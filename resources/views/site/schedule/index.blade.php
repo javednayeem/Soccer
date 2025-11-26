@@ -4,96 +4,222 @@
 
 @section('content')
 
-    <div class="site-section bg-dark">
+    <div class="site-section bg-light">
         <div class="container">
 
-            @if($nextTwoMatches->count() > 0)
-                <div class="row">
-                    <div class="col-12 title-section">
-                        <h2 class="heading">Upcoming Matches</h2>
+        @if($nextTwoMatches->count() > 0)
+            <!-- Upcoming Matches Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="heading text-dark mb-1">Upcoming Matches</h2>
+                                <p class="text-secondary mb-0">Next exciting fixtures</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="badge badge-primary px-3 py-2 bg-primary text-white">
+                                    <i class="mdi mdi-calendar-clock mr-1"></i>
+                                    {{ $nextTwoMatches->count() }} Match{{ $nextTwoMatches->count() > 1 ? 'es' : '' }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
+                <!-- Upcoming Matches Cards -->
+                <div class="row">
                     @foreach($nextTwoMatches as $match)
                         <div class="col-lg-6 mb-4">
-                            <div class="bg-light p-4 rounded">
-                                <div class="widget-body">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body p-4">
+                                    <!-- Match Header -->
+                                    <div class="text-center mb-4">
+                                        <span class="badge badge-info px-3 py-2 bg-info text-white mb-2">
+                                            {{ isset($match->competition) ? $match->competition : 'Friendly Match' }}
+                                        </span>
+                                        <h5 class="text-muted mb-1">{{ $match->match_date->format('l, F j, Y') }}</h5>
+                                        <h4 class="text-primary fw-bold">{{ $match->match_date->format('g:i A') }}</h4>
+                                        <p class="text-dark mb-0">
+                                            <i class="mdi mdi-map-marker text-danger mr-1"></i>
+                                            {{ isset($match->venue) ? $match->venue : 'Venue TBA' }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Teams -->
                                     <div class="widget-vs">
-                                        <div class="d-flex align-items-center justify-content-around justify-content-between w-100">
-                                            <div class="team-1 text-center">
+                                        <div class="d-flex align-items-center justify-content-between w-100">
+                                            <!-- Home Team -->
+                                            <div class="team text-center flex-fill">
                                                 <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}"
-                                                     alt="{{ $match->homeTeam->name }}" class="img-fluid" style="max-height: 60px;">
-                                                <h3>{{ $match->homeTeam->name }}</h3>
+                                                     alt="{{ $match->homeTeam->name }}"
+                                                     class="img-fluid rounded-circle border border-secondary mb-3"
+                                                     style="width: 80px; height: 80px; object-fit: cover;"
+                                                     onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
+                                                <h5 class="fw-bold text-dark mb-1">{{ $match->homeTeam->name }}</h5>
+                                                @if($match->homeTeam->short_name)
+                                                    <small class="text-muted">({{ $match->homeTeam->short_name }})</small>
+                                                @endif
                                             </div>
-                                            <div>
-                                                <span class="vs"><span>VS</span></span>
+
+                                            <!-- VS -->
+                                            <div class="vs-section text-center mx-4">
+                                                <span class="vs bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle"
+                                                      style="width: 60px; height: 60px; font-size: 14px; font-weight: bold;">
+                                                    VS
+                                                </span>
+                                                <div class="mt-2">
+                                                    <small class="text-muted">Upcoming</small>
+                                                </div>
                                             </div>
-                                            <div class="team-2 text-center">
+
+                                            <!-- Away Team -->
+                                            <div class="team text-center flex-fill">
                                                 <img src="{{ asset('site/images/teams/' . $match->awayTeam->logo) }}"
-                                                     alt="{{ $match->awayTeam->name }}" class="img-fluid" style="max-height: 60px;">
-                                                <h3>{{ $match->awayTeam->name }}</h3>
+                                                     alt="{{ $match->awayTeam->name }}"
+                                                     class="img-fluid rounded-circle border border-secondary mb-3"
+                                                     style="width: 80px; height: 80px; object-fit: cover;"
+                                                     onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
+                                                <h5 class="fw-bold text-dark mb-1">{{ $match->awayTeam->name }}</h5>
+                                                @if($match->awayTeam->short_name)
+                                                    <small class="text-muted">({{ $match->awayTeam->short_name }})</small>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="text-center widget-vs-contents mb-4">
-                                    <h4>{{ isset($match->competition) ? $match->competition : 'Friendly Match' }}</h4>
-                                    <p class="mb-5">
-                                        <span class="d-block">{{ $match->match_date->format('F j, Y') }}</span>
-                                        <span class="d-block">{{ $match->match_date->format('g:i A') }}</span>
-                                        <strong class="text-primary">{{ isset($match->venue) ? $match->venue : 'Venue TBA' }}</strong>
-                                    </p>
+                                    <!-- Match Footer -->
+                                    <div class="text-center mt-4 pt-3 border-top">
+                                        <small class="text-muted">
+                                            <i class="mdi mdi-clock-outline mr-1"></i>
+                                            {{ $match->match_date->diffForHumans() }}
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
-            @endif
+        @endif
 
-            @if($otherUpcomingMatches->count() > 0)
-                <div class="row mt-5">
-                    <div class="col-12 title-section">
-                        <h2 class="heading">All Scheduled Matches</h2>
-                    </div>
-
+        @if($otherUpcomingMatches->count() > 0)
+            <!-- All Scheduled Matches Header -->
+                <div class="row mt-5 mb-4">
                     <div class="col-12">
-                        <div class="table-responsive bg-light p-3 rounded">
-                            <table class="table table-striped table-bordered">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Home Team VS Away Team</th>
-                                    <th>Venue</th>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="heading text-dark mb-1">All Scheduled Matches</h2>
+                                <p class="text-secondary mb-0">Complete fixture list for the season</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="badge badge-success px-3 py-2 bg-success text-white">
+                                    <i class="mdi mdi-calendar-multiple mr-1"></i>
+                                    {{ $otherUpcomingMatches->count() }} Total
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Scheduled Matches Table -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-borderless mb-0">
+                                <thead class="thead-light">
+                                <tr class="bg-primary text-white">
+                                    <th class="py-3 border-0" style="width: 120px;">Date & Time</th>
+                                    <th class="py-3 border-0">Match</th>
+                                    <th class="py-3 border-0" style="width: 200px;">Competition</th>
+                                    <th class="py-3 border-0" style="width: 150px;">Venue</th>
                                 </tr>
                                 </thead>
+
                                 <tbody>
                                 @foreach($otherUpcomingMatches as $match)
-                                    <tr>
-                                        <td class="align-middle">{{ $match->match_date->format('F j, Y') }}</td>
-                                        <td class="align-middle">{{ $match->match_date->format('g:i A') }}</td>
-
-                                        <td class="d-flex align-items-center">
-                                            <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}"
-                                                 alt="{{ $match->homeTeam->name }}"
-                                                 style="height: 40px; width: 40px; object-fit: contain; margin-right: 10px;">
-                                            {{ $match->homeTeam->name }}
+                                    <tr class="border-bottom">
+                                        <!-- Date & Time -->
+                                        <td class="align-middle py-3">
+                                            <div class="d-flex flex-column">
+                                                <span class="fw-bold text-dark">{{ $match->match_date->format('M j, Y') }}</span>
+                                                <span class="text-muted small">{{ $match->match_date->format('g:i A') }}</span>
+                                                <span class="badge badge-secondary badge-sm mt-1">
+                                                    {{ $match->match_date->format('D') }}
+                                                </span>
+                                            </div>
                                         </td>
 
-                                        <td class="d-flex align-items-center">
-                                            <img src="{{ asset('site/images/teams/' . $match->awayTeam->logo) }}"
-                                                 alt="{{ $match->awayTeam->name }}"
-                                                 style="height: 40px; width: 40px; object-fit: contain; margin-right: 10px;">
-                                            {{ $match->awayTeam->name }}
+                                        <!-- Match -->
+                                        <td class="align-middle py-3">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <!-- Home Team -->
+                                                <div class="d-flex align-items-center flex-fill">
+                                                    <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}"
+                                                         alt="{{ $match->homeTeam->name }}"
+                                                         class="rounded-circle border border-secondary me-3"
+                                                         style="width: 40px; height: 40px; object-fit: cover;"
+                                                         onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
+                                                    <div>
+                                                        <span class="fw-bold text-dark d-block">{{ $match->homeTeam->name }}</span>
+                                                        @if($match->homeTeam->short_name)
+                                                            <small class="text-muted">{{ $match->homeTeam->short_name }}</small>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <!-- VS -->
+                                                <div class="mx-3">
+                                                    <span class="badge badge-light border text-muted px-2">VS</span>
+                                                </div>
+
+                                                <!-- Away Team -->
+                                                <div class="d-flex align-items-center flex-fill text-right">
+                                                    <div class="me-3 text-end">
+                                                        <span class="fw-bold text-dark d-block">{{ $match->awayTeam->name }}</span>
+                                                        @if($match->awayTeam->short_name)
+                                                            <small class="text-muted">{{ $match->awayTeam->short_name }}</small>
+                                                        @endif
+                                                    </div>
+                                                    <img src="{{ asset('site/images/teams/' . $match->awayTeam->logo) }}"
+                                                         alt="{{ $match->awayTeam->name }}"
+                                                         class="rounded-circle border border-secondary"
+                                                         style="width: 40px; height: 40px; object-fit: cover;"
+                                                         onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
+                                                </div>
+                                            </div>
                                         </td>
 
-                                        <td class="align-middle">{{ $match->venue ? $match->venue : 'Venue TBA' }}</td>
+                                        <!-- Competition -->
+                                        <td class="align-middle py-3">
+                                            <span class="badge badge-info bg-info text-white px-3 py-2">
+                                                {{ isset($match->competition) ? $match->competition : 'Friendly' }}
+                                            </span>
+                                        </td>
+
+                                        <!-- Venue -->
+                                        <td class="align-middle py-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="mdi mdi-map-marker text-danger me-2"></i>
+                                                <span class="text-dark">{{ $match->venue ? $match->venue : 'TBA' }}</span>
+                                            </div>
+                                        </td>
                                     </tr>
-
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+        @endif
+
+        <!-- Empty State -->
+            @if($nextTwoMatches->count() == 0 && $otherUpcomingMatches->count() == 0)
+                <div class="row">
+                    <div class="col-12 text-center py-5">
+                        <div class="mb-4">
+                            <i class="mdi mdi-calendar-remove display-4 text-muted"></i>
+                        </div>
+                        <h3 class="text-dark">No Upcoming Matches</h3>
+                        <p class="text-muted">Check back later for the latest schedule updates.</p>
                     </div>
                 </div>
             @endif

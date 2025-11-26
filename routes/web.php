@@ -53,6 +53,10 @@ Route::group(['middleware'=> ['auth']],function ()  {
 
     Route::get('/teams', 'TeamController@index')->name('admin.team');
 
+    Route::post('/add/team', 'TeamController@addTeam');
+    Route::post('/edit/team', 'TeamController@editTeam');
+    Route::post('/delete/team', 'TeamController@deleteTeam');
+
     Route::post('/change/team-status', 'TeamController@changeTeamStatus');
     Route::post('/update/team-active-status', 'TeamController@updateTeamActiveStatus');
     Route::get('/team/{team}/players', 'TeamController@getTeamPlayers');

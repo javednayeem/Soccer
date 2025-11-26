@@ -466,6 +466,100 @@ $(document).ready(function() {
         }
     });
 
+
+    $("#add_team_button").click(function(){
+
+        var name = $('#name').val();
+        var team_manager = $('#team_manager').val();
+        var team_status = $('#team_status').val();
+
+        if (name != "" && team_manager != "" && team_status != "") {
+
+            var formData = new FormData();
+            formData.append("name", name);
+            formData.append("short_name", $('#short_name').val());
+            formData.append("team_manager", team_manager);
+            formData.append("manager_email", $('#manager_email').val());
+            formData.append("manager_phone", $('#manager_phone').val());
+            formData.append("note", $('#note').val());
+            formData.append("payment_reference_number", $('#payment_reference_number').val());
+            formData.append("team_status", team_status);
+            formData.append("logo", $('#logo')[0].files[0]);
+            formData.append("team_image", $('#team_image')[0].files[0]);
+
+            showProcessingNotification();
+
+            $.ajax({
+                url: '/add/team',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('#token').val()
+                },
+                success: function (response) {
+                    showSuccessNotification('New Team Added!');
+                    $('#add_team_modal').modal('hide');
+                    reloadCurrentPage();
+                },
+                error: function (error) {
+                    showErrorNotification();
+                }
+            });
+        } else {
+            showErrorNotification('Please fill all required fields!');
+        }
+    });
+
+
+    $("#edit_team_button").click(function(){
+
+        var team_id = $('#team_id').val();
+        var name = $('#edit_name').val();
+        var team_manager = $('#edit_team_manager').val();
+        var team_status = $('#edit_team_status').val();
+
+        if (name != "" && team_manager != "" && team_status != "") {
+
+            var formData = new FormData();
+            formData.append("id", team_id);
+            formData.append("name", name);
+            formData.append("short_name", $('#edit_short_name').val());
+            formData.append("team_manager", team_manager);
+            formData.append("manager_email", $('#edit_manager_email').val());
+            formData.append("manager_phone", $('#edit_manager_phone').val());
+            formData.append("note", $('#edit_note').val());
+            formData.append("payment_reference_number", $('#edit_payment_reference_number').val());
+            formData.append("team_status", team_status);
+            formData.append("logo", $('#edit_logo')[0].files[0]);
+            formData.append("team_image", $('#edit_team_image')[0].files[0]);
+
+            showProcessingNotification();
+
+            $.ajax({
+                url: '/edit/team',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('#token').val()
+                },
+                success: function (response) {
+                    showSuccessNotification('Team Info Updated!');
+                    $('#edit_team_modal').modal('hide');
+                    reloadCurrentPage();
+                },
+                error: function (error) {
+                    showErrorNotification();
+                }
+            });
+        } else {
+            showErrorNotification('Please fill all required fields!');
+        }
+    });
+
 });
 
 function editPlayer(button) {
@@ -1302,11 +1396,12 @@ function changePasswordModal(userId, userName) {
 
 
 function applyFilters() {
-    const search = $('#searchInput').val();
-    const role = $('#roleFilter').val();
 
-    let url = new URL(window.location.href);
-    let params = new URLSearchParams(url.search);
+    var search = $('#searchInput').val();
+    var role = $('#roleFilter').val();
+
+    var url = new URL(window.location.href);
+    var params = new URLSearchParams(url.search);
 
     if (search) params.set('search', search);
     else params.delete('search');
@@ -1320,4 +1415,114 @@ function applyFilters() {
 
 function clearFilters() {
     window.location.href = window.location.pathname;
+}
+
+
+function editTeam(button) {
+
+    $("#team_id").val(button.getAttribute('data-id'));
+    $("#edit_name").val(button.getAttribute('data-name'));
+    $("#edit_short_name").val(button.getAttribute('data-short-name') || '');
+    $("#edit_team_manager").val(button.getAttribute('data-team-manager'));
+    $("#edit_manager_email").val(button.getAttribute('data-manager-email') || '');
+    $("#edit_manager_phone").val(button.getAttribute('data-manager-phone') || '');
+    $("#edit_note").val(button.getAttribute('data-note') || '');
+    $("#edit_payment_reference_number").val(button.getAttribute('data-payment-reference-number') || '');
+    $("#edit_team_status").val(button.getAttribute('data-team-status'));
+
+    var logoPath = button.getAttribute('data-logo');
+    $("#edit_team_logo").attr("src", logoPath && logoPath !== 'default_team.png' ? '/' + logoPath : '/site/images/teams/default_team.png');
+
+    var teamImagePath = button.getAttribute('data-team-image');
+    $("#edit_team_image_preview").attr("src", teamImagePath && teamImagePath !== 'default_team_image.png' ? '/' + teamImagePath : '/site/images/teams/default_team_image.png');
+
+    $('#edit_team_modal').modal('show');
+}
+
+
+function deleteTeam(team_id) {
+
+    swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonClass: 'btn btn-success mr-2',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false
+    }).then(function () {
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/delete/team',
+            type: 'POST',
+            data: {
+                team_id: team_id,
+                "_token": $('#token').val()
+            },
+            success: function (response) {
+                showSuccessNotification('Team Has Been Deleted');
+                $('#team_' + team_id).remove();
+            },
+            error: function (error) {
+                if (error.responseJSON && error.responseJSON.message) {
+                    showErrorNotification(error.responseJSON.message);
+                } else {
+                    showErrorNotification();
+                }
+            }
+        });
+
+    });
+}
+
+
+function updateTeamActiveStatus(teamId) {
+    var checkbox = $('#active_' + teamId);
+    var isActive = checkbox.is(':checked') ? '1' : '0';
+    var label = checkbox.next('label.form-check-label');
+
+    showProcessingNotification();
+
+    $.ajax({
+        url: '/update/team-active-status',
+        type: 'POST',
+        data: {
+            team_id: teamId,
+            active: isActive,
+            "_token": $('#token').val()
+        },
+        success: function (response) {
+            showSuccessNotification('Team status updated successfully!');
+
+            // Update the label text
+            label.text(isActive === '1' ? 'Active' : 'Inactive');
+
+            // Optional: Update row styling for visual feedback
+            var teamRow = $('#team_' + teamId);
+            if (isActive === '1') {
+                teamRow.removeClass('bg-light');
+                teamRow.find('.status-badge').removeClass('bg-secondary').addClass('bg-success');
+            } else {
+                teamRow.addClass('bg-light');
+                teamRow.find('.status-badge').removeClass('bg-success').addClass('bg-secondary');
+            }
+        },
+        error: function (xhr, status, error) {
+            showErrorNotification('Failed to update team status!');
+
+            // Revert the checkbox to its previous state
+            checkbox.prop('checked', !checkbox.is(':checked'));
+
+            // Revert the label text
+            label.text(checkbox.is(':checked') ? 'Active' : 'Inactive');
+
+            console.error('Error updating team status:', error);
+        }
+    });
 }

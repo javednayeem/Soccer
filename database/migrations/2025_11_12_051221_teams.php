@@ -25,6 +25,7 @@ class Teams extends Migration {
             $table->text('note')->nullable();
             $table->string('payment_reference_number')->nullable();
 
+            $table->enum('active', ['0', '1'])->default('1');
             $table->enum('team_status', ['pending', 'approved', 'rejected', 'inactive'])->default('pending');
 
             $table->timestamps();

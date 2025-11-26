@@ -10,5 +10,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/public/images/teams/*
-/public/images/players/*
+/public/site/images/teams/*
+/public/site/images/players/*

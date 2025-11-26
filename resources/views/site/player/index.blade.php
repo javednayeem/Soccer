@@ -34,9 +34,9 @@
                                 <div class="player-card">
 
                                     <div class="player-card-image">
-                                        <img src="{{ asset('site/images/players/' . $player->photo) }}"
+                                        <img src="{{ str_contains($player->photo, 'site/images/players/') ? asset($player->photo) : asset('site/images/players/' . $player->photo) }}"
                                              alt="{{ $player->first_name }} {{ $player->last_name }}"
-                                             class="img-fluid"
+                                             class="img-fluid" style="height: 400px"
                                              onerror="this.onerror=null; this.src='{{ asset('site/images/players/default_player.jpg') }}';">
                                     </div>
 

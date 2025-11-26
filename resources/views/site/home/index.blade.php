@@ -178,7 +178,7 @@
             <!-- Title -->
             <div class="row mb-4">
                 <div class="col-12 title-section d-flex justify-content-between align-items-center">
-                    <h2 class="heading mb-0">Top Scorers</h2>
+                    <h2 class="heading mb-0 text-dark">Top Scorers</h2>
                 </div>
             </div>
 
