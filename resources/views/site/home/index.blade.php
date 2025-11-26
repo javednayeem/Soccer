@@ -195,7 +195,7 @@
 
                             <div class="d-flex align-items-center">
 
-                                <img src="/site/images/players/{{ $stat->player->photo }}" class="player-photo" onerror="this.src='/site/images/players/default_player.jpg'">
+                                <img src="{{ str_contains($stat->player->photo, 'site/images/players/') ? asset($stat->player->photo) : asset('site/images/players/' . $stat->player->photo) }}" class="player-photo" onerror="this.src='/site/images/players/default_player.jpg'">
 
                                 <div class="ml-3">
                                     <h5 class="mb-1 player-name text-dark">
