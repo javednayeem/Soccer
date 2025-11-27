@@ -30,6 +30,8 @@ class DashboardController extends Controller {
             ->get();
 
         $topScorers = PlayerStatistic::with(['player.team'])
+            ->whereHas('player')
+            ->whereHas('player.team')
             ->orderBy('goals', 'desc')
             ->take(5)
             ->get();

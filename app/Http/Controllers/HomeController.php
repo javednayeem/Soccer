@@ -138,6 +138,7 @@ class HomeController extends Controller {
             ->whereHas('team')
             ->where('league_id', $activeLeague->id)
             ->orderBy('goals', 'DESC')
+            ->orderBy('assists', 'DESC')
             ->take(10)
             ->get();
 

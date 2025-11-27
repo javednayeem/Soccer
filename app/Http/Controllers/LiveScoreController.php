@@ -16,6 +16,7 @@ use App\Models\League;
 
 class LiveScoreController extends Controller {
 
+
     public function liveMatches() {
 
         $liveMatches = Match::with(['league', 'homeTeam', 'awayTeam', 'events.player'])
@@ -23,7 +24,18 @@ class LiveScoreController extends Controller {
             ->orderBy('match_date', 'asc')
             ->get();
 
-        $teams = Team::where('team_status', 'approved')->get();
+        $teamIds = [];
+        foreach ($liveMatches as $match) {
+            $teamIds[] = $match->home_team_id;
+            $teamIds[] = $match->away_team_id;
+        }
+
+        $teamIds = array_unique($teamIds);
+
+        $teams = Team::whereIn('id', $teamIds)
+            ->where('team_status', 'approved')
+            ->get();
+
         $leagues = League::where('is_active', true)->get();
 
         return view('admin.live-score.live-matches', [
@@ -31,7 +43,6 @@ class LiveScoreController extends Controller {
             'teams' => $teams,
             'leagues' => $leagues,
         ]);
-
     }
 
 
@@ -61,7 +72,7 @@ class LiveScoreController extends Controller {
     }
 
 
-    public function updateMatchScore(Request $request, $matchId) {
+    public function updateMatchScore_old(Request $request, $matchId) {
 
         $request->validate([
             'home_team_score' => 'required|integer|min:0',
@@ -69,21 +80,98 @@ class LiveScoreController extends Controller {
         ]);
 
         DB::transaction(function () use ($request, $matchId) {
+
             $match = Match::findOrFail($matchId);
 
-            // Update match score
             $match->update([
                 'home_team_score' => $request->home_team_score,
                 'away_team_score' => $request->away_team_score,
             ]);
 
-            // If match is finished, update standings and statistics
             if ($match->status === 'finished') {
                 $this->updateLeagueStandings($match);
             }
+
         });
 
         return response()->json(['success' => true, 'message' => 'Score updated successfully!']);
+    }
+
+
+    public function updateMatchScore(Request $request, $matchId) {
+
+        $request->validate([
+            'home_team_score' => 'required|integer|min:0',
+            'away_team_score' => 'required|integer|min:0',
+            'man_of_the_match' => 'nullable|exists:players,id',
+        ]);
+
+        DB::transaction(function () use ($request, $matchId) {
+
+            $match = Match::findOrFail($matchId);
+
+            $match->update([
+                'home_team_score' => $request->home_team_score,
+                'away_team_score' => $request->away_team_score,
+                'man_of_the_match' => $request->man_of_the_match,
+            ]);
+
+            if ($match->status === 'finished') {
+                $this->updateLeagueStandings($match);
+            }
+
+        });
+
+        return response()->json(['success' => true, 'message' => 'Score updated successfully!']);
+    }
+
+
+    public function getMatchPlayers($matchId) {
+        try {
+            $match = Match::with(['homeTeam.players', 'awayTeam.players'])->findOrFail($matchId);
+
+            $players = collect();
+
+            // Get active players from both teams
+            if ($match->homeTeam) {
+                $homePlayers = $match->homeTeam->players()
+                    ->where('player_status', '1')
+                    ->select('id', 'first_name', 'last_name', 'jersey_number', 'team_id')
+                    ->get()
+                    ->map(function($player) use ($match) {
+                        $player->team_name = $match->homeTeam->name;
+                        return $player;
+                    });
+                $players = $players->merge($homePlayers);
+            }
+
+            if ($match->awayTeam) {
+                $awayPlayers = $match->awayTeam->players()
+                    ->where('player_status', '1')
+                    ->select('id', 'first_name', 'last_name', 'jersey_number', 'team_id')
+                    ->get()
+                    ->map(function($player) use ($match) {
+                        $player->team_name = $match->awayTeam->name;
+                        return $player;
+                    });
+                $players = $players->merge($awayPlayers);
+            }
+
+            // Sort players by team and name
+            $players = $players->sortBy('team_name')->sortBy('first_name')->values();
+
+            return response()->json([
+                'success' => true,
+                'players' => $players,
+                'current_motm' => $match->man_of_the_match
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Match not found'
+            ], 404);
+        }
     }
 
 

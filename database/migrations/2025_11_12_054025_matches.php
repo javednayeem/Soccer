@@ -22,6 +22,8 @@ class Matches extends Migration {
             $table->integer('away_team_score')->nullable();
             $table->string('match_week')->nullable();
 
+            $table->foreignId('man_of_the_match')->nullable()->constrained('players')->onDelete('set null');
+
             $table->timestamps();
 
         });

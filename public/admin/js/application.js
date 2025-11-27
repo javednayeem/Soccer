@@ -444,6 +444,9 @@ $(document).ready(function() {
         var teamId = $(this).val();
 
         if (teamId) {
+            // Show loading state
+            $('#event_player_id').html('<option value="">Loading players...</option>');
+
             $.ajax({
                 url: '/team/' + teamId + '/players',
                 type: 'GET',
@@ -451,18 +454,28 @@ $(document).ready(function() {
                     'X-CSRF-TOKEN': $('#token').val()
                 },
                 success: function(response) {
-                    var options = '<option value="">Select Player</option>';
+                    if (response.success && response.players.length > 0) {
+                        var options = '<option value="">Select Player</option>';
 
-                    response.players.forEach(function(player) {
-                        options += '<option value="' + player.id + '">' + player.first_name + ' ' + player.last_name + '</option>';
-                    });
+                        response.players.forEach(function(player) {
+                            options += '<option value="' + player.id + '">' +
+                                player.first_name + ' ' + player.last_name +
+                                ' (#' + (player.jersey_number || 'N/A') + ')' +
+                                '</option>';
+                        });
 
-                    $('#event_player_id').html(options);
+                        $('#event_player_id').html(options);
+                    } else {
+                        $('#event_player_id').html('<option value="">No active players found</option>');
+                    }
                 },
                 error: function(error) {
                     console.error('Error loading players:', error);
+                    $('#event_player_id').html('<option value="">Error loading players</option>');
                 }
             });
+        } else {
+            $('#event_player_id').html('<option value="">Select Player</option>');
         }
     });
 
@@ -1213,9 +1226,13 @@ function finishMatch(matchId) {
 
 
 function updateScore(matchId) {
-    // Fetch match details via AJAX to get current scores
-    showProcessingNotification();
+    // Show loading state
+    $('#updateScoreModal').modal('show');
+    $('#score_loading').show();
+    $('#score_content').hide();
+    $('#motm_section').hide();
 
+    // Load match details and players
     $.ajax({
         url: '/match/' + matchId + '/events',
         type: 'GET',
@@ -1229,13 +1246,69 @@ function updateScore(matchId) {
                 $('#home_score').val(match.home_team_score ? match.home_team_score : 0);
                 $('#away_score').val(match.away_team_score ? match.away_team_score : 0);
 
-                $('#updateScoreModal').modal('show');
+                // Load players for Man of the Match selection
+                loadMatchPlayers(matchId);
             } else {
                 showErrorNotification('Failed to load match details');
+                $('#updateScoreModal').modal('hide');
             }
         },
         error: function () {
             showErrorNotification('Failed to load match details');
+            $('#updateScoreModal').modal('hide');
+        }
+    });
+}
+
+
+function loadMatchPlayers(matchId) {
+    $.ajax({
+        url: '/match/' + matchId + '/players',
+        type: 'GET',
+        headers: {
+            'X-CSRF-TOKEN': $('#token').val()
+        },
+        success: function (response) {
+            if (response.success) {
+                var options = '<option value="">Select Man of the Match</option>';
+
+                if (response.players.length > 0) {
+                    var currentTeam = '';
+
+                    response.players.forEach(function(player) {
+                        // Add team header if team changed
+                        if (player.team_name !== currentTeam) {
+                            currentTeam = player.team_name;
+                            options += '<optgroup label="' + currentTeam + '">';
+                        }
+
+                        var selected = (player.id == response.current_motm) ? 'selected' : '';
+                        options += '<option value="' + player.id + '" ' + selected + '>' +
+                            player.first_name + ' ' + player.last_name +
+                            ' (#' + (player.jersey_number || 'N/A') + ')' +
+                            '</option>';
+                    });
+
+                    // Close the last optgroup
+                    options += '</optgroup>';
+                } else {
+                    options += '<option value="" disabled>No players found</option>';
+                }
+
+                $('#man_of_the_match').html(options);
+
+                // Show content
+                $('#score_loading').hide();
+                $('#score_content').show();
+                $('#motm_section').show();
+            } else {
+                showErrorNotification('Failed to load players');
+                $('#updateScoreModal').modal('hide');
+            }
+        },
+        error: function () {
+            showErrorNotification('Failed to load players');
+            $('#updateScoreModal').modal('hide');
         }
     });
 }
@@ -1245,6 +1318,7 @@ function saveScore() {
     var matchId = $('#score_match_id').val();
     var homeScore = $('#home_score').val();
     var awayScore = $('#away_score').val();
+    var manOfTheMatch = $('#man_of_the_match').val();
 
     if (homeScore === '' || awayScore === '') {
         showErrorNotification('Please enter both scores');
@@ -1259,6 +1333,7 @@ function saveScore() {
         data: {
             home_team_score: parseInt(homeScore),
             away_team_score: parseInt(awayScore),
+            man_of_the_match: manOfTheMatch || null,
             "_token": $('#token').val()
         },
         success: function (response) {

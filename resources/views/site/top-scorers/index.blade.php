@@ -7,7 +7,6 @@
     <div class="site-section bg-light">
         <div class="container">
 
-            <!-- Header -->
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center">
@@ -25,7 +24,6 @@
                 </div>
             </div>
 
-            <!-- Top Scorers Table -->
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -35,8 +33,17 @@
                                 <th class="text-center py-3 border-0" style="width: 70px;">#</th>
                                 <th class="py-3 border-0">Player</th>
                                 <th class="py-3 border-0">Team</th>
-                                <th class="text-center py-3 border-0" style="width: 100px;">
+                                <th class="text-center py-3 border-0" style="width: 90px;">
+                                    <strong>Played</strong>
+                                </th>
+                                <th class="text-center py-3 border-0" style="width: 90px;">
                                     <strong>Goals</strong>
+                                </th>
+                                <th class="text-center py-3 border-0" style="width: 90px;">
+                                    <strong>Assists</strong>
+                                </th>
+                                <th class="text-center py-3 border-0" style="width: 90px;">
+                                    <strong>MOTM</strong>
                                 </th>
                             </tr>
                             </thead>
@@ -49,18 +56,18 @@
                                         @if($index == 0)
                                             <span class="badge badge-warning badge-pill d-inline-flex align-items-center justify-content-center text-dark"
                                                   style="width: 36px; height: 36px; font-size: 16px; font-weight: bold;">
-                                                {{ $index + 1 }}
+                        {{ $index + 1 }}
                                                 <i class="mdi mdi-crown ml-1" style="font-size: 14px;"></i>
-                                            </span>
+                    </span>
                                         @elseif($index < 3)
                                             <span class="badge badge-success badge-pill d-inline-flex align-items-center justify-content-center text-white"
                                                   style="width: 32px; height: 32px; font-size: 14px; font-weight: bold;">
-                                                {{ $index + 1 }}
-                                            </span>
+                        {{ $index + 1 }}
+                    </span>
                                         @else
                                             <span class="text-dark fw-bold" style="font-size: 16px;">
-                                                {{ $index + 1 }}
-                                            </span>
+                        {{ $index + 1 }}
+                    </span>
                                         @endif
                                     </td>
 
@@ -79,12 +86,12 @@
                                                     {{ $stat->player->first_name }} {{ $stat->player->last_name }}
                                                 </h6>
                                                 <div class="d-flex align-items-center ml-2">
-                                                    <span class="badge badge-secondary badge-sm me-2">
-                                                        #{{ $stat->player->jersey_number ?: 'N/A' }}
-                                                    </span>
+                            <span class="badge badge-secondary badge-sm me-2">
+                                #{{ $stat->player->jersey_number ?: 'N/A' }}
+                            </span>
                                                     <span class="text-muted small">
-                                                        {{ ucfirst($stat->player->position) }}
-                                                    </span>
+                                {{ ucfirst($stat->player->position) }}
+                            </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,9 +108,9 @@
                                                      onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <span class="text-dark fw-semibold d-block">
-                                                    {{ $stat->player->team->short_name ?: $stat->player->team->name }}
-                                                </span>
+                        <span class="text-dark fw-semibold d-block">
+                            {{ $stat->player->team->short_name ?: $stat->player->team->name }}
+                        </span>
                                                 <small class="text-muted">
                                                     {{ $stat->player->team->name }}
                                                 </small>
@@ -111,17 +118,43 @@
                                         </div>
                                     </td>
 
+                                    <!-- Matches Played -->
+                                    <td class="text-center align-middle py-3">
+                                        <div class="d-flex flex-column align-items-center">
+                    <span class="badge badge-info px-3 py-2 fw-bold text-white" style="font-size: 14px;">
+                        {{ $stat->matches_played ?? 0 }}
+                    </span>
+                                            <small class="text-muted mt-1">Games</small>
+                                        </div>
+                                    </td>
+
                                     <!-- Goals -->
                                     <td class="text-center align-middle py-3">
                                         <div class="d-flex flex-column align-items-center">
-                                            <span class="badge badge-danger px-3 py-2 fw-bold text-white" style="font-size: 16px;">
-                                                {{ $stat->goals }}
-                                            </span>
-                                            <small class="text-muted mt-1">
-                                                @if($stat->matches_played)
-                                                    {{ $stat->matches_played }} games
-                                                @endif
-                                            </small>
+                    <span class="badge badge-danger px-3 py-2 fw-bold text-white" style="font-size: 14px;">
+                        {{ $stat->goals }}
+                    </span>
+                                            <small class="text-muted mt-1">Goals</small>
+                                        </div>
+                                    </td>
+
+                                    <!-- Assists -->
+                                    <td class="text-center align-middle py-3">
+                                        <div class="d-flex flex-column align-items-center">
+                    <span class="badge badge-primary px-3 py-2 fw-bold text-white" style="font-size: 14px;">
+                        {{ $stat->assists ?? 0 }}
+                    </span>
+                                            <small class="text-muted mt-1">Assists</small>
+                                        </div>
+                                    </td>
+
+                                    <!-- Man of the Match -->
+                                    <td class="text-center align-middle py-3">
+                                        <div class="d-flex flex-column align-items-center">
+                    <span class="badge badge-warning px-3 py-2 fw-bold text-white" style="font-size: 14px;">
+                        {{ $stat->man_of_the_match ?? 0 }}
+                    </span>
+                                            <small class="text-muted mt-1">MOTM</small>
                                         </div>
                                     </td>
                                 </tr>
@@ -132,7 +165,6 @@
                 </div>
             </div>
 
-            <!-- Stats Summary -->
             @if(!$playerStatistics->isEmpty())
                 <div class="row mt-4">
                     <div class="col-12">

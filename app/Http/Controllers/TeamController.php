@@ -192,7 +192,9 @@ class TeamController extends Controller {
 
         try {
             $team = Team::findOrFail($teamId);
+
             $players = Player::where('team_id', $teamId)
+                ->where('player_status', '1')
                 ->orderBy('first_name')
                 ->get();
 

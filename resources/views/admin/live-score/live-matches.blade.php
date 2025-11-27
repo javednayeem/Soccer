@@ -120,7 +120,7 @@
     </div>
 
     <div id="updateScoreModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Update Match Score</h4>
@@ -128,23 +128,63 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="score_match_id">
-                    <div class="form-group text-center">
-                        <div class="row">
-                            <div class="col-5">
-                                <label id="home_team_name" class="font-weight-bold"></label>
-                                <input type="number" class="form-control text-center" id="home_score" min="0" value="0">
+
+                    <!-- Loading State -->
+                    <div id="score_loading" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Loading match details...</p>
+                    </div>
+
+                    <!-- Content -->
+                    <div id="score_content" style="display: none;">
+                        <!-- Score Section -->
+                        <div class="score-section mb-4">
+                            <h6 class="text-center mb-3 text-muted">Final Score</h6>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-5">
+                                        <label id="home_team_name" class="font-weight-bold d-block text-center mb-2"></label>
+                                        <input type="number" class="form-control text-center font-weight-bold"
+                                               id="home_score" min="0" value="0" style="font-size: 1.2rem;">
+                                    </div>
+                                    <div class="col-2 text-center">
+                                        <span class="h4 text-muted">-</span>
+                                    </div>
+                                    <div class="col-5">
+                                        <label id="away_team_name" class="font-weight-bold d-block text-center mb-2"></label>
+                                        <input type="number" class="form-control text-center font-weight-bold"
+                                               id="away_score" min="0" value="0" style="font-size: 1.2rem;">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-2 text-center pt-4">-</div>
-                            <div class="col-5">
-                                <label id="away_team_name" class="font-weight-bold"></label>
-                                <input type="number" class="form-control text-center" id="away_score" min="0" value="0">
+                        </div>
+
+                        <!-- Man of the Match Section -->
+                        <div id="motm_section" class="motm-section border-top pt-3">
+                            <h6 class="text-center mb-3 text-muted">
+                                <i class="mdi mdi-trophy-outline text-warning mr-2"></i>
+                                Man of the Match
+                            </h6>
+                            <div class="form-group">
+                                <select class="form-control" id="man_of_the_match">
+                                    <option value="">Select Man of the Match</option>
+                                    <!-- Players will be loaded via AJAX -->
+                                </select>
+                                <small class="form-text text-muted">
+                                    Select the outstanding player from either team (optional)
+                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveScore()">Update Score</button>
+                    <button type="button" class="btn btn-primary" onclick="saveScore()">
+                        <i class="mdi mdi-content-save mr-1"></i>
+                        Update Score
+                    </button>
                 </div>
             </div>
         </div>
@@ -176,6 +216,7 @@
                                 <label>Player</label>
                                 <select class="form-control" id="event_player_id">
                                     <option value="">Select Player</option>
+                                    <!-- Players will be loaded via AJAX -->
                                 </select>
                             </div>
                         </div>
