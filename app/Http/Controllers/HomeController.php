@@ -112,18 +112,15 @@ class HomeController extends Controller {
 
     public function getPlayerDetails($id) {
 
-        $player = Player::with('team')->findOrFail($id);
+        $player = Player::with(['team', 'statistics'])->findOrFail($id);
         $age = NULL;
 
-        if ($player->date_of_birth) {
-            $age = Carbon::parse($player->date_of_birth)->age;
-        }
+        if ($player->date_of_birth) $age = Carbon::parse($player->date_of_birth)->age;
 
         return view('site.player.modal-content', [
             'player' => $player,
             'age' => $age,
         ]);
-
     }
 
 
@@ -202,6 +199,17 @@ class HomeController extends Controller {
             'groupedResults' => $groupedResults,
         ]);
 
+    }
+
+    public function teamPlayers($teamId) {
+        $team = Team::with(['players' => function($query) {
+            $query->where('player_status', '1')->orderBy('position')->orderBy('first_name');
+        }])->findOrFail($teamId);
+
+        return view('site.team.players', [
+            'team' => $team,
+            'players' => $team->players
+        ]);
     }
 
 }

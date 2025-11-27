@@ -84,7 +84,7 @@
                                                          onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                                 </div>
                                                 <div class="flex-grow-1 ms-3">
-                                                    <h6 class="mb-0 text-dark fw-bold ml-2">{{ $standing->team->name }}</h6>
+                                                    <h6 class="mb-0 text-dark fw-bold ml-2"><a href="/team/{{ $standing->team->id }}/players" class="text-dark" style="text-decoration: none">{{ $standing->team->name }}</a></h6>
                                                     @if($standing->team->short_name)
                                                         <small class="text-muted ml-2">{{ $standing->team->short_name }}</small>
                                                     @endif

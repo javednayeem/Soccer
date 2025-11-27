@@ -1,16 +1,18 @@
 <div class="player-modal-header">
-    <div class="player-number-badge">
-        {{ isset($player->jersey_number) ? $player->jersey_number : 'N/A' }}
-    </div>
+    @if(isset($player->jersey_number))
+        <div class="player-number-badge">
+            {{ $player->jersey_number }}
+        </div>
+    @endif
     <h1 class="player-name mb-0">{{ $player->first_name }} {{ $player->last_name }}</h1>
 </div>
 
 <div class="player-content">
+
     <div class="player-image-section">
-        <img src="site/images/players/{{ $player->photo }}"
-             alt="{{ $player->first_name }} {{ $player->last_name }}"
+        <img src="/{{ $player->photo }}" alt="{{ $player->first_name }} {{ $player->last_name }}"
              class="player-image"
-             onerror="this.src='site/images/players/default_player.jpg'">
+             onerror="this.src='/site/images/players/default_player.jpg'">
     </div>
 
     <div class="player-info">
@@ -35,20 +37,14 @@
             <span class="info-value">{{ isset($player->team->name) ? $player->team->name : 'N/A' }}</span>
         </div>
         <div class="info-row">
-            <span class="info-label">Birthday</span>
+            <span class="info-label">Age</span>
             <span class="info-value">
-                {{ $player->date_of_birth ? \Carbon\Carbon::parse($player->date_of_birth)->format('F d, Y') : 'N/A' }}
+                {{ $age }}
             </span>
         </div>
-        @if($age)
-            <div class="info-row">
-                <span class="info-label">Age</span>
-                <span class="info-value">{{ $age }}</span>
-            </div>
-        @endif
     </div>
 
-    @if(isset($player->stats) && count($player->stats) > 0)
+    @if(isset($player->statistics) && $player->statistics->count() > 0)
         <div class="stats-section">
             <div class="stats-header">
                 <h2>PLAYER STATISTICS</h2>
@@ -62,14 +58,14 @@
                     <div class="table-cell">Yellow Cards</div>
                     <div class="table-cell">Red Cards</div>
                 </div>
-                @foreach($player->stats as $stat)
+                @foreach($player->statistics as $stat)
                     <div class="table-row">
-                        <div class="table-cell">{{ $stat->season }}</div>
-                        <div class="table-cell">{{ $stat->team_name }}</div>
-                        <div class="table-cell">{{ $stat->goals }}</div>
-                        <div class="table-cell">{{ $stat->assists }}</div>
-                        <div class="table-cell">{{ $stat->yellow_cards }}</div>
-                        <div class="table-cell">{{ $stat->red_cards }}</div>
+                        <div class="table-cell">{{ $stat->season ?? 'N/A' }}</div>
+                        <div class="table-cell">{{ $stat->team_name ?? 'N/A' }}</div>
+                        <div class="table-cell">{{ $stat->goals ?? 0 }}</div>
+                        <div class="table-cell">{{ $stat->assists ?? 0 }}</div>
+                        <div class="table-cell">{{ $stat->yellow_cards ?? 0 }}</div>
+                        <div class="table-cell">{{ $stat->red_cards ?? 0 }}</div>
                     </div>
                 @endforeach
             </div>

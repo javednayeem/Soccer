@@ -86,12 +86,12 @@
                                                     {{ $stat->player->first_name }} {{ $stat->player->last_name }}
                                                 </h6>
                                                 <div class="d-flex align-items-center ml-2">
-                            <span class="badge badge-secondary badge-sm me-2">
-                                #{{ $stat->player->jersey_number ?: 'N/A' }}
-                            </span>
-                                                    <span class="text-muted small">
-                                {{ ucfirst($stat->player->position) }}
-                            </span>
+                                                    <span class="badge badge-secondary badge-sm me-2">
+                                                        #{{ $stat->player->jersey_number ?: 'N/A' }}
+                                                    </span>
+                                                    <span class="text-muted small ml-1">
+                                                        {{ ucfirst($stat->player->position) }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,12 +108,11 @@
                                                      onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                        <span class="text-dark fw-semibold d-block">
-                            {{ $stat->player->team->short_name ?: $stat->player->team->name }}
-                        </span>
-                                                <small class="text-muted">
+                                                <span class="text-dark fw-semibold d-block ml-2">
+                                                    <a href="/team/{{ $stat->player->team->id }}/players" class="text-dark" style="text-decoration: none">
                                                     {{ $stat->player->team->name }}
-                                                </small>
+                                                    </a>
+                                                </span>
                                             </div>
                                         </div>
                                     </td>

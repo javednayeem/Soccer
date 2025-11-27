@@ -379,3 +379,225 @@ tr:first-child {
         font-size: 0.8rem !important;
     }
 }
+
+
+
+
+
+
+
+.player-card-new {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 380px;
+    border: 1px solid #e3e6f0;
+}
+
+.player-card-new:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Team Watermark */
+/* Team Watermark Container */
+.team-watermark {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+}
+
+.team-watermark img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    opacity: 0.7;
+}
+
+/* Player Photo Container */
+.player-photo-container {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+}
+
+/* Player Main Photo */
+.player-main-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.3s ease;
+    z-index: 1;
+    position: relative;
+}
+
+.player-card-new:hover .player-main-photo {
+    transform: scale(1.05);
+}
+
+/* Rest of your existing CSS remains the same */
+.player-card-new {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 380px;
+    border: 1px solid #e3e6f0;
+}
+
+.player-info-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    padding: 20px 15px;
+    z-index: 3;
+}
+
+.player-jersey-number {
+    position: absolute;
+    top: -25px;
+    right: 15px;
+    background: #ffc107;
+    color: #000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 4;
+}
+
+.player-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.player-name strong {
+    font-size: 1.3rem;
+}
+
+.player-position {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.team-nav-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.team-nav-btn {
+    background: #ffffff;
+    color: #007bff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: 2px solid #007bff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.team-nav-btn:hover {
+    background: #007bff;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    text-decoration: none;
+}
+
+.team-nav-btn .icon-keyboard_arrow_left,
+.team-nav-btn .icon-keyboard_arrow_right {
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Optional: Different colors for better visibility */
+.team-nav-prev {
+    background: #ffffff;
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.team-nav-next {
+    background: #ffffff;
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.team-nav-prev:hover,
+.team-nav-next:hover {
+    background: #007bff;
+    color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .player-card-new {
+        height: 320px;
+    }
+
+    .player-photo-container {
+        height: 230px;
+    }
+
+    .team-watermark img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .player-jersey-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        top: -20px;
+    }
+
+    .player-name {
+        font-size: 1rem;
+    }
+
+    .player-name strong {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .player-card-new {
+        height: 280px;
+    }
+
+    .player-photo-container {
+        height: 190px;
+    }
+}

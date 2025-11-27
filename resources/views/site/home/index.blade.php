@@ -100,14 +100,22 @@
                                     <div class="d-flex align-items-center justify-content-around justify-content-between w-100">
                                         <div class="team-1 text-center">
                                             <img src="/site/images/teams/{{ $nextMatch->homeTeam->logo }}" alt="{{ $nextMatch->homeTeam->name }}" style="max-height: 60px;">
-                                            <h3>{{ $nextMatch->homeTeam->name }}</h3>
+                                            <h3>
+                                                <a href="/team/{{ $nextMatch->homeTeam->id }}/players" class="text-white" style="text-decoration: none">
+                                                    {{ $nextMatch->homeTeam->name }}
+                                                </a>
+                                            </h3>
                                         </div>
                                         <div>
                                             <span class="vs"><span>VS</span></span>
                                         </div>
                                         <div class="team-2 text-center">
                                             <img src="/site/images/teams/{{ $nextMatch->awayTeam->logo }}" alt="{{ $nextMatch->awayTeam->name }}" style="max-height: 60px;">
-                                            <h3>{{ $nextMatch->awayTeam->name }}</h3>
+                                            <h3>
+                                                <a href="/team/{{ $nextMatch->awayTeam->id }}/players" class="text-white" style="text-decoration: none">
+                                                    {{ $nextMatch->awayTeam->name }}
+                                                </a>
+                                            </h3>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +160,13 @@
                             @foreach($standings as $standing)
                                 <tr>
                                     <td>{{ $standing->position }}</td>
-                                    <td><strong class="text-white">{{ $standing->team->name }}</strong></td>
+                                    <td>
+                                        <strong class="text-white">
+                                            <a href="/team/{{ $standing->team->id }}/players" class="text-white" style="text-decoration: none">
+                                            {{ $standing->team->name }}
+                                            </a>
+                                        </strong>
+                                    </td>
                                     <td>{{ $standing->won }}</td>
                                     <td>{{ $standing->drawn }}</td>
                                     <td>{{ $standing->lost }}</td>
