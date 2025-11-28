@@ -3,6 +3,8 @@
         <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
 
             <li class="{{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}" class="nav-link">Home</a></li>
+            <li class="{{ request()->routeIs('matches.schedule') ? 'active' : '' }}"><a href="{{ route('matches.schedule') }}" class="nav-link">Schedule</a></li>
+            <li class="{{ request()->routeIs('matches.standing') ? 'active' : '' }}"><a href="{{ route('matches.standing') }}" class="nav-link">Standing</a></li>
 
             <li class="has-children">
                 <a href="#" class="nav-link">Matches</a>
