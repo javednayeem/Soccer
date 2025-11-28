@@ -46,7 +46,9 @@ class HomeController extends Controller {
             ->orderBy('position')
             ->get();
 
-        $teams = Team::where('team_status', 'approved')->get();
+        $teams = Team::where('team_status', 'approved')
+            ->where('active', '1')
+            ->get();
 
         $player_statistics = PlayerStatistic::with(['player', 'player.team'])
             ->whereHas('player', function($query) {
@@ -101,6 +103,7 @@ class HomeController extends Controller {
                 ->orderBy('jersey_number');
         }])
             ->where('team_status', 'approved')
+            ->where('active', '1')
             ->get();
 
         return view('site.player.index', [
@@ -201,10 +204,14 @@ class HomeController extends Controller {
 
     }
 
+
     public function teamPlayers($teamId) {
+
         $team = Team::with(['players' => function($query) {
             $query->where('player_status', '1')->orderBy('position')->orderBy('first_name');
-        }])->findOrFail($teamId);
+        }])
+            ->where('active', '1') // Added active filter
+            ->findOrFail($teamId);
 
         return view('site.team.players', [
             'team' => $team,
