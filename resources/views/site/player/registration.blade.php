@@ -64,8 +64,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email" class="text-white">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="player@example.com">
+                                        <label for="email" class="text-white">Email *</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="player@example.com" required>
                                         @error('email')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror

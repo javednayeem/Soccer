@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mail;
+
 use App\Models\Team;
 use App\Models\Player;
 
@@ -81,6 +83,8 @@ class RegistrationController extends Controller {
             'team_id' => 'required|exists:teams,id',
             'first_name' => 'required|string|max:191',
             'last_name' => 'required|string|max:191',
+            'email' => 'required|email|unique:players,email', // Make email required and unique
+            'phone_no' => 'nullable|string|max:20',
             'nationality' => 'required|string|max:100',
             'position' => 'required|string|in:Goalkeeper,Defender,Midfielder,Forward',
             'jersey_number' => 'nullable|integer|min:1|max:99',
@@ -90,16 +94,15 @@ class RegistrationController extends Controller {
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $photoPath = 'default_player.jpg';
+        $photoName = 'default_player.jpg';
 
         if ($request->hasFile('photo')) {
             $photoFile = $request->file('photo');
             $photoName = time() . '_' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
-            $photoPath = 'site/images/players/' . $photoName;
             $photoFile->move(public_path('site/images/players'), $photoName);
         }
 
-        Player::create([
+        $player = Player::create([
             'team_id' => $request->team_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -111,10 +114,22 @@ class RegistrationController extends Controller {
             'height' => $request->height,
             'weight' => $request->weight,
             'date_of_birth' => $request->date_of_birth,
-            'photo' => $photoPath,
+            'photo' => $photoName,
         ]);
 
-        return redirect()->back()->with('success', 'Player registered successfully!');
+        try {
+
+            Mail::send('emails.player-registration', ['player' => $player], function($message) use ($player) {
+                $message->to($player->email)->subject('Player Registration Confirmation');
+            });
+
+        }
+
+        catch (\Exception $e) {
+            \Log::error('Player registration email failed: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', 'Player registered successfully! A confirmation email has been sent to ' . $player->email . '.');
 
     }
 

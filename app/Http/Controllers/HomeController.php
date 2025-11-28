@@ -27,12 +27,10 @@ class HomeController extends Controller {
             ->first();
 
         if (!$liveMatch) {
-
             $liveMatch = Match::with(['homeTeam', 'awayTeam', 'events.player'])
                 ->where('status', 'finished')
                 ->orderBy('match_date', 'desc')
                 ->first();
-
         }
 
         $nextMatch = Match::with(['homeTeam', 'awayTeam'])
@@ -41,7 +39,13 @@ class HomeController extends Controller {
             ->orderBy('match_date', 'asc')
             ->first();
 
-        $standings = LeagueStanding::with('team')
+        // Updated standings query to only include active teams
+        $standings = LeagueStanding::with(['team' => function($query) {
+            $query->where('active', '1');
+        }])
+            ->whereHas('team', function($query) {
+                $query->where('active', '1');
+            })
             ->where('league_id', 1)
             ->orderBy('position')
             ->get();
@@ -74,6 +78,12 @@ class HomeController extends Controller {
         $upcoming = Match::with(['homeTeam','awayTeam'])
             ->where('match_date', '>', now())
             ->where('status', 'scheduled')
+            ->whereHas('homeTeam', function($query) {
+                $query->where('active', '1');
+            })
+            ->whereHas('awayTeam', function($query) {
+                $query->where('active', '1');
+            })
             ->orderBy('match_date', 'asc')
             ->get();
 
@@ -83,6 +93,12 @@ class HomeController extends Controller {
         $recentMatches = Match::with(['homeTeam','awayTeam'])
             ->where('match_date', '<', now())
             ->where('status', 'finished')
+            ->whereHas('homeTeam', function($query) {
+                $query->where('active', '1');
+            })
+            ->whereHas('awayTeam', function($query) {
+                $query->where('active', '1');
+            })
             ->orderBy('match_date', 'desc')
             ->take(5)
             ->get();
@@ -92,7 +108,6 @@ class HomeController extends Controller {
             'nextTwoMatches' => $nextTwoMatches,
             'otherUpcomingMatches' => $otherUpcomingMatches,
         ]);
-
     }
 
 
@@ -162,10 +177,17 @@ class HomeController extends Controller {
     public function standing() {
 
         $league = League::where('is_active', true)
-            ->with(['standings.team'])
+            ->with(['standings.team' => function($query) {
+                $query->where('active', '1');
+            }])
             ->first();
 
         if ($league) {
+            // Filter out standings with inactive teams
+            $league->standings = $league->standings->filter(function($standing) {
+                return $standing->team && $standing->team->active == '1';
+            });
+
             foreach ($league->standings as $standing) {
                 $standing->next_match = Match::with(['homeTeam', 'awayTeam'])
                     ->where('league_id', $league->id)
@@ -183,7 +205,6 @@ class HomeController extends Controller {
         return view('site.standing.index', [
             'league' => $league
         ]);
-
     }
 
 

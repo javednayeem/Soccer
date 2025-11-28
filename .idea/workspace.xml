@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a8ca19a6-16f6-4d65-a404-dc0064cd4e50" name="Default Changelist" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Soccer.iml" afterPath="$PROJECT_DIR$/.idea/Soccer.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/email/player-registration.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.env.example" afterPath="$PROJECT_DIR$/.env.example" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/site/css/style.css" afterPath="$PROJECT_DIR$/public/site/css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/RegistrationController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/RegistrationController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/site/player/registration.blade.php" afterPath="$PROJECT_DIR$/resources/views/site/player/registration.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +31,18 @@
       <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1938">
-              <caret line="114" column="110" lean-forward="false" selection-start-line="114" selection-start-column="110" selection-end-line="114" selection-end-column="110" />
+            <state relative-caret-position="470">
+              <caret line="33" column="71" lean-forward="false" selection-start-line="33" selection-start-column="60" selection-end-line="33" selection-end-column="71" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".env" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="34" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -39,43 +51,69 @@
       <file leaf-file-name="HomeController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="213" column="34" lean-forward="false" selection-start-line="213" selection-start-column="34" selection-end-line="213" selection-end-column="34" />
+            <state relative-caret-position="442">
+              <caret line="81" column="37" lean-forward="false" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="37" />
               <folding>
                 <element signature="e#40#68#0#PHP" expanded="true" />
-                <element signature="e#290#1902#0#PHP" expanded="false" />
-                <element signature="e#1909#2718#0#PHP" expanded="false" />
-                <element signature="e#3121#3473#0#PHP" expanded="false" />
-                <element signature="e#3480#4133#0#PHP" expanded="false" />
-                <element signature="e#4140#4232#0#PHP" expanded="false" />
-                <element signature="e#4239#5129#0#PHP" expanded="false" />
-                <element signature="e#5136#5580#0#PHP" expanded="false" />
+                <element signature="e#290#2151#0#PHP" expanded="false" />
+                <element signature="e#3433#3822#0#PHP" expanded="false" />
+                <element signature="e#3829#4181#0#PHP" expanded="false" />
+                <element signature="e#4188#4841#0#PHP" expanded="false" />
+                <element signature="e#4848#4940#0#PHP" expanded="false" />
+                <element signature="e#4947#6147#0#PHP" expanded="false" />
+                <element signature="e#6154#6598#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2025_11_12_051221_teams.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/database/migrations/2025_11_12_051221_teams.php">
+      <file leaf-file-name="player-registration.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/email/player-registration.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="27" column="32" lean-forward="false" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="1428">
+              <caret line="84" column="7" lean-forward="false" selection-start-line="84" selection-start-column="7" selection-end-line="84" selection-end-column="7" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#p#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="e#3078#3084#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/site/home/index.blade.php">
+      <file leaf-file-name="registration.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/site/player/registration.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1534">
-              <caret line="191" column="26" lean-forward="true" selection-start-line="191" selection-start-column="26" selection-end-line="191" selection-end-column="26" />
-              <folding />
+            <state relative-caret-position="845">
+              <caret line="168" column="11" lean-forward="false" selection-start-line="168" selection-start-column="11" selection-end-line="168" selection-end-column="11" />
+              <folding>
+                <element signature="e#559#566#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RegistrationController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/RegistrationController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="896">
+              <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+              <folding>
+                <element signature="e#40#68#0#PHP" expanded="true" />
+                <element signature="e#182#279#0#PHP" expanded="false" />
+                <element signature="e#286#2258#0#PHP" expanded="false" />
+                <element signature="e#2265#2473#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>/update/team-active-status</find>
+      <find>updateTeamActiveStatus</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,6 +132,11 @@
         <option value="$PROJECT_DIR$/resources/views/admin/live-score/live-matches.blade.php" />
         <option value="$PROJECT_DIR$/public/site/css/style.css" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" />
+        <option value="$PROJECT_DIR$/resources/views/site/player/registration.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/email/player-registration.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/RegistrationController.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/.env.example" />
       </list>
     </option>
   </component>
@@ -233,6 +276,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -255,11 +299,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -273,15 +313,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site" />
+              <option name="myItemId" value="Http" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -295,71 +331,20 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="Http" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="site" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="home" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Soccer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Soccer" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Soccer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Soccer" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="database" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Soccer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Soccer" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="database" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="migrations" />
+              <option name="myItemId" value="Controllers" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -373,11 +358,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\xampp_72\htdocs\Soccer\resources\views\email" />
       <recent name="$PROJECT_DIR$/resources/views/site/team" />
       <recent name="D:\xampp_72\htdocs\Soccer\resources\views\site\partials" />
       <recent name="$PROJECT_DIR$/resources/views/site" />
       <recent name="$PROJECT_DIR$/resources/views/admin/live-score" />
-      <recent name="D:\xampp_72\htdocs\Soccer\resources\views\admin" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -478,18 +463,19 @@
       <workItem from="1764303539490" duration="196000" />
       <workItem from="1764312246504" duration="231000" />
       <workItem from="1764323580743" duration="1448000" />
-      <workItem from="1764328705664" duration="402000" />
+      <workItem from="1764328705664" duration="1401000" />
+      <workItem from="1764331229452" duration="1062000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7776000" />
+    <option name="totallyTimeSpent" value="9837000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26599148" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26865673" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -508,6 +494,26 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26865673" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -543,94 +549,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TeamController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="190" column="45" lean-forward="false" selection-start-line="190" selection-start-column="45" selection-end-line="190" selection-end-column="45" />
-          <folding>
-            <element signature="e#216#366#0#PHP" expanded="false" />
-            <element signature="e#373#2142#0#PHP" expanded="false" />
-            <element signature="e#2149#3805#0#PHP" expanded="false" />
-            <element signature="e#3812#4388#0#PHP" expanded="false" />
-            <element signature="e#4395#5185#0#PHP" expanded="false" />
-            <element signature="e#5192#5587#0#PHP" expanded="false" />
-            <element signature="e#5594#5959#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/LiveScoreController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="128" column="47" lean-forward="false" selection-start-line="128" selection-start-column="47" selection-end-line="128" selection-end-column="47" />
-          <folding>
-            <element signature="e#312#1109#0#PHP" expanded="false" />
-            <element signature="e#1116#1464#0#PHP" expanded="false" />
-            <element signature="e#1471#1763#0#PHP" expanded="false" />
-            <element signature="e#1770#2521#0#PHP" expanded="false" />
-            <element signature="e#2528#3405#0#PHP" expanded="false" />
-            <element signature="e#5228#6415#0#PHP" expanded="false" />
-            <element signature="e#6422#7218#0#PHP" expanded="false" />
-            <element signature="e#7225#7822#0#PHP" expanded="false" />
-            <element signature="e#7829#8022#0#PHP" expanded="false" />
-            <element signature="e#8029#8331#0#PHP" expanded="false" />
-            <element signature="e#8338#9866#0#PHP" expanded="false" />
-            <element signature="e#9873#10632#0#PHP" expanded="false" />
-            <element signature="e#10639#11448#0#PHP" expanded="false" />
-            <element signature="e#11455#12197#0#PHP" expanded="false" />
-            <element signature="e#12204#12605#0#PHP" expanded="false" />
-            <element signature="e#12612#13199#0#PHP" expanded="false" />
-            <element signature="e#13206#13442#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2025_11_12_054025_matches.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/admin/js/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="1227" column="30" lean-forward="false" selection-start-line="1227" selection-start-column="30" selection-end-line="1227" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/admin/live-score/live-matches.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4369">
-          <caret line="257" column="11" lean-forward="false" selection-start-line="257" selection-start-column="11" selection-end-line="257" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="114" column="110" lean-forward="false" selection-start-line="114" selection-start-column="110" selection-end-line="114" selection-end-column="110" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TeamController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="190" column="45" lean-forward="false" selection-start-line="190" selection-start-column="45" selection-end-line="190" selection-end-column="45" />
-          <folding>
-            <element signature="e#216#366#0#PHP" expanded="false" />
-            <element signature="e#373#2142#0#PHP" expanded="false" />
-            <element signature="e#2149#3805#0#PHP" expanded="false" />
-            <element signature="e#3812#4388#0#PHP" expanded="false" />
-            <element signature="e#4395#5185#0#PHP" expanded="false" />
-            <element signature="e#5192#5587#0#PHP" expanded="false" />
-            <element signature="e#5594#5959#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/LiveScoreController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -661,7 +579,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="24" column="47" lean-forward="false" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -669,6 +586,52 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1836">
           <caret line="1227" column="30" lean-forward="false" selection-start-line="1227" selection-start-column="30" selection-end-line="1227" selection-end-column="30" />
+          <folding>
+            <element signature="e#76#2183#0" expanded="false" />
+            <element signature="e#2233#4613#0" expanded="false" />
+            <element signature="e#4662#5938#0" expanded="false" />
+            <element signature="e#5989#7389#0" expanded="false" />
+            <element signature="e#7437#9434#0" expanded="false" />
+            <element signature="e#9483#11622#0" expanded="false" />
+            <element signature="e#11669#13156#0" expanded="false" />
+            <element signature="e#13204#14543#0" expanded="false" />
+            <element signature="e#14597#15804#0" expanded="false" />
+            <element signature="e#15851#17411#0" expanded="false" />
+            <element signature="e#17458#19156#0" expanded="false" />
+            <element signature="e#19204#21044#0" expanded="false" />
+            <element signature="n#!!block;n#editPlayer#0" expanded="false" />
+            <element signature="n#!!block;n#deletePlayer#0" expanded="false" />
+            <element signature="n#!!block;n#viewSelectedImage#0" expanded="false" />
+            <element signature="n#!!block;n#showProcessingNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showSuccessNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showWarningNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showErrorNotification#0" expanded="false" />
+            <element signature="n#!!block;n#reloadCurrentPage#0" expanded="false" />
+            <element signature="n#!!block;n#viewTeamPlayer#0" expanded="false" />
+            <element signature="n#!!block;n#editLeague#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLeague#0" expanded="false" />
+            <element signature="n#!!block;n#editMatch#0" expanded="false" />
+            <element signature="n#!!block;n#deleteMatch#0" expanded="false" />
+            <element signature="n#!!block;n#editUser#0" expanded="false" />
+            <element signature="n#!!block;n#deleteUser#0" expanded="false" />
+            <element signature="n#!!block;n#removeProfilePicture#0" expanded="false" />
+            <element signature="n#!!block;n#updateScore_old#0" expanded="false" />
+            <element signature="n#!!block;n#saveScore_old#0" expanded="false" />
+            <element signature="n#!!block;n#addEvent#0" expanded="false" />
+            <element signature="n#!!block;n#saveEvent#0" expanded="false" />
+            <element signature="n#!!block;n#quickGoal#0" expanded="false" />
+            <element signature="n#!!block;n#deleteEvent#0" expanded="false" />
+            <element signature="n#!!block;n#finishMatch#0" expanded="false" />
+            <element signature="n#!!block;n#updateScore#0" expanded="false" />
+            <element signature="n#!!block;n#loadMatchPlayers#0" expanded="false" />
+            <element signature="n#!!block;n#saveScore#0" expanded="false" />
+            <element signature="n#!!block;n#viewMatchEvents#0" expanded="false" />
+            <element signature="n#!!block;n#changePasswordModal#0" expanded="false" />
+            <element signature="n#!!block;n#applyFilters#0" expanded="false" />
+            <element signature="n#!!block;n#clearFilters#0" expanded="false" />
+            <element signature="n#!!block;n#editTeam#0" expanded="false" />
+            <element signature="n#!!block;n#deleteTeam#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -698,7 +661,6 @@
             <element signature="e#3812#4388#0#PHP" expanded="false" />
             <element signature="e#4395#5185#0#PHP" expanded="false" />
             <element signature="e#5192#5587#0#PHP" expanded="false" />
-            <element signature="e#5594#5959#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -733,7 +695,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="24" column="47" lean-forward="false" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -741,6 +702,52 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20859">
           <caret line="1227" column="30" lean-forward="false" selection-start-line="1227" selection-start-column="30" selection-end-line="1227" selection-end-column="30" />
+          <folding>
+            <element signature="e#76#2183#0" expanded="false" />
+            <element signature="e#2233#4613#0" expanded="false" />
+            <element signature="e#4662#5938#0" expanded="false" />
+            <element signature="e#5989#7389#0" expanded="false" />
+            <element signature="e#7437#9434#0" expanded="false" />
+            <element signature="e#9483#11622#0" expanded="false" />
+            <element signature="e#11669#13156#0" expanded="false" />
+            <element signature="e#13204#14543#0" expanded="false" />
+            <element signature="e#14597#15804#0" expanded="false" />
+            <element signature="e#15851#17411#0" expanded="false" />
+            <element signature="e#17458#19156#0" expanded="false" />
+            <element signature="e#19204#21044#0" expanded="false" />
+            <element signature="n#!!block;n#editPlayer#0" expanded="false" />
+            <element signature="n#!!block;n#deletePlayer#0" expanded="false" />
+            <element signature="n#!!block;n#viewSelectedImage#0" expanded="false" />
+            <element signature="n#!!block;n#showProcessingNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showSuccessNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showWarningNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showErrorNotification#0" expanded="false" />
+            <element signature="n#!!block;n#reloadCurrentPage#0" expanded="false" />
+            <element signature="n#!!block;n#viewTeamPlayer#0" expanded="false" />
+            <element signature="n#!!block;n#editLeague#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLeague#0" expanded="false" />
+            <element signature="n#!!block;n#editMatch#0" expanded="false" />
+            <element signature="n#!!block;n#deleteMatch#0" expanded="false" />
+            <element signature="n#!!block;n#editUser#0" expanded="false" />
+            <element signature="n#!!block;n#deleteUser#0" expanded="false" />
+            <element signature="n#!!block;n#removeProfilePicture#0" expanded="false" />
+            <element signature="n#!!block;n#updateScore_old#0" expanded="false" />
+            <element signature="n#!!block;n#saveScore_old#0" expanded="false" />
+            <element signature="n#!!block;n#addEvent#0" expanded="false" />
+            <element signature="n#!!block;n#saveEvent#0" expanded="false" />
+            <element signature="n#!!block;n#quickGoal#0" expanded="false" />
+            <element signature="n#!!block;n#deleteEvent#0" expanded="false" />
+            <element signature="n#!!block;n#finishMatch#0" expanded="false" />
+            <element signature="n#!!block;n#updateScore#0" expanded="false" />
+            <element signature="n#!!block;n#loadMatchPlayers#0" expanded="false" />
+            <element signature="n#!!block;n#saveScore#0" expanded="false" />
+            <element signature="n#!!block;n#viewMatchEvents#0" expanded="false" />
+            <element signature="n#!!block;n#changePasswordModal#0" expanded="false" />
+            <element signature="n#!!block;n#applyFilters#0" expanded="false" />
+            <element signature="n#!!block;n#clearFilters#0" expanded="false" />
+            <element signature="n#!!block;n#editTeam#0" expanded="false" />
+            <element signature="n#!!block;n#deleteTeam#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -916,13 +923,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/admin/js/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="1227" column="30" lean-forward="false" selection-start-line="1227" selection-start-column="30" selection-end-line="1227" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/LiveScoreController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -953,7 +953,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="24" column="47" lean-forward="false" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -961,30 +960,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="763">
           <caret line="257" column="11" lean-forward="false" selection-start-line="257" selection-start-column="11" selection-end-line="257" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TeamController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="190" column="45" lean-forward="false" selection-start-line="190" selection-start-column="45" selection-end-line="190" selection-end-column="45" />
-          <folding>
-            <element signature="e#216#366#0#PHP" expanded="false" />
-            <element signature="e#373#2142#0#PHP" expanded="false" />
-            <element signature="e#2149#3805#0#PHP" expanded="false" />
-            <element signature="e#3812#4388#0#PHP" expanded="false" />
-            <element signature="e#4395#5185#0#PHP" expanded="false" />
-            <element signature="e#5192#5587#0#PHP" expanded="false" />
-            <element signature="e#5594#5959#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/site/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="845">
-          <caret line="1138" column="0" lean-forward="false" selection-start-line="1138" selection-start-column="0" selection-end-line="1138" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -996,18 +971,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Team.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="114" column="110" lean-forward="false" selection-start-line="114" selection-start-column="110" selection-end-line="114" selection-end-column="110" />
+        <state relative-caret-position="323">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/site/home/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1534">
-          <caret line="191" column="26" lean-forward="true" selection-start-line="191" selection-start-column="26" selection-end-line="191" selection-end-column="26" />
+        <state relative-caret-position="2703">
+          <caret line="159" column="47" lean-forward="false" selection-start-line="159" selection-start-column="37" selection-end-line="159" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/site/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18683">
+          <caret line="1099" column="35" lean-forward="true" selection-start-line="1099" selection-start-column="35" selection-end-line="1099" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1020,19 +1003,153 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/admin/team/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="213" column="34" lean-forward="false" selection-start-line="213" selection-start-column="34" selection-end-line="213" selection-end-column="34" />
+        <state relative-caret-position="1819">
+          <caret line="107" column="74" lean-forward="false" selection-start-line="107" selection-start-column="74" selection-end-line="107" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/admin/js/application.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2431">
+          <caret line="1567" column="40" lean-forward="false" selection-start-line="1567" selection-start-column="14" selection-end-line="1567" selection-end-column="40" />
+          <folding>
+            <element signature="e#76#2183#0" expanded="false" />
+            <element signature="e#2233#4613#0" expanded="false" />
+            <element signature="e#4662#5938#0" expanded="false" />
+            <element signature="e#5989#7389#0" expanded="false" />
+            <element signature="e#7437#9434#0" expanded="false" />
+            <element signature="e#9483#11622#0" expanded="false" />
+            <element signature="e#11669#13156#0" expanded="false" />
+            <element signature="e#13204#14543#0" expanded="false" />
+            <element signature="e#14597#15804#0" expanded="false" />
+            <element signature="e#15851#17411#0" expanded="false" />
+            <element signature="e#17458#19156#0" expanded="false" />
+            <element signature="e#19204#21044#0" expanded="false" />
+            <element signature="n#!!block;n#editPlayer#0" expanded="false" />
+            <element signature="n#!!block;n#deletePlayer#0" expanded="false" />
+            <element signature="n#!!block;n#viewSelectedImage#0" expanded="false" />
+            <element signature="n#!!block;n#showProcessingNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showSuccessNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showWarningNotification#0" expanded="false" />
+            <element signature="n#!!block;n#showErrorNotification#0" expanded="false" />
+            <element signature="n#!!block;n#reloadCurrentPage#0" expanded="false" />
+            <element signature="n#!!block;n#viewTeamPlayer#0" expanded="false" />
+            <element signature="n#!!block;n#editLeague#0" expanded="false" />
+            <element signature="n#!!block;n#deleteLeague#0" expanded="false" />
+            <element signature="n#!!block;n#editMatch#0" expanded="false" />
+            <element signature="n#!!block;n#deleteMatch#0" expanded="false" />
+            <element signature="n#!!block;n#editUser#0" expanded="false" />
+            <element signature="n#!!block;n#deleteUser#0" expanded="false" />
+            <element signature="n#!!block;n#removeProfilePicture#0" expanded="false" />
+            <element signature="n#!!block;n#updateScore_old#0" expanded="false" />
+            <element signature="n#!!block;n#saveScore_old#0" expanded="false" />
+            <element signature="n#!!block;n#addEvent#0" expanded="false" />
+            <element signature="n#!!block;n#saveEvent#0" expanded="false" />
+            <element signature="n#!!block;n#quickGoal#0" expanded="false" />
+            <element signature="n#!!block;n#deleteEvent#0" expanded="false" />
+            <element signature="n#!!block;n#finishMatch#0" expanded="false" />
+            <element signature="n#!!block;n#updateScore#0" expanded="false" />
+            <element signature="n#!!block;n#loadMatchPlayers#0" expanded="false" />
+            <element signature="n#!!block;n#saveScore#0" expanded="false" />
+            <element signature="n#!!block;n#viewMatchEvents#0" expanded="false" />
+            <element signature="n#!!block;n#changePasswordModal#0" expanded="false" />
+            <element signature="n#!!block;n#applyFilters#0" expanded="false" />
+            <element signature="n#!!block;n#clearFilters#0" expanded="false" />
+            <element signature="n#!!block;n#editTeam#0" expanded="false" />
+            <element signature="n#!!block;n#deleteTeam#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TeamController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="180" column="19" lean-forward="false" selection-start-line="180" selection-start-column="13" selection-end-line="180" selection-end-column="19" />
+          <folding>
+            <element signature="e#216#366#0#PHP" expanded="false" />
+            <element signature="e#373#2142#0#PHP" expanded="false" />
+            <element signature="e#2149#3805#0#PHP" expanded="false" />
+            <element signature="e#3812#4388#0#PHP" expanded="false" />
+            <element signature="e#4395#5185#0#PHP" expanded="false" />
+            <element signature="e#5192#5587#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="33" column="71" lean-forward="false" selection-start-line="33" selection-start-column="60" selection-end-line="33" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/site/player/registration.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="845">
+          <caret line="168" column="11" lean-forward="false" selection-start-line="168" selection-start-column="11" selection-end-line="168" selection-end-column="11" />
+          <folding>
+            <element signature="e#559#566#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/email/player-registration.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1428">
+          <caret line="84" column="7" lean-forward="false" selection-start-line="84" selection-start-column="7" selection-end-line="84" selection-end-column="7" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#p#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#3078#3084#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/RegistrationController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="896">
+          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
           <folding>
             <element signature="e#40#68#0#PHP" expanded="true" />
-            <element signature="e#290#1902#0#PHP" expanded="false" />
-            <element signature="e#1909#2718#0#PHP" expanded="false" />
-            <element signature="e#3121#3473#0#PHP" expanded="false" />
-            <element signature="e#3480#4133#0#PHP" expanded="false" />
-            <element signature="e#4140#4232#0#PHP" expanded="false" />
-            <element signature="e#4239#5129#0#PHP" expanded="false" />
-            <element signature="e#5136#5580#0#PHP" expanded="false" />
+            <element signature="e#182#279#0#PHP" expanded="false" />
+            <element signature="e#286#2258#0#PHP" expanded="false" />
+            <element signature="e#2265#2473#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env.example">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" column="28" lean-forward="false" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="34" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/HomeController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="81" column="37" lean-forward="false" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="37" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+            <element signature="e#290#2151#0#PHP" expanded="false" />
+            <element signature="e#3433#3822#0#PHP" expanded="false" />
+            <element signature="e#3829#4181#0#PHP" expanded="false" />
+            <element signature="e#4188#4841#0#PHP" expanded="false" />
+            <element signature="e#4848#4940#0#PHP" expanded="false" />
+            <element signature="e#4947#6147#0#PHP" expanded="false" />
+            <element signature="e#6154#6598#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
