@@ -21,6 +21,7 @@ Route::prefix('matches')->name('matches.')->group(function () {
 
 Route::get('/player/{id}', 'HomeController@getPlayerDetails')->name('player.details');
 Route::get('/team/{teamId}/players', 'HomeController@teamPlayers');
+Route::get('/get/team/{teamId}/players', 'TeamController@getTeamPlayers');
 
 Route::get('/top-scorers', 'HomeController@topScorers')->name('top.scorers');
 

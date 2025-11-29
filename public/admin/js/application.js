@@ -448,7 +448,7 @@ $(document).ready(function() {
             $('#event_player_id').html('<option value="">Loading players...</option>');
 
             $.ajax({
-                url: '/team/' + teamId + '/players',
+                url: '/get/team/' + teamId + '/players',
                 type: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': $('#token').val()
@@ -746,7 +746,7 @@ function viewTeamPlayer(teamId) {
 
     // Fetch team players via AJAX
     $.ajax({
-        url: '/team/' + teamId + '/players',
+        url: '/get/team/' + teamId + '/players',
         type: 'GET',
         headers: {
             'X-CSRF-TOKEN': $('#token').val()
@@ -1132,7 +1132,7 @@ function quickGoal(matchId, teamId) {
 
     // Load players for selected team
     $.ajax({
-        url: '/team/' + teamId + '/players',
+        url: '/get/team/' + teamId + '/players',
         type: 'GET',
         headers: {
             'X-CSRF-TOKEN': $('#token').val()
