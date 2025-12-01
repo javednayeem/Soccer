@@ -74,10 +74,14 @@ class HomeController extends Controller {
 
 
     public function schedule() {
-
-        $upcoming = Match::with(['homeTeam','awayTeam'])
-            ->where('match_date', '>', now())
-            ->where('status', 'scheduled')
+        // Get all upcoming matches (live + scheduled) in one query
+        $upcoming = Match::with(['homeTeam', 'awayTeam'])
+            ->where(function($query) {
+                // Match date is in the future OR status is live (even if in past)
+                $query->where('match_date', '>', now())
+                    ->orWhere('status', 'live');
+            })
+            ->whereIn('status', ['scheduled', 'live'])
             ->whereHas('homeTeam', function($query) {
                 $query->where('active', '1');
             })
@@ -87,10 +91,14 @@ class HomeController extends Controller {
             ->orderBy('match_date', 'asc')
             ->get();
 
+        // Next two upcoming matches (can be either scheduled or live)
         $nextTwoMatches = $upcoming->take(2);
+
+        // All other upcoming matches (excluding first two)
         $otherUpcomingMatches = $upcoming->slice(2)->values();
 
-        $recentMatches = Match::with(['homeTeam','awayTeam'])
+        // Recent finished matches
+        $recentMatches = Match::with(['homeTeam', 'awayTeam'])
             ->where('match_date', '<', now())
             ->where('status', 'finished')
             ->whereHas('homeTeam', function($query) {
@@ -211,7 +219,7 @@ class HomeController extends Controller {
     public function result() {
 
         $matches = Match::with(['homeTeam', 'awayTeam', 'league'])
-            ->where('status', 'finished')
+            ->whereIn('status', ['finished', 'live'])
             ->orderBy('match_date', 'desc')
             ->get();
 
@@ -220,6 +228,7 @@ class HomeController extends Controller {
         });
 
         return view('site.result.index', [
+            'matches' => $matches,
             'groupedResults' => $groupedResults,
         ]);
 
