@@ -114,6 +114,7 @@ Route::group(['middleware'=> ['auth']],function ()  {
     Route::post('/match/{match}/delete-event', 'LiveScoreController@deleteMatchEvent')->name('admin.match.delete.event');
     Route::post('/match/{match}/finish', 'LiveScoreController@finishMatch')->name('admin.match.finish');
     Route::get('/match/{matchId}/players', 'LiveScoreController@getMatchPlayers')->name('admin.match.finish');
+    Route::post('/calculate-pts', 'LiveScoreController@calculatePTS');
 
 
 

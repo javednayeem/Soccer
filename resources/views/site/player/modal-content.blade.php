@@ -65,7 +65,7 @@
                 @foreach($player->statistics as $stat)
                     <tr>
                         <td>{{ $stat->season ?? 'N/A' }}</td>
-                        <td>{{ $stat->team_name ?? 'N/A' }}</td>
+                        <td>{{ $player->team->name }}</td>
                         <td>{{ $stat->goals ?? 0 }}</td>
                         <td>{{ $stat->assists ?? 0 }}</td>
                         <td>{{ $stat->yellow_cards ?? 0 }}</td>

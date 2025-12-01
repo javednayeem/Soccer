@@ -9,9 +9,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="text-right mb-3">
-                            <button type="button" class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#add_match_modal">
-                                <i class="md md-add"></i> Add New Match
+
+                            <button type="button" class="btn btn-danger waves-effect waves-light" onclick="calculatePTS();">
+                                <i class="mdi mdi-calculator"></i> Calculate PTS
                             </button>
+
+                            <button type="button" class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#add_match_modal">
+                                <i class="mdi mdi-swim mr-1"></i> Add New Match
+                            </button>
+
                         </div>
 
                         <div class="table-responsive">
@@ -27,7 +33,7 @@
                                     <th>Score</th>
                                     <th>Status</th>
                                     <th>Match Week</th>
-                                    <th>Action</th>
+                                    <th style="width: 8%">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody id="match_table">

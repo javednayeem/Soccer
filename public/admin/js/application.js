@@ -1601,3 +1601,38 @@ function updateTeamActiveStatus(teamId) {
         }
     });
 }
+
+
+function calculatePTS() {
+
+    swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, calculate it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonClass: 'btn btn-success mr-2',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false
+    }).then(function () {
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/calculate-pts',
+            type: 'POST',
+            data: {"_token": $('#token').val()},
+            success: function (response) {
+                showSuccessNotification('PTS Calculation Done!');
+            },
+            error: function (error) {
+
+            }
+        });
+
+    });
+}
+
