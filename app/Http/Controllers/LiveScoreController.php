@@ -413,7 +413,7 @@ class LiveScoreController extends Controller {
     }
 
 
-    public function calculatePTS(Request $request) {
+    public function calculatePTS() {
 
         $league = League::where('is_active', '1')->first();
 
@@ -577,21 +577,26 @@ class LiveScoreController extends Controller {
     }
 
 
-    private function recalculatePositions_new($leagueId) {
-        // Get standings ordered by points, goal difference, goals for
-        $standings = DB::table('league_standings')
-            ->where('league_id', $leagueId)
-            ->orderBy('points', 'desc')
-            ->orderBy('goal_difference', 'desc')
-            ->orderBy('goals_for', 'desc')
+    public function calculatePlayerStatistics() {
+
+        $league = League::where('is_active', '1')->first();
+
+        if (!$league) {
+            return response()->json(['success' => false, 'message' => 'No active league found']);
+        }
+
+        DB::table('player_statistics')->where('league_id', $league->id)->delete();
+
+        $matches = Match::where('league_id', $league->id)
+            ->where('status', 'finished')
             ->get();
 
-        // Update positions
-        foreach ($standings as $index => $standing) {
-            DB::table('league_standings')
-                ->where('id', $standing->id)
-                ->update(['position' => $index + 1]);
+        foreach ($matches as $match) {
+            $this->updatePlayerAppearances($match);
+            $this->updateAllPlayerStatistics($match);
         }
+
+        return response()->json(['success' => true, 'message' => 'Player Statistics Calculation Done!']);
     }
 
 }

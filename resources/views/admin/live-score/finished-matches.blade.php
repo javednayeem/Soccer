@@ -34,9 +34,11 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="mr-3">
-                                                        @if($match->homeTeam->logo !== 'default_team.png')
-                                                            <img src="{{ asset('storage/' . $match->homeTeam->logo) }}" alt="{{ $match->homeTeam->name }}" class="rounded-circle" width="30" height="30">
-                                                        @endif
+                                                        <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}"
+                                                             alt="{{ $match->homeTeam->name }}"
+                                                             class="rounded-circle me-3"
+                                                             width="40" height="40"
+                                                             onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <strong>{{ $match->homeTeam->name }}</strong> vs

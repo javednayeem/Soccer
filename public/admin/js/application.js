@@ -1494,7 +1494,6 @@ function clearFilters() {
 
 
 function editTeam(button) {
-
     $("#team_id").val(button.getAttribute('data-id'));
     $("#edit_name").val(button.getAttribute('data-name'));
     $("#edit_short_name").val(button.getAttribute('data-short-name') || '');
@@ -1506,10 +1505,31 @@ function editTeam(button) {
     $("#edit_team_status").val(button.getAttribute('data-team-status'));
 
     var logoPath = button.getAttribute('data-logo');
-    $("#edit_team_logo").attr("src", logoPath && logoPath !== 'default_team.png' ? '/' + logoPath : '/site/images/teams/default_team.png');
-
     var teamImagePath = button.getAttribute('data-team-image');
-    $("#edit_team_image_preview").attr("src", teamImagePath && teamImagePath !== 'default_team_image.png' ? '/' + teamImagePath : '/site/images/teams/default_team_image.png');
+
+    // Set logo preview
+    if (logoPath && logoPath !== 'default_team.png') {
+        // Check if path already contains the full URL
+        if (logoPath.startsWith('http') || logoPath.startsWith('/')) {
+            $("#edit_team_logo").attr("src", logoPath);
+        } else {
+            $("#edit_team_logo").attr("src", '/site/images/teams/' + logoPath);
+        }
+    } else {
+        $("#edit_team_logo").attr("src", '/site/images/teams/default_team.png');
+    }
+
+    // Set team image preview
+    if (teamImagePath && teamImagePath !== 'default_team_image.png') {
+        // Check if path already contains the full URL
+        if (teamImagePath.startsWith('http') || teamImagePath.startsWith('/')) {
+            $("#edit_team_image_preview").attr("src", teamImagePath);
+        } else {
+            $("#edit_team_image_preview").attr("src", '/site/images/teams/' + teamImagePath);
+        }
+    } else {
+        $("#edit_team_image_preview").attr("src", '/site/images/teams/default_team_image.png');
+    }
 
     $('#edit_team_modal').modal('show');
 }
@@ -1636,3 +1656,36 @@ function calculatePTS() {
     });
 }
 
+
+function calculatePlayerStatistics() {
+
+    swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, calculate it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonClass: 'btn btn-success mr-2',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false
+    }).then(function () {
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/calculate-player-statistics',
+            type: 'POST',
+            data: {"_token": $('#token').val()},
+            success: function (response) {
+                showSuccessNotification('Player Statistics Calculation Done!');
+            },
+            error: function (error) {
+
+            }
+        });
+
+    });
+}

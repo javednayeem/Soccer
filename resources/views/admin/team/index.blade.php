@@ -140,8 +140,8 @@
                                                 data-note="{{ $team->note }}"
                                                 data-payment-reference-number="{{ $team->payment_reference_number }}"
                                                 data-team-status="{{ $team->team_status }}"
-                                                data-logo="{{ $team->logo }}"
-                                                data-team-image="{{ $team->team_image }}"
+                                                data-logo="{{ asset('site/images/teams/' . $team->logo) }}"
+                                                data-team-image="{{ asset('site/images/teams/' . $team->team_image) }}"
                                                 title="Edit Team">
                                             <i class="mdi mdi-pencil-outline"></i>
                                         </button>
@@ -285,12 +285,12 @@
                         </div>
 
                         <div class="col-md-6 text-center">
-                            <img id="add_team_logo" src="/site/images/teams/logo/default_team.png" alt="Team Logo" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='/site/images/teams/logo/default_team.png'">
+                            <img id="add_team_logo" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Logo" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}'">
                             <p class="small text-muted mt-1">Team Logo</p>
                         </div>
 
                         <div class="col-md-6 text-center">
-                            <img id="add_team_image_preview" src="/site/images/teams/team_image/default_team_image.png" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='/site/images/teams/team_image/default_team_image.png'">
+                            <img id="add_team_image_preview" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team_image.png') }}'">
                             <p class="small text-muted mt-1">Team Image</p>
                         </div>
 
@@ -390,12 +390,12 @@
                         </div>
 
                         <div class="col-md-6 text-center">
-                            <img id="edit_team_logo" src="/site/images/teams/logo/default_team.png" alt="Team Logo" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='/site/images/teams/logo/default_team.png'">
+                            <img id="edit_team_logo" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Logo" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}'">
                             <p class="small text-muted mt-1">Team Logo</p>
                         </div>
 
                         <div class="col-md-6 text-center">
-                            <img id="edit_team_image_preview" src="/site/images/teams/team_image/default_team_image.png" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='/site/images/teams/team_image/default_team_image.png'">
+                            <img id="edit_team_image_preview" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team_image.png') }}'">
                             <p class="small text-muted mt-1">Team Image</p>
                         </div>
 

@@ -7,8 +7,8 @@
     <div class="site-section bg-light">
         <div class="container">
 
-        @if($nextTwoMatches->count() > 0)
-            <!-- Upcoming Matches Header -->
+            @if($nextTwoMatches->count() > 0)
+
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="d-flex justify-content-between align-items-center">
@@ -26,14 +26,19 @@
                     </div>
                 </div>
 
-                <!-- Upcoming Matches Cards -->
                 <div class="row">
                     @foreach($nextTwoMatches as $match)
                         <div class="col-lg-6 mb-4">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body p-4">
-                                    <!-- Match Header -->
+                                    <!-- Match Header with Week -->
                                     <div class="text-center mb-4">
+                                        @if($match->match_week)
+                                            <span class="badge badge-warning px-3 py-2 bg-warning text-dark mb-2">
+                                                <i class="mdi mdi-calendar-week mr-1"></i>
+                                                Week {{ $match->match_week }}
+                                            </span>
+                                        @endif
                                         <span class="badge badge-info px-3 py-2 bg-info text-white mb-2">
                                             {{ isset($match->competition) ? $match->competition : 'Friendly Match' }}
                                         </span>
@@ -45,10 +50,9 @@
                                         </p>
                                     </div>
 
-                                    <!-- Teams -->
                                     <div class="widget-vs">
                                         <div class="d-flex align-items-center justify-content-between w-100">
-                                            <!-- Home Team -->
+
                                             <div class="team text-center flex-fill">
                                                 <a href="/team/{{ $match->homeTeam->id }}/players" class="text-dark" style="text-decoration: none">
                                                     <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}"
@@ -63,7 +67,6 @@
                                                 @endif
                                             </div>
 
-                                            <!-- VS -->
                                             <div class="vs-section text-center mx-4">
                                                 <span class="vs bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle"
                                                       style="width: 60px; height: 60px; font-size: 14px; font-weight: bold;">
@@ -74,7 +77,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Away Team -->
                                             <div class="team text-center flex-fill">
                                                 <a href="/team/{{ $match->awayTeam->id }}/players" class="text-dark" style="text-decoration: none">
                                                     <img src="{{ asset('site/images/teams/' . $match->awayTeam->logo) }}"
@@ -91,7 +93,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Match Footer -->
                                     <div class="text-center mt-4 pt-3 border-top">
                                         <small class="text-muted">
                                             <i class="mdi mdi-clock-outline mr-1"></i>
@@ -103,10 +104,10 @@
                         </div>
                     @endforeach
                 </div>
-        @endif
+            @endif
 
-        @if($otherUpcomingMatches->count() > 0)
-            <!-- All Scheduled Matches Header -->
+            @if($otherUpcomingMatches->count() > 0)
+
                 <div class="row mt-5 mb-4">
                     <div class="col-12">
                         <div class="d-flex justify-content-between align-items-center">
@@ -124,14 +125,14 @@
                     </div>
                 </div>
 
-                <!-- All Scheduled Matches Table -->
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover table-borderless mb-0">
                                 <thead class="thead-light">
                                 <tr class="bg-primary text-white">
-                                    <th class="py-3 border-0" style="width: 20%">Date & Time</th>
+                                    <th class="py-3 border-0" style="width: 120px;">Week</th>
+                                    <th class="py-3 border-0" style="width: 140px;">Date & Time</th>
                                     <th class="py-3 border-0 text-center">Match</th>
                                     <th class="py-3 border-0" style="width: 200px;">Competition</th>
                                     <th class="py-3 border-0" style="width: 150px;">Venue</th>
@@ -141,21 +142,34 @@
                                 <tbody>
                                 @foreach($otherUpcomingMatches as $match)
                                     <tr class="border-bottom">
+                                        <!-- Match Week -->
+                                        <td class="align-middle py-3">
+                                            @if($match->match_week)
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <span class="badge badge-warning bg-warning text-dark px-3 py-2 fw-bold">
+                                                        Week {{ $match->match_week }}
+                                                    </span>
+                                                </div>
+                                            @else
+                                                <span class="text-muted fst-italic">-</span>
+                                            @endif
+                                        </td>
 
+                                        <!-- Date & Time -->
                                         <td class="align-middle py-3">
                                             <div class="d-flex flex-column">
-                                                <h4 class="fw-bold text-dark">{{ $match->match_date->format('M j, Y') }}</h4>
-                                                <h6>{{ $match->match_date->format('g:i A') }}</h6>
+                                                <span class="fw-bold text-dark">{{ $match->match_date->format('M j, Y') }}</span>
+                                                <span class="text-muted small">{{ $match->match_date->format('g:i A') }}</span>
                                                 <span class="badge badge-secondary badge-sm mt-1">
                                                     {{ $match->match_date->format('D') }}
                                                 </span>
                                             </div>
                                         </td>
 
-
+                                        <!-- Match -->
                                         <td class="align-middle py-3 text-center">
                                             <div class="d-flex align-items-center justify-content-between">
-
+                                                <!-- Home Team -->
                                                 <div class="d-flex align-items-center flex-fill">
                                                     <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}"
                                                          alt="{{ $match->homeTeam->name }}"
@@ -165,21 +179,23 @@
                                                     <div>
                                                         <span class="fw-bold text-dark d-block ml-2">
                                                             <a href="/team/{{ $match->homeTeam->id }}/players" class="text-dark" style="text-decoration: none">
-                                                            {{ $match->homeTeam->name }}
+                                                                {{ $match->homeTeam->name }}
                                                             </a>
                                                         </span>
                                                     </div>
                                                 </div>
 
+                                                <!-- VS -->
                                                 <div class="mx-3">
                                                     <span class="badge badge-light border text-muted px-2">VS</span>
                                                 </div>
 
+                                                <!-- Away Team -->
                                                 <div class="d-flex align-items-center flex-fill text-right">
                                                     <div class="me-3 text-end">
                                                         <span class="fw-bold text-dark d-block mr-2">
                                                             <a href="/team/{{ $match->awayTeam->id }}/players" class="text-dark" style="text-decoration: none">
-                                                            {{ $match->awayTeam->name }}
+                                                                {{ $match->awayTeam->name }}
                                                             </a>
                                                         </span>
                                                     </div>
@@ -192,19 +208,20 @@
                                             </div>
                                         </td>
 
+                                        <!-- Competition -->
                                         <td class="align-middle py-3">
                                             <span class="badge badge-info bg-info text-white px-3 py-2">
                                                 {{ isset($match->competition) ? $match->competition : 'Friendly' }}
                                             </span>
                                         </td>
 
+                                        <!-- Venue -->
                                         <td class="align-middle py-3">
                                             <div class="d-flex align-items-center">
                                                 <i class="mdi mdi-map-marker text-danger me-2"></i>
                                                 <span class="text-dark">{{ $match->venue ? $match->venue : 'TBA' }}</span>
                                             </div>
                                         </td>
-
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -212,9 +229,8 @@
                         </div>
                     </div>
                 </div>
-        @endif
+            @endif
 
-        <!-- Empty State -->
             @if($nextTwoMatches->count() == 0 && $otherUpcomingMatches->count() == 0)
                 <div class="row">
                     <div class="col-12 text-center py-5">
@@ -229,5 +245,27 @@
 
         </div>
     </div>
+
+    <style>
+        /* Additional styling for match week badges */
+        .badge-warning {
+            background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .table th:nth-child(1),
+            .table td:nth-child(1) {
+                display: none; /* Hide week column on mobile */
+            }
+
+            .table th:nth-child(2),
+            .table td:nth-child(2) {
+                width: 120px !important;
+            }
+        }
+    </style>
 
 @endsection

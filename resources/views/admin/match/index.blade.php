@@ -10,6 +10,10 @@
                     <div class="col-md-12">
                         <div class="text-right mb-3">
 
+                            <button type="button" class="btn btn-warning waves-effect waves-light" onclick="calculatePlayerStatistics();">
+                                <i class="mdi mdi-calculator"></i> Calculate Player Statistics
+                            </button>
+
                             <button type="button" class="btn btn-danger waves-effect waves-light" onclick="calculatePTS();">
                                 <i class="mdi mdi-calculator"></i> Calculate PTS
                             </button>
