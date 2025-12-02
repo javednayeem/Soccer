@@ -131,10 +131,11 @@
                             <table class="table table-hover table-borderless mb-0">
                                 <thead class="thead-light">
                                 <tr class="bg-primary text-white">
+                                    <th class="py-3 border-0" style="width: 40px;">#</th>
                                     <th class="py-3 border-0" style="width: 120px;">Week</th>
                                     <th class="py-3 border-0" style="width: 140px;">Date & Time</th>
                                     <th class="py-3 border-0 text-center">Match</th>
-                                    <th class="py-3 border-0" style="width: 200px;">Competition</th>
+                                    <th class="py-3 border-0" style="width: 160px;">Competition</th>
                                     <th class="py-3 border-0" style="width: 150px;">Venue</th>
                                 </tr>
                                 </thead>
@@ -142,12 +143,21 @@
                                 <tbody>
                                 @foreach($otherUpcomingMatches as $match)
                                     <tr class="border-bottom">
-                                        <!-- Match Week -->
+
+                                        <td class="align-middle py-3">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <span class="badge badge-dark bg-dark text-white px-3 py-2 fw-bold" style="font-size: 0.9rem;">
+                                                    #{{ $loop->iteration }}
+                                                </span>
+                                                <small class="text-muted mt-1">Match</small>
+                                            </div>
+                                        </td>
+
                                         <td class="align-middle py-3">
                                             @if($match->match_week)
                                                 <div class="d-flex flex-column align-items-center">
                                                     <span class="badge badge-warning bg-warning text-dark px-3 py-2 fw-bold">
-                                                        Week {{ $match->match_week }}
+                                                        {{ $match->match_week }}
                                                     </span>
                                                 </div>
                                             @else
@@ -155,7 +165,6 @@
                                             @endif
                                         </td>
 
-                                        <!-- Date & Time -->
                                         <td class="align-middle py-3">
                                             <div class="d-flex flex-column">
                                                 <span class="fw-bold text-dark">{{ $match->match_date->format('M j, Y') }}</span>
@@ -166,7 +175,6 @@
                                             </div>
                                         </td>
 
-                                        <!-- Match -->
                                         <td class="align-middle py-3 text-center">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <!-- Home Team -->
@@ -185,12 +193,10 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- VS -->
                                                 <div class="mx-3">
                                                     <span class="badge badge-light border text-muted px-2">VS</span>
                                                 </div>
 
-                                                <!-- Away Team -->
                                                 <div class="d-flex align-items-center flex-fill text-right">
                                                     <div class="me-3 text-end">
                                                         <span class="fw-bold text-dark d-block mr-2">
@@ -208,14 +214,12 @@
                                             </div>
                                         </td>
 
-                                        <!-- Competition -->
                                         <td class="align-middle py-3">
                                             <span class="badge badge-info bg-info text-white px-3 py-2">
                                                 {{ isset($match->competition) ? $match->competition : 'Friendly' }}
                                             </span>
                                         </td>
 
-                                        <!-- Venue -->
                                         <td class="align-middle py-3">
                                             <div class="d-flex align-items-center">
                                                 <i class="mdi mdi-map-marker text-danger me-2"></i>
