@@ -260,12 +260,12 @@ class LiveScoreController extends Controller {
             [
                 'team_id' => $event->team_id,
                 // Initialize default values for new records
-                'goals' => 0,
-                'assists' => 0,
-                'yellow_cards' => 0,
-                'red_cards' => 0,
-                'minutes_played' => 0,
-                'appearances' => 0,
+                #'goals' => 0,
+                #'assists' => 0,
+                #'yellow_cards' => 0,
+                #'red_cards' => 0,
+                #'minutes_played' => 0,
+                #'appearances' => 0,
             ]
         );
 
