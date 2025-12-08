@@ -212,7 +212,7 @@ class HomeController extends Controller {
     }
 
 
-    public function result() {
+    public function result_old() {
 
         $matches = Match::with(['homeTeam', 'awayTeam', 'league'])
             ->whereIn('status', ['finished', 'live'])
@@ -228,6 +228,29 @@ class HomeController extends Controller {
             'groupedResults' => $groupedResults,
         ]);
 
+    }
+
+
+    public function result() {
+
+        $matches = Match::with([
+            'homeTeam',
+            'awayTeam',
+            'league',
+            'events.player'
+        ])
+            ->whereIn('status', ['finished', 'live'])
+            ->orderBy('match_date', 'desc')
+            ->get();
+
+        $groupedResults = $matches->groupBy(function ($match) {
+            return $match->match_date->format('F Y');
+        });
+
+        return view('site.result.index', [
+            'matches' => $matches,
+            'groupedResults' => $groupedResults,
+        ]);
     }
 
 

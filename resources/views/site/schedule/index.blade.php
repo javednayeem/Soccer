@@ -36,7 +36,7 @@
                                         @if($match->match_week)
                                             <span class="badge badge-warning px-3 py-2 bg-warning text-dark mb-2">
                                                 <i class="mdi mdi-calendar-week mr-1"></i>
-                                                Week {{ $match->match_week }}
+                                                Match # {{ $match->match_week }}
                                             </span>
                                         @endif
                                         <span class="badge badge-info px-3 py-2 bg-info text-white mb-2">
@@ -131,7 +131,7 @@
                             <table class="table table-hover table-borderless mb-0">
                                 <thead class="thead-light">
                                 <tr class="bg-primary text-white">
-                                    <th class="py-3 border-0" style="width: 120px;">Week</th>
+                                    <th class="py-3 border-0" style="width: 120px;">#</th>
                                     <th class="py-3 border-0" style="width: 140px;">Date & Time</th>
                                     <th class="py-3 border-0 text-center">Match</th>
                                     <th class="py-3 border-0" style="width: 200px;">Competition</th>
@@ -147,7 +147,7 @@
                                             @if($match->match_week)
                                                 <div class="d-flex flex-column align-items-center">
                                                     <span class="badge badge-warning bg-warning text-dark px-3 py-2 fw-bold">
-                                                        Week {{ $match->match_week }}
+                                                        Match# {{ $match->match_week }}
                                                     </span>
                                                 </div>
                                             @else

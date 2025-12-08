@@ -163,7 +163,7 @@
                                     <td>
                                         <strong class="text-white">
                                             <a href="/team/{{ $standing->team->id }}/players" class="text-white" style="text-decoration: none">
-                                            {{ $standing->team->name }}
+                                                {{ $standing->team->name }}
                                             </a>
                                         </strong>
                                     </td>
@@ -225,6 +225,11 @@
                             <div class="goals-box mt-3">
                                 <span class="goals-number">{{ $stat->goals }}</span>
                                 <span class="goals-label">Goals</span>
+                            </div>
+
+                            <div class="goals-box mt-3">
+                                <span class="goals-number">{{ $stat->assists }}</span>
+                                <span class="goals-label">Assists</span>
                             </div>
 
                         </div>
@@ -420,6 +425,7 @@
             </div>
         </div>
         <div class="row">
+            <!--
             <div class="col-lg-6">
                 <div class="custom-media d-flex">
                     <div class="img mr-4">
@@ -445,7 +451,7 @@
                         <p><a href="#">Read more</a></p>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
