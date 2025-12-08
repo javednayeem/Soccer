@@ -143,14 +143,14 @@
                                 @foreach($otherUpcomingMatches as $match)
                                     <tr class="border-bottom">
 
-                                        <td class="align-middle py-3">
-                                            <div class="d-flex flex-column align-items-center">
-                                                <span class="badge badge-dark bg-dark text-white px-3 py-2 fw-bold" style="font-size: 0.9rem;">
-                                                    #{{ $loop->iteration }}
-                                                </span>
-                                                <small class="text-muted mt-1">Match</small>
-                                            </div>
-                                        </td>
+                                        {{--<td class="align-middle py-3">--}}
+                                            {{--<div class="d-flex flex-column align-items-center">--}}
+                                                {{--<span class="badge badge-dark bg-dark text-white px-3 py-2 fw-bold" style="font-size: 0.9rem;">--}}
+                                                    {{--#{{ $loop->iteration }}--}}
+                                                {{--</span>--}}
+                                                {{--<small class="text-muted mt-1">Match</small>--}}
+                                            {{--</div>--}}
+                                        {{--</td>--}}
 
                                         <td class="align-middle py-3">
                                             @if($match->match_week)
