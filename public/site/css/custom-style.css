@@ -682,3 +682,246 @@ tr:first-child {
         margin-bottom: 15px;
     }
 }
+
+
+
+
+
+
+.site-section.bg-dark {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+    min-height: 100vh;
+}
+
+.match-container {
+    background: rgba(45, 55, 72, 0.95);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.match-container:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.match-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    color: #a0aec0;
+    font-size: 16px;
+    font-weight: 500;
+    position: relative;
+}
+
+.match-header::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #a0aec0;
+    border-radius: 50%;
+}
+
+.match-info {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.team-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-label {
+    color: #a0aec0;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: lowercase;
+}
+
+.team-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.team-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+}
+
+.team-name {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    word-break: break-word;
+}
+
+.score-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.foull-info {
+    color: #a0aec0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 64px;
+    font-weight: 700;
+}
+
+.score-home {
+    color: #f6ad55;
+}
+
+.score-separator {
+    color: #4a5568;
+    font-weight: 300;
+}
+
+.score-away {
+    color: #f6ad55;
+}
+
+.match-status {
+    text-align: center;
+    color: #f6ad55;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 32px;
+}
+
+.goal-scorers-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+}
+
+.goal-scorers h3 {
+    color: #a0aec0;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: capitalize;
+}
+
+.scorer {
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    padding: 4px 0;
+}
+
+.sparkle-icon {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    opacity: 0.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .match-container {
+        max-width: 100%;
+        padding: 24px;
+    }
+
+    .match-info {
+        gap: 16px;
+    }
+
+    .score {
+        font-size: 48px;
+        gap: 12px;
+    }
+
+    .team-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .team-name {
+        font-size: 16px;
+    }
+
+    .goal-scorers-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .goal-scorers h3 {
+        font-size: 13px;
+    }
+
+    .scorer {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .match-header {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .match-header::before {
+        display: none;
+    }
+
+    .score {
+        font-size: 40px;
+    }
+
+    .match-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .score-section {
+        order: 2;
+    }
+
+    .team-section:first-child {
+        order: 1;
+    }
+
+    .team-section:last-child {
+        order: 3;
+    }
+
+    .sparkle-icon {
+        bottom: 16px;
+        right: 16px;
+    }
+}
