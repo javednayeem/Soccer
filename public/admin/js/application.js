@@ -71,6 +71,7 @@ $(document).ready(function() {
         var weight = $('#edit_weight').val();
         var date_of_birth = $('#edit_date_of_birth').val();
         var player_status = $('#edit_player_status').val();
+        var payment_status = $('#edit_payment_status').val();
 
         if (first_name != "" && team_id != "" && nationality != "" && position != "" && date_of_birth != "") {
 
@@ -89,6 +90,7 @@ $(document).ready(function() {
             formData.append("weight", weight);
             formData.append("date_of_birth", date_of_birth);
             formData.append("player_status", player_status);
+            formData.append("payment_status", payment_status);
             formData.append("photo", $('#edit_photo')[0].files[0]);
 
             showProcessingNotification();
@@ -591,7 +593,9 @@ function editPlayer(button) {
 
     var dateOfBirth = button.getAttribute('data-date-of-birth');
     $("#edit_date_of_birth").val(dateOfBirth);
+
     $("#edit_player_status").val(button.getAttribute('data-player-status'));
+    $("#edit_payment_status").val(button.getAttribute('data-payment-status'));
 
     var photoPath = button.getAttribute('data-photo');
     $("#edit_player_photo").attr("src", photoPath ? '/' + photoPath : '/site/images/players/default_player.jpg');

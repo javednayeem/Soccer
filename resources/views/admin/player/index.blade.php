@@ -38,6 +38,14 @@
                                         </select>
                                     </div>
 
+                                    <div class="form-group mr-2">
+                                        <select class="form-control" id="payment_status" name="payment_status">
+                                            <option value="">All Status</option>
+                                            <option value="1" {{ (isset($search_payment_status) ? $search_payment_status : '') == '1' ? 'selected' : '' }}>Paid</option>
+                                            <option value="0" {{ (isset($search_payment_status) ? $search_payment_status : '') == '0' ? 'selected' : '' }}>Unpaid</option>
+                                        </select>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary mr-2">
                                         <i class="fa fa-search"></i> Search
                                     </button>
@@ -69,6 +77,7 @@
                                     <th>Nationality</th>
                                     <th>Date of Birth</th>
                                     <th>Status</th>
+                                    <th>Payment</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -97,6 +106,15 @@
                                                 <span class="badge badge-danger">Inactive</span>
                                             @endif
                                         </td>
+
+                                        <td>
+                                            @if($player->payment_status == '1')
+                                                <span class="badge badge-success">Paid</span>
+                                            @else
+                                                <span class="badge badge-danger">Unpaid</span>
+                                            @endif
+                                        </td>
+
                                         <td>
                                             <button type="button" class="btn btn-xs btn-icon waves-effect waves-light btn-primary"
                                                     onclick="editPlayer(this)"
@@ -113,6 +131,7 @@
                                                     data-weight="{{ $player->weight }}"
                                                     data-date-of-birth="{{ date('Y-m-d', strtotime($player->date_of_birth)) }}"
                                                     data-player-status="{{ $player->player_status }}"
+                                                    data-payment-status="{{ $player->payment_status }}"
                                                     data-photo="{{ $player->photo }}"
                                                     title="Edit Player">
                                                 <i class="fe-edit"></i>
@@ -351,19 +370,29 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="edit_date_of_birth" class="control-label">Date of Birth <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="edit_date_of_birth">
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="edit_player_status" class="control-label">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" id="edit_player_status">
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="edit_payment_status" class="control-label">Payment Status <span class="text-danger">*</span></label>
+                                <select class="form-control" id="edit_payment_status">
+                                    <option value="1">Paid</option>
+                                    <option value="0">Unpaid</option>
                                 </select>
                             </div>
                         </div>

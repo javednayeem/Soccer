@@ -10,7 +10,6 @@
         @foreach($teams as $team)
             @if($team->players->count() > 0)
 
-                <!-- Team Header -->
                     <div class="row mb-4 align-items-center">
                         <div class="col-md-8">
                             <div class="d-flex align-items-center">
@@ -49,14 +48,18 @@
                         @foreach($team->players as $player)
                             <div class="item">
                                 <div class="player-card-new" onclick="loadPlayerDetails({{ $player->id }})">
-                                    <!-- Team Logo Watermark -->
+
+                                    <div class="payment-status-icon">
+                                        <img src="{{ $player->payment_status == '1' ? asset('site/images/check-mark.png') : asset('site/images/cross-mark.png') }}"
+                                             alt="Payment Status">
+                                    </div>
+
                                     <div class="team-watermark">
                                         <img src="{{ asset('site/images/teams/' . $team->logo) }}"
                                              alt="{{ $team->name }}"
                                              onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                     </div>
 
-                                    <!-- Player Photo -->
                                     <div class="player-photo-container">
                                         <img src="{{ str_contains($player->photo, 'site/images/players/') ? asset($player->photo) : asset('site/images/players/' . $player->photo) }}"
                                              alt="{{ $player->first_name }} {{ $player->last_name }}"
@@ -79,6 +82,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         @endforeach
                     </div>

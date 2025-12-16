@@ -24,7 +24,9 @@ class Players extends Migration {
             $table->double('weight')->nullable();
             $table->date('date_of_birth');
             $table->string('photo')->default('default_player.jpg');
+
             $table->enum('player_status', ['0', '1'])->default('1');
+            $table->enum('payment_status', ['0', '1'])->default('1');
 
             $table->timestamps();
 

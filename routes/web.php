@@ -141,6 +141,19 @@ Route::group(['middleware'=> ['auth']],function ()  {
     Route::post('/remove/profilePicture', 'ProfileController@removeProfilePicture');
 
 
+
+    /*
+    * Attendance & Contribution Routes
+    */
+
+    Route::get('/insert-contribution', 'ContributionController@index')->name('insert.contribution');
+    Route::post('/contribution/insert', 'ContributionController@insertAttendanceContribution');
+
+    Route::get('/view-contribution', 'ContributionController@viewContribution')->name('view.contribution.layout');
+    Route::post('/view-contribution', 'ContributionController@generateContributionReport')->name('view.contribution');
+
+
+
 });
 
 

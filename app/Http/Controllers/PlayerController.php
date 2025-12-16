@@ -12,17 +12,19 @@ class PlayerController extends Controller {
     public function index(Request $request) {
 
         if ($request->has('clear_session')) {
-            session()->forget(['player_search', 'team_search', 'status_search']);
+            session()->forget(['player_search', 'team_search', 'status_search', 'payment_status_search']);
             return $this->renderPlayerLayout();
         }
 
-        if (session()->has('player_search') || session()->has('team_search') || session()->has('status_search')) {
+        if (session()->has('player_search') || session()->has('team_search') || session()->has('status_search') || session()->has('payment_status_search')) {
 
             $player_name = session('player_search');
             $team_id = session('team_search');
             $player_status = session('status_search');
+            $payment_status = session('payment_status_search');
 
-            return $this->renderPlayerLayout($player_name, $team_id, $player_status);
+            return $this->renderPlayerLayout($player_name, $team_id, $player_status, $payment_status);
+
         }
 
         return $this->renderPlayerLayout();
@@ -34,18 +36,20 @@ class PlayerController extends Controller {
         $player_name = $request->player_name;
         $team_id = $request->team_id;
         $player_status = $request->player_status;
+        $payment_status = $request->payment_status;
 
         session([
             'player_search' => $player_name,
             'team_search' => $team_id,
-            'status_search' => $player_status
+            'status_search' => $player_status,
+            'payment_status_search' => $payment_status,
         ]);
 
-        return $this->renderPlayerLayout($player_name, $team_id, $player_status);
+        return $this->renderPlayerLayout($player_name, $team_id, $player_status, $payment_status);
     }
 
 
-    public function renderPlayerLayout($player_name = null, $team_id = 0, $player_status = '1') {
+    public function renderPlayerLayout($player_name = null, $team_id = 0, $player_status = '1', $payment_status = '1') {
 
         $players = Player::with('team')
             ->when($player_name, function($query) use ($player_name) {
@@ -60,6 +64,9 @@ class PlayerController extends Controller {
             ->when(in_array($player_status, ['0', '1']), function($query) use ($player_status) {
                 $query->where('player_status', $player_status);
             })
+            ->when(in_array($payment_status, ['0', '1']), function($query) use ($payment_status) {
+                $query->where('payment_status', $payment_status);
+            })
             ->orderBy('first_name')
             ->paginate(20);
 
@@ -71,6 +78,7 @@ class PlayerController extends Controller {
             'search_player_name' => $player_name,
             'search_team_id' => $team_id,
             'search_player_status' => $player_status,
+            'search_payment_status' => $payment_status,
         ]);
     }
 
@@ -130,6 +138,7 @@ class PlayerController extends Controller {
             'weight' => 'nullable|numeric',
             'date_of_birth' => 'date|before:today',
             'player_status' => 'required|in:0,1',
+            'payment_status' => 'required|in:0,1',
             #'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -156,6 +165,7 @@ class PlayerController extends Controller {
             'weight' => $request->weight,
             'date_of_birth' => $request->date_of_birth,
             'player_status' => $request->player_status,
+            'payment_status' => $request->payment_status,
         ]);
 
         return response()->json(['success' => true]);

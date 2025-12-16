@@ -20,6 +20,7 @@ class Player extends Model {
         'date_of_birth',
         'photo',
         'player_status',
+        'payment_status',
     ];
 
     protected $casts = [
