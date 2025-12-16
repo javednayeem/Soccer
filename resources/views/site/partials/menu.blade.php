@@ -9,22 +9,32 @@
             <li class="has-children">
                 <a href="#" class="nav-link">Matches</a>
                 <ul class="dropdown">
+
                     <li class="{{ request()->routeIs('matches.schedule') ? 'active' : '' }}">
                         <a href="{{ route('matches.schedule') }}" class="nav-link">Schedule</a>
                     </li>
+
                     <li class="{{ request()->routeIs('matches.result') ? 'active' : '' }}">
                         <a href="{{ route('matches.result') }}" class="nav-link">Result</a>
                     </li>
+
                     <li class="{{ request()->routeIs('matches.standing') ? 'active' : '' }}">
                         <a href="{{ route('matches.standing') }}" class="nav-link">Standing</a>
                     </li>
-                    <li class="{{ request()->routeIs('matches.player') ? 'active' : '' }}">
-                        <a href="{{ route('matches.player') }}" class="nav-link">Player</a>
+
+                    {{--<li class="{{ request()->routeIs('matches.player') ? 'active' : '' }}">--}}
+                        {{--<a href="{{ route('matches.player') }}" class="nav-link">Player</a>--}}
+                    {{--</li>--}}
+
+                    <li class="{{ request()->routeIs('top.scorers') ? 'active' : '' }}">
+                        <a href="{{ route('top.scorers') }}" class="nav-link">Top Scorers</a>
                     </li>
+
                 </ul>
             </li>
 
-            <li class="{{ request()->routeIs('top.scorers') ? 'active' : '' }}"><a href="{{ route('top.scorers') }}" class="nav-link">Top Scorers</a></li>
+            {{--<li class="{{ request()->routeIs('top.scorers') ? 'active' : '' }}"><a href="{{ route('top.scorers') }}" class="nav-link">Top Scorers</a></li>--}}
+            <li class="{{ request()->routeIs('matches.player') ? 'active' : '' }}"><a href="{{ route('matches.player') }}" class="nav-link">Player</a></li>
 
             @guest
 
