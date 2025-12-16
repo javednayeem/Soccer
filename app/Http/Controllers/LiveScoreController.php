@@ -162,11 +162,12 @@ class LiveScoreController extends Controller {
         DB::transaction(function () use ($request, $matchId) {
 
             $match = Match::findOrFail($matchId);
+            $player = Player::findOrFail($request->player_id);
 
             $event = MatchEvent::create([
                 'match_id' => $matchId,
                 'player_id' => $request->player_id,
-                'team_id' => $request->team_id,
+                'team_id' => $player->team_id,
                 'type' => $request->type,
                 'minute' => $request->minute,
                 'description' => $request->description,
@@ -175,7 +176,7 @@ class LiveScoreController extends Controller {
             $this->updatePlayerStatistics($match, $event);
 
             if ($request->type === 'goal') {
-                $this->updateGoalScore($match, $request->team_id);
+                $this->updateGoalScore($match);
             }
 
         });
@@ -231,10 +232,19 @@ class LiveScoreController extends Controller {
     }
 
 
-    private function updateGoalScore($match, $teamId) {
+    private function updateGoalScore($match) {
 
-        if ($teamId == $match->home_team_id) $match->increment('home_team_score');
-        else $match->increment('away_team_score');
+        $match_events = DB::table('match_events')
+            ->where('match_id', $match->id)
+            ->where('type', 'goal')
+            ->get();
+
+        DB::table('matches')
+            ->where('id', $match->id)
+            ->update([
+                'home_team_score' => $match_events->where('team_id', $match->home_team_id)->count(),
+                'away_team_score' => $match_events->where('team_id', $match->away_team_id)->count(),
+            ]);
 
     }
 

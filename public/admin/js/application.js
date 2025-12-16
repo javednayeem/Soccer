@@ -1069,6 +1069,7 @@ function addEvent(matchId) {
 
 
 function saveEvent() {
+
     var matchId = $('#event_match_id').val();
     var playerId = $('#event_player_id').val();
     var teamId = $('#event_team_id').val();
