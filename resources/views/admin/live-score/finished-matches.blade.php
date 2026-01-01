@@ -16,14 +16,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         @if($finishedMatches->count() > 0)
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                            <div class="table-responsive text-center">
+                                <table class="table table-sm table-striped table-bordered">
                                     <thead>
                                     <tr>
                                         <th>Match</th>
                                         <th>League</th>
                                         <th>Date & Time</th>
                                         <th>Score</th>
+                                        <th>Man Of The Match</th>
                                         <th>Result</th>
                                         <th>Actions</th>
                                     </tr>
@@ -58,6 +59,7 @@
                                                 <br>
                                                 <small class="text-muted">{{ \Carbon\Carbon::parse($match->match_date)->format('H:i') }}</small>
                                             </td>
+
                                             <td>
                                                 @if($match->home_team_score !== null && $match->away_team_score !== null)
                                                     <span class="h5 mb-0">
@@ -69,6 +71,34 @@
                                                 </span>
                                                 @endif
                                             </td>
+
+                                            <td class="align-middle">
+                                                @if($match->manOfTheMatch)
+                                                    <div class="d-flex flex-column">
+
+                                                        <div class="fw-bold mb-1">
+                                                            {{ $match->manOfTheMatch->first_name }} {{ $match->manOfTheMatch->last_name }}
+                                                        </div>
+
+                                                        <div>
+                                                            <span class="badge badge-light d-inline-flex align-items-center" style="font-size: 0.8rem;">
+                                                                <img src="{{ asset('site/images/teams/' . ($match->manOfTheMatch->team->logo ?? 'default_team.png')) }}"
+                                                                     alt="{{ $match->manOfTheMatch->team->name ?? 'Unknown' }}"
+                                                                     class="rounded-circle mr-1"
+                                                                     width="14" height="14"
+                                                                     style="object-fit: cover;"
+                                                                     onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
+                                                                <span>{{ $match->manOfTheMatch->team->name ?? 'Unknown Team' }}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted" style="font-size: 0.9rem;">
+                                                        <i class="fe-user-x mr-1"></i>Not assigned
+                                                    </span>
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 @if($match->home_team_score !== null && $match->away_team_score !== null)
                                                     @php
@@ -88,6 +118,7 @@
                                                     <span class="badge badge-warning">Pending</span>
                                                 @endif
                                             </td>
+
                                             <td>
                                                 <div class="btn-group">
                                                     <!-- Always show Update Score button for any match -->
@@ -101,6 +132,7 @@
                                                     </button>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     @endforeach
                                     </tbody>

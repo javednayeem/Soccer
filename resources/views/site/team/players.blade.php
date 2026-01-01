@@ -63,11 +63,16 @@
                 </div>
             </div>
 
-            <!-- Players Grid -->
             <div class="row">
                 @foreach($players as $player)
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
                         <div class="player-card-new" onclick="loadPlayerDetails({{ $player->id }})">
+                            <!-- Payment Status Icon -->
+                            <div class="payment-status-icon">
+                                <img src="{{ $player->payment_status == '1' ? asset('site/images/check-mark.png') : asset('site/images/cross-mark.png') }}"
+                                     alt="Payment Status">
+                            </div>
+
                             <!-- Team Logo Watermark -->
                             <div class="team-watermark">
                                 <img src="{{ asset('site/images/teams/' . $team->logo) }}"
@@ -75,7 +80,6 @@
                                      onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                             </div>
 
-                            <!-- Player Photo -->
                             <div class="player-photo-container">
                                 <img src="{{ str_contains($player->photo, 'site/images/players/') ? asset($player->photo) : asset('site/images/players/' . $player->photo) }}"
                                      alt="{{ $player->first_name }} {{ $player->last_name }}"
@@ -102,7 +106,6 @@
                 @endforeach
             </div>
 
-            <!-- Empty State -->
             @if($players->count() == 0)
                 <div class="text-center py-5">
                     <div class="mb-4">
@@ -116,7 +119,6 @@
         </div>
     </div>
 
-    <!-- Player Modal -->
     <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="playerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">

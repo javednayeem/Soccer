@@ -230,6 +230,7 @@
                                     <option value="red_card">Red Card</option>
                                     <option value="substitution_in">Substitution In</option>
                                     <option value="substitution_out">Substitution Out</option>
+                                    <option value="man_of_the_match">Man Of The Match</option>
                                 </select>
                             </div>
                         </div>

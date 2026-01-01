@@ -48,7 +48,12 @@ class LiveScoreController extends Controller {
 
     public function finishedMatches() {
 
-        $finishedMatches = Match::with(['league', 'homeTeam', 'awayTeam'])
+        $finishedMatches = Match::with([
+            'league',
+            'homeTeam',
+            'awayTeam',
+            'manOfTheMatch.team'
+        ])
             ->where('status', 'finished')
             ->orderBy('match_date', 'desc')
             ->get();
@@ -154,10 +159,20 @@ class LiveScoreController extends Controller {
         $request->validate([
             'player_id' => 'required|exists:players,id',
             'team_id' => 'required|exists:teams,id',
-            'type' => 'required|in:goal,assist,yellow_card,red_card,substitution_in,substitution_out',
-            'minute' => 'required|integer|min:1|max:120',
-            'description' => 'nullable|string',
+            'type' => 'required|in:goal,assist,yellow_card,red_card,substitution_in,substitution_out,man_of_the_match',
+            #'minute' => 'required|integer|min:1|max:120',
+            #'description' => 'nullable|string',
         ]);
+
+        if ($request->type === 'man_of_the_match') {
+
+            $match = Match::findOrFail($matchId);
+            $match->man_of_the_match = $request->player_id;
+            $match->save();
+
+            return response()->json(['success' => true, 'message' => 'Man Of The Match Set!']);
+
+        }
 
         DB::transaction(function () use ($request, $matchId) {
 

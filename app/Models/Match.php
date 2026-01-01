@@ -35,6 +35,10 @@ class Match extends Model {
         return $this->belongsTo(Team::class, 'away_team_id');
     }
 
+        public function manOfTheMatch() {
+        return $this->belongsTo(Player::class, 'man_of_the_match', 'id');
+    }
+
     public function events() {
         return $this->hasMany(MatchEvent::class);
     }

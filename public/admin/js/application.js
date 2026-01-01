@@ -1081,7 +1081,7 @@ function saveEvent() {
     var minute = $('#event_minute').val();
     var description = $('#event_description').val();
 
-    if (!playerId || !teamId || !minute) {
+    if (!playerId || !teamId) {
         showErrorNotification('Please fill all required fields!');
         return;
     }

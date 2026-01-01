@@ -89,6 +89,7 @@
     <div class="site-section bg-dark">
         <div class="container">
             <div class="row">
+
                 <div class="col-lg-6">
                     @if($nextMatch)
                         <div class="widget-next-match">
@@ -143,45 +144,75 @@
                         </div>
                     @endif
                 </div>
+
                 <div class="col-lg-6">
                     <div class="widget-next-match">
-                        <table class="table custom-table">
-                            <thead>
-                            <tr>
-                                <th>P</th>
-                                <th>Team</th>
-                                <th>W</th>
-                                <th>D</th>
-                                <th>L</th>
-                                <th>PTS</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($standings as $standing)
+                        <div class="table-responsive">
+                            <table class="table custom-table table-sm table-hover">
+                                <thead>
                                 <tr>
-                                    <td>{{ $standing->position }}</td>
-                                    <td>
-                                        <strong class="text-white">
-                                            <a href="/team/{{ $standing->team->id }}/players" class="text-white" style="text-decoration: none">
-                                                {{ $standing->team->name }}
-                                            </a>
-                                        </strong>
-                                    </td>
-                                    <td>{{ $standing->won }}</td>
-                                    <td>{{ $standing->drawn }}</td>
-                                    <td>{{ $standing->lost }}</td>
-                                    <td>{{ $standing->points }}</td>
+                                    <th class="text-center" style="width: 40px;">P</th>
+                                    <th style="min-width: 150px;">Team</th>
+                                    <th class="text-center" style="width: 50px;">MP</th>
+                                    <th class="text-center" style="width: 45px;">W</th>
+                                    <th class="text-center" style="width: 45px;">D</th>
+                                    <th class="text-center" style="width: 45px;">L</th>
+                                    <th class="text-center" style="width: 45px;">GF</th>
+                                    <th class="text-center" style="width: 45px;">GA</th>
+                                    <th class="text-center" style="width: 50px;">GD</th>
+                                    <th class="text-center" style="width: 50px;">PTS</th>
                                 </tr>
-                            @endforeach
-                            @if($standings->count() == 0)
-                                <tr>
-                                    <td colspan="6" class="text-center">No standings data available</td>
-                                </tr>
-                            @endif
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @foreach($league->standings as $standing)
+                                    <tr class="align-middle">
+                                        <td class="text-center fw-bold">{{ $standing->position }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center" style="gap: 8px;">
+                                                <div style="flex-shrink: 0;">
+                                                    <img src="{{ asset('site/images/teams/' . $standing->team->logo) }}"
+                                                         alt="{{ $standing->team->name }}"
+                                                         class="rounded-circle border border-light"
+                                                         style="width: 24px; height: 24px; object-fit: cover;"
+                                                         onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
+                                                </div>
+                                                <div style="min-width: 0; flex: 1;">
+                                                    <a href="/team/{{ $standing->team->id }}/players"
+                                                       class="text-white text-decoration-none"
+                                                       style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
+                                                        {{ $standing->team->name }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">{{ $standing->played }}</td>
+                                        <td class="text-center text-success fw-bold">{{ $standing->won }}</td>
+                                        <td class="text-center">{{ $standing->drawn }}</td>
+                                        <td class="text-center text-danger">{{ $standing->lost }}</td>
+                                        <td class="text-center">{{ $standing->goals_for }}</td>
+                                        <td class="text-center">{{ $standing->goals_against }}</td>
+                                        <td class="text-center fw-bold {{ $standing->goal_difference > 0 ? 'text-success' : ($standing->goal_difference < 0 ? 'text-danger' : '') }}">
+                                            {{ $standing->goal_difference > 0 ? '+' : '' }}{{ $standing->goal_difference }}
+                                        </td>
+                                        <td class="text-center fw-bold" style="background-color: rgba(0,0,0,0.3);">{{ $standing->points }}</td>
+                                    </tr>
+                                @endforeach
+
+                                @if($standings->count() == 0)
+                                    <tr>
+                                        <td colspan="10" class="text-center py-3">
+                                            <div class="text-muted" style="font-size: 0.9rem;">
+                                                <i class="fas fa-table me-1"></i>No standings
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

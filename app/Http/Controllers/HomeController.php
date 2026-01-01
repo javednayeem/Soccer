@@ -62,6 +62,8 @@ class HomeController extends Controller {
             ->take(10)
             ->get();
 
+        $league = $this->getStanding();
+
         return view('site.home.index', [
             'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
@@ -69,6 +71,7 @@ class HomeController extends Controller {
             'standings' => $standings,
             'teams' => $teams,
             'player_statistics' => $player_statistics,
+            'league' => $league,
         ]);
     }
 
@@ -180,54 +183,11 @@ class HomeController extends Controller {
 
     public function standing() {
 
-        $league = League::where('is_active', true)
-            ->with(['standings.team' => function($query) {
-                $query->where('active', '1');
-            }])
-            ->first();
-
-        if ($league) {
-            // Filter out standings with inactive teams
-            $league->standings = $league->standings->filter(function($standing) {
-                return $standing->team && $standing->team->active == '1';
-            });
-
-            foreach ($league->standings as $standing) {
-                $standing->next_match = Match::with(['homeTeam', 'awayTeam'])
-                    ->where('league_id', $league->id)
-                    ->where(function ($q) use ($standing) {
-                        $q->where('home_team_id', $standing->team_id)
-                            ->orWhere('away_team_id', $standing->team_id);
-                    })
-                    ->where('match_date', '>', now())
-                    ->where('status', 'scheduled')
-                    ->orderBy('match_date', 'asc')
-                    ->first();
-            }
-        }
+        $league = $this->getStanding();
 
         return view('site.standing.index', [
             'league' => $league
         ]);
-    }
-
-
-    public function result_old() {
-
-        $matches = Match::with(['homeTeam', 'awayTeam', 'league'])
-            ->whereIn('status', ['finished', 'live'])
-            ->orderBy('match_date', 'desc')
-            ->get();
-
-        $groupedResults = $matches->groupBy(function ($match) {
-            return $match->match_date->format('F Y');
-        });
-
-        return view('site.result.index', [
-            'matches' => $matches,
-            'groupedResults' => $groupedResults,
-        ]);
-
     }
 
 
@@ -266,6 +226,38 @@ class HomeController extends Controller {
             'team' => $team,
             'players' => $team->players
         ]);
+    }
+
+
+    private function getStanding() {
+
+        $league = League::where('is_active', true)
+            ->with(['standings.team' => function($query) {
+                $query->where('active', '1');
+            }])
+            ->first();
+
+        if ($league) {
+            // Filter out standings with inactive teams
+            $league->standings = $league->standings->filter(function($standing) {
+                return $standing->team && $standing->team->active == '1';
+            });
+
+            foreach ($league->standings as $standing) {
+                $standing->next_match = Match::with(['homeTeam', 'awayTeam'])
+                    ->where('league_id', $league->id)
+                    ->where(function ($q) use ($standing) {
+                        $q->where('home_team_id', $standing->team_id)
+                            ->orWhere('away_team_id', $standing->team_id);
+                    })
+                    ->where('match_date', '>', now())
+                    ->where('status', 'scheduled')
+                    ->orderBy('match_date', 'asc')
+                    ->first();
+            }
+        }
+
+        return $league;
     }
 
 }
