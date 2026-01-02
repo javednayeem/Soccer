@@ -357,10 +357,12 @@ $(document).ready(function() {
 
 
     $("#edit_user_button").click(function(){
+
         var id = $('#user_id').val();
         var name = $('#edit_name').val().trim();
         var email = $('#edit_email').val().trim();
         var role = $('#edit_role').val();
+        var team_id = $('#edit_team_id').val();
 
         if (!name || !email || !role) {
             showErrorNotification('Please fill all required fields');
@@ -372,6 +374,7 @@ $(document).ready(function() {
         formData.append("name", name);
         formData.append("email", email);
         formData.append("role", role);
+        formData.append("team_id", team_id);
         formData.append("phone", $('#edit_phone').val().trim());
         formData.append("address", $('#edit_address').val().trim());
         formData.append("user_image", $('#edit_user_image')[0].files[0]);

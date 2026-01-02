@@ -9,6 +9,7 @@ use Mail;
 use Hash;
 
 use App\User;
+use App\Models\Team;
 
 class UserController extends Controller {
 
@@ -30,11 +31,13 @@ class UserController extends Controller {
 
         $users = $query->get();
         $roles = ['admin', 'manager', 'staff'];
+        $teams = Team::all();
 
         return view('admin.user.index', [
             'users' => $users,
             'roles' => $roles,
-            'filters' => $request->only(['search', 'role'])
+            'filters' => $request->only(['search', 'role']),
+            'teams' => $teams
         ]);
     }
 
@@ -84,9 +87,11 @@ class UserController extends Controller {
         ]);
 
         $user = User::find($request->id);
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;
+        $user->team_id = $request->team_id;
         $user->phone = $request->phone;
         $user->address = $request->address;
 

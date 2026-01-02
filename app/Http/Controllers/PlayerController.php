@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\Models\Team;
 use App\Models\Player;
 
@@ -51,6 +53,9 @@ class PlayerController extends Controller {
 
     public function renderPlayerLayout($player_name = null, $team_id = 0, $player_status = '1', $payment_status = '1') {
 
+        $role = Auth::user()->role;
+        $user_team_id = Auth::user()->team_id;
+        /*
         $players = Player::with('team')
             ->when($player_name, function($query) use ($player_name) {
                 $query->where(function($q) use ($player_name) {
@@ -69,8 +74,32 @@ class PlayerController extends Controller {
             })
             ->orderBy('first_name')
             ->paginate(20);
+        */
 
-        $teams = Team::all();
+        $players = Player::with('team')
+            ->when($role == 'manager' && $user_team_id > 0, function($query) use ($user_team_id) {
+                $query->where('team_id', $user_team_id);
+            })
+            ->when($player_name, function($query) use ($player_name) {
+                $query->where(function($q) use ($player_name) {
+                    $q->where('first_name', 'like', "%{$player_name}%")
+                        ->orWhere('last_name', 'like', "%{$player_name}%");
+                });
+            })
+            ->when($team_id && $team_id != 'all', function($query) use ($team_id) {
+                $query->where('team_id', $team_id);
+            })
+            ->when(in_array($player_status, ['0', '1']), function($query) use ($player_status) {
+                $query->where('player_status', $player_status);
+            })
+            ->when(in_array($payment_status, ['0', '1']), function($query) use ($payment_status) {
+                $query->where('payment_status', $payment_status);
+            })
+            ->orderBy('first_name')
+            ->paginate(20);
+
+        if ($role == 'manager') $teams = Team::where('id', $user_team_id)->get();
+        else $teams = Team::all();
 
         return view('admin.player.index', [
             'players' => $players,

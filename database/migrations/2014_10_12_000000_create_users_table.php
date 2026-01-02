@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration {
             $table->string('user_image')->default('default_user.png');
 
             $table->string('role')->default('player');
+            $table->integer('team_id')->default(0);
             $table->enum('user_status', ['0', '1'])->default('1');
 
             $table->string('phone')->nullable();

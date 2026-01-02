@@ -29,16 +29,13 @@
                                         Email Address
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0">
-                                            <i class="mdi mdi-account text-muted"></i>
-                                        </span>
                                         <input type="email"
                                                class="form-control border-start-0 ps-0"
                                                id="email"
                                                name="email"
                                                placeholder="Enter your email address"
                                                required
-                                               value="{{ old('email') }}">
+                                               value="{{ old('email') }}" style="color: black !important;">
                                     </div>
                                     @error('email')
                                     <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -52,20 +49,12 @@
                                         Password
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0">
-                                            <i class="mdi mdi-key text-muted"></i>
-                                        </span>
                                         <input type="password"
                                                class="form-control border-start-0 ps-0"
                                                id="password"
                                                name="password"
                                                placeholder="Enter your password"
-                                               required>
-                                        <span class="input-group-text bg-light border-start-0 cursor-pointer"
-                                              onclick="togglePassword()"
-                                              style="cursor: pointer;">
-                                            <i class="mdi mdi-eye-outline" id="password-toggle"></i>
-                                        </span>
+                                               required style="color: black !important;">
                                     </div>
                                     @error('password')
                                     <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -176,22 +165,5 @@
             }
         }
     </style>
-
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('password-toggle');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('mdi-eye-outline');
-                toggleIcon.classList.add('mdi-eye-off-outline');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('mdi-eye-off-outline');
-                toggleIcon.classList.add('mdi-eye-outline');
-            }
-        }
-    </script>
 
 @endsection
