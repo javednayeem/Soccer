@@ -35,6 +35,7 @@
 
             {{--<li class="{{ request()->routeIs('top.scorers') ? 'active' : '' }}"><a href="{{ route('top.scorers') }}" class="nav-link">Top Scorers</a></li>--}}
             <li class="{{ request()->routeIs('matches.player') ? 'active' : '' }}"><a href="{{ route('matches.player') }}" class="nav-link">Player</a></li>
+            <li class="{{ request()->routeIs('event') ? 'active' : '' }}"><a href="{{ route('event') }}" class="nav-link">Events</a></li>
 
             @guest
 

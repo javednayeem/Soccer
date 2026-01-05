@@ -578,6 +578,55 @@ $(document).ready(function() {
         }
     });
 
+
+    $("#add_event_button").click(function(){
+
+        var event_id = $('#event_id').val();
+        var event_name = $('#event_name').val();
+        var event_description = $('#summernote-editor').val();
+        var event_date = $('#event_date').val();
+        var status = $('#event_status').is(':checked')?1:0;
+        var default_event = $('#default_event').is(':checked')?1:0;
+        var featured_event = $('#featured_event').is(':checked')?1:0;
+
+        if (event_name != "") {
+
+            var formData = new FormData();
+            formData.append("event_id", event_id);
+            formData.append("event_name", event_name);
+            formData.append("event_description", event_description);
+            formData.append("event_date", event_date);
+            formData.append("status", status);
+            formData.append("default_event", default_event);
+            formData.append("featured_event", featured_event);
+            formData.append("event_image", $('#event_image')[0].files[0]);
+
+            showProcessingNotification();
+
+            $.ajax({
+                url: '/add/event',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('#token').val()
+                },
+                success: function (response) {
+
+                    if (event_id == '0') showSuccessNotification('New Event Created!');
+                    else showSuccessNotification('Event Updated!');
+
+                    reloadCurrentPage();
+
+                },
+                error: function (error) {
+                    showErrorNotification();
+                }
+            });
+        }
+    });
+
 });
 
 function editPlayer(button) {
@@ -1696,4 +1745,96 @@ function calculatePlayerStatistics() {
         });
 
     });
+}
+
+
+function createNewEvent() {
+
+    $("#event_id").val(0);
+    $("#event_name").val('');
+    $("#event_description").val('');
+    $("#event_date").val('');
+
+    $("#event_image").attr("src", '/site/images/events/default_event.jpg');
+
+    $('#event_status').prop('checked', true);
+
+    $('#modal_title').text('Add New Event');
+    $('#add_event_modal').modal('show');
+}
+
+function editEvent(button) {
+
+    var event_id = button.getAttribute('data-id');
+    var event_name = button.getAttribute('data-name');
+    var event_description = button.getAttribute('data-description');
+    var event_image = button.getAttribute('data-image');
+    var event_date = button.getAttribute('data-date');
+    var status = button.getAttribute('data-status');
+    var default_event = button.getAttribute('data-default-event');
+    var featured_event = button.getAttribute('data-featured-event');
+
+    // Populate the modal with the event data
+    $("#event_id").val(event_id);
+    $("#event_name").val(event_name);
+    $("#event_date").val(event_date);
+
+    // Use summernote's API to set the content
+    $('#summernote-editor').summernote('code', event_description);
+
+    $("#add_event_image").attr("src", '/site/images/events/' + event_image);
+
+    if (status == '1') $('#event_status').prop('checked', true);
+    else $('#event_status').prop('checked', false);
+
+    if (default_event == '1') $('#default_event').prop('checked', true);
+    else $('#default_event').prop('checked', false);
+
+    if (featured_event == '1') $('#featured_event').prop('checked', true);
+    else $('#featured_event').prop('checked', false);
+
+    $('#modal_title').text('Edit Event');
+    $('#add_event_modal').modal('show');
+}
+
+
+function destroyEvent(event_id) {
+
+    swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonClass: 'btn btn-success mr-2',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false
+    }).then(function () {
+
+        var params = {
+            event_id: event_id
+        };
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/delete/event',
+            type: 'POST',
+            format: 'JSON',
+            data: {params: params, "_token": $('#token').val()},
+
+            success: function (response) {
+                showSuccessNotification('Event Has Been Deleted');
+                $('#event_' + event_id).remove();
+            },
+            error: function (error) {
+                showErrorNotification();
+            }
+        });
+
+    });
+
 }

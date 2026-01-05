@@ -35,6 +35,11 @@ Route::get('/player-registration', 'RegistrationController@playerRegistrationLay
 Route::post('/player-registration', 'RegistrationController@storePlayer')->name('player.store');
 
 
+
+Route::get('/event', 'HomeController@event')->name('event');
+Route::get('/event/{event_id}', 'HomeController@eventDetail');
+
+
 Auth::routes();
 
 
@@ -151,6 +156,18 @@ Route::group(['middleware'=> ['auth']],function ()  {
 
     Route::get('/view-contribution', 'ContributionController@viewContribution')->name('view.contribution.layout');
     Route::post('/view-contribution', 'ContributionController@generateContributionReport')->name('view.contribution');
+
+
+
+    /*
+    * Event Routes
+    */
+
+    Route::get('/events', 'EventController@index')->name('admin.event');
+
+    Route::post('/add/event', 'EventController@addEvent');
+    Route::post('/edit/event', 'EventController@editEvent');
+    Route::post('/delete/event', 'EventController@deleteEvent');
 
 
 

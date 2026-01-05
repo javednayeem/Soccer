@@ -12,6 +12,8 @@ use App\Models\Team;
 use App\Models\Player;
 use App\Models\League;
 use App\Models\PlayerStatistic;
+use App\Models\Event;
+
 
 class HomeController extends Controller {
 
@@ -258,6 +260,58 @@ class HomeController extends Controller {
         }
 
         return $league;
+    }
+
+
+    public function event() {
+
+        $currentDate = now()->toDateString();
+
+        // Get all active events ordered by date (most recent first)
+        $events = Event::where('status', '1')
+            ->orderBy('event_date', 'desc')
+            ->paginate(9); // Paginate with 9 items per page (3x3 grid)
+
+        // Get upcoming events (events with date >= today)
+        $upcomingEvents = Event::where('status', '1')
+            ->where('event_date', '>=', $currentDate)
+            ->orderBy('event_date', 'asc')
+            ->get();
+
+        // Get featured events
+        $featuredEvents = Event::where('status', '1')
+            ->where('featured_event', '1')
+            ->orderBy('event_date', 'desc')
+            ->take(3) // Limit to 3 featured events
+            ->get();
+
+        // If no featured events, use default events as fallback
+        if ($featuredEvents->isEmpty()) {
+            $featuredEvents = Event::where('status', '1')
+                ->where('default_event', '1')
+                ->orderBy('event_date', 'desc')
+                ->take(3)
+                ->get();
+        }
+
+        return view('site.event.index', [
+            'events' => $events,
+            'upcomingEvents' => $upcomingEvents,
+            'featuredEvents' => $featuredEvents,
+            'totalEvents' => $events->total(),
+        ]);
+
+    }
+
+
+    public function eventDetail($event_id) {
+
+        $event = Event::where('status', '1')->findOrFail($event_id);
+
+        return view('site.event.detail', [
+            'event' => $event,
+        ]);
+
     }
 
 }
