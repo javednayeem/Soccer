@@ -185,8 +185,10 @@
                                                     <i class="fas fa-crown me-1"></i> FEATURED
                                                 </span>
                                             </div>
-                                            <h5 class="card-title">{{ $featuredEvent->event_name }}</h5>
-                                            <p class="card-text">{{ Str::of(strip_tags($featuredEvent->event_description))->words(20, '...') }}</p>
+                                            <h5 class="card-title text-dark">{{ $featuredEvent->event_name }}</h5>
+                                            <p class="card-text text-dark">
+                                                {{ Str::of(strip_tags($featuredEvent->event_description))->words(20, '...') }}
+                                            </p>
                                             <a href="/event/{{ $featuredEvent->event_id }}" class="btn btn-warning">
                                                 Learn More <i class="fas fa-arrow-right ms-1"></i>
                                             </a>
@@ -200,5 +202,50 @@
             @endif
         </div>
     </section>
+
+    <style>
+        /* Fix invisible text from theme */
+        .event-card,
+        .featured-event-card,
+        .event-card * ,
+        .featured-event-card * {
+            color: #222 !important;
+        }
+
+        /* Card hover animation */
+        .event-card {
+            transition: all .3s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 1rem 2rem rgba(0,0,0,.15);
+        }
+
+        /* Featured section polish */
+        .featured-event-card {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border-radius: 14px;
+        }
+        .featured-event-card .card-title {
+            font-weight: 700;
+        }
+        .featured-event-card .btn {
+            border-radius: 50px;
+        }
+
+        /* Section header styling */
+        .section-title {
+            font-size: 2rem;
+        }
+
+        /* Make event images elegant */
+        .event-image img {
+            transition: transform .4s ease;
+        }
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+    </style>
+
 
 @endsection

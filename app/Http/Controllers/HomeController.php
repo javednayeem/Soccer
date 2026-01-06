@@ -66,6 +66,11 @@ class HomeController extends Controller {
 
         $league = $this->getStanding();
 
+        $events = Event::where('status', '1')
+            ->where('featured_event', '1')
+            ->orderBy('event_date', 'desc')
+            ->get();
+
         return view('site.home.index', [
             'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
@@ -74,6 +79,7 @@ class HomeController extends Controller {
             'teams' => $teams,
             'player_statistics' => $player_statistics,
             'league' => $league,
+            'events' => $events,
         ]);
     }
 

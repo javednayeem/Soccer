@@ -23,7 +23,7 @@ class Event extends Model {
         }
 
         if ($featured_event == '1') {
-            DB::table('events')->where('event_id', '<>', $this->event_id)->update(['featured_event' => '0']);
+            #DB::table('events')->where('event_id', '<>', $this->event_id)->update(['featured_event' => '0']);
         }
 
     }

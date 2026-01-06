@@ -347,107 +347,146 @@
         </div>
     </div>
 
-    <div class="site-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-6 title-section">
-                    <h2 class="heading">Videos</h2>
-                </div>
-                <div class="col-6 text-right">
-                    <div class="custom-nav">
-                        <a href="#" class="js-custom-prev-v2"><span class="icon-keyboard_arrow_left"></span></a>
-                        <span></span>
-                        <a href="#" class="js-custom-next-v2"><span class="icon-keyboard_arrow_right"></span></a>
+    {{--<div class="site-section">--}}
+    {{--<div class="container">--}}
+    {{--<div class="row">--}}
+    {{--<div class="col-6 title-section">--}}
+    {{--<h2 class="heading">Videos</h2>--}}
+    {{--</div>--}}
+    {{--<div class="col-6 text-right">--}}
+    {{--<div class="custom-nav">--}}
+    {{--<a href="#" class="js-custom-prev-v2"><span class="icon-keyboard_arrow_left"></span></a>--}}
+    {{--<span></span>--}}
+    {{--<a href="#" class="js-custom-next-v2"><span class="icon-keyboard_arrow_right"></span></a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+
+
+    {{--<div class="owl-4-slider owl-carousel">--}}
+    {{--<div class="item">--}}
+    {{--<div class="video-media">--}}
+    {{--<img src="/site/images/img_1.jpg" alt="Image" class="img-fluid">--}}
+    {{--<a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>--}}
+    {{--<span class="icon mr-3">--}}
+    {{--<span class="icon-play"></span>--}}
+    {{--</span>--}}
+    {{--<div class="caption">--}}
+    {{--<h3 class="m-0">Dogba set for Juvendu return?</h3>--}}
+    {{--</div>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--<div class="item">--}}
+    {{--<div class="video-media">--}}
+    {{--<img src="/site/images/img_2.jpg" alt="Image" class="img-fluid">--}}
+    {{--<a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>--}}
+    {{--<span class="icon mr-3">--}}
+    {{--<span class="icon-play"></span>--}}
+    {{--</span>--}}
+    {{--<div class="caption">--}}
+    {{--<h3 class="m-0">Kai Nets Double To Secure Comfortable Away Win</h3>--}}
+    {{--</div>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--<div class="item">--}}
+    {{--<div class="video-media">--}}
+    {{--<img src="/site/images/img_3.jpg" alt="Image" class="img-fluid">--}}
+    {{--<a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>--}}
+    {{--<span class="icon mr-3">--}}
+    {{--<span class="icon-play"></span>--}}
+    {{--</span>--}}
+    {{--<div class="caption">--}}
+    {{--<h3 class="m-0">Romolu to stay at Real Nadrid?</h3>--}}
+    {{--</div>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+
+    {{--<div class="item">--}}
+    {{--<div class="video-media">--}}
+    {{--<img src="/site/images/img_1.jpg" alt="Image" class="img-fluid">--}}
+    {{--<a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>--}}
+    {{--<span class="icon mr-3">--}}
+    {{--<span class="icon-play"></span>--}}
+    {{--</span>--}}
+    {{--<div class="caption">--}}
+    {{--<h3 class="m-0">Dogba set for Juvendu return?</h3>--}}
+    {{--</div>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--<div class="item">--}}
+    {{--<div class="video-media">--}}
+    {{--<img src="/site/images/img_2.jpg" alt="Image" class="img-fluid">--}}
+    {{--<a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>--}}
+    {{--<span class="icon mr-3">--}}
+    {{--<span class="icon-play"></span>--}}
+    {{--</span>--}}
+    {{--<div class="caption">--}}
+    {{--<h3 class="m-0">Kai Nets Double To Secure Comfortable Away Win</h3>--}}
+    {{--</div>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--<div class="item">--}}
+    {{--<div class="video-media">--}}
+    {{--<img src="/site/images/img_3.jpg" alt="Image" class="img-fluid">--}}
+    {{--<a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>--}}
+    {{--<span class="icon mr-3">--}}
+    {{--<span class="icon-play"></span>--}}
+    {{--</span>--}}
+    {{--<div class="caption">--}}
+    {{--<h3 class="m-0">Romolu to stay at Real Nadrid?</h3>--}}
+    {{--</div>--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+
+    {{--</div>--}}
+
+    {{--</div>--}}
+    {{--</div>--}}
+
+    @if($events->count())
+        <div class="latest-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 title-section">
+                        <h2 class="heading">Events</h2>
                     </div>
                 </div>
+                <div class="row no-gutters">
+                    @foreach($events as $event)
+                        <div class="col-md-4 pl-2">
+                            <div class="post-entry" onclick="window.location.href='{{ url('/event/'.$event->event_id) }}'" style="cursor:pointer;">
+                                <a href="/event/{{ $event->event_id }}">
+                                    <img src="{{ asset('site/images/events/' . $event->event_image) }}" alt="{{ $event->event_name }}" class="img-fluid">
+                                </a>
+                                <div class="caption">
+                                    <div class="caption-inner">
+                                        <h3 class="mb-3">{{ $event->event_name }}</h3>
+                                        <div class="author d-flex align-items-center">
+                                            <div class="img mb-2 mr-3">
+                                                <img src="{{ asset('site/images/events/' . $event->event_image) }}" alt="">
+                                            </div>
+                                            <div class="text">
+                                                <h4>{{ $event->event_name }}</h4>
+                                                <span>{{ formatDate($event->event_date) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
             </div>
-
-
-            <div class="owl-4-slider owl-carousel">
-                <div class="item">
-                    <div class="video-media">
-                        <img src="/site/images/img_1.jpg" alt="Image" class="img-fluid">
-                        <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                            <div class="caption">
-                                <h3 class="m-0">Dogba set for Juvendu return?</h3>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="video-media">
-                        <img src="/site/images/img_2.jpg" alt="Image" class="img-fluid">
-                        <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                            <div class="caption">
-                                <h3 class="m-0">Kai Nets Double To Secure Comfortable Away Win</h3>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="video-media">
-                        <img src="/site/images/img_3.jpg" alt="Image" class="img-fluid">
-                        <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                            <div class="caption">
-                                <h3 class="m-0">Romolu to stay at Real Nadrid?</h3>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <div class="video-media">
-                        <img src="/site/images/img_1.jpg" alt="Image" class="img-fluid">
-                        <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                            <div class="caption">
-                                <h3 class="m-0">Dogba set for Juvendu return?</h3>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="video-media">
-                        <img src="/site/images/img_2.jpg" alt="Image" class="img-fluid">
-                        <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                            <div class="caption">
-                                <h3 class="m-0">Kai Nets Double To Secure Comfortable Away Win</h3>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="video-media">
-                        <img src="/site/images/img_3.jpg" alt="Image" class="img-fluid">
-                        <a href="https://vimeo.com/139714818" class="d-flex play-button align-items-center" data-fancybox>
-                <span class="icon mr-3">
-                  <span class="icon-play"></span>
-                </span>
-                            <div class="caption">
-                                <h3 class="m-0">Romolu to stay at Real Nadrid?</h3>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
-    </div>
+    @endif
+
 
     <div class="container site-section">
         <div class="row">
