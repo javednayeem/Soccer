@@ -737,16 +737,37 @@ h1, h2, h3, h4, h5,
 
 .latest-news {
   padding: 100px 0; }
+
+
+
+/* ===============================
+   LATEST NEWS / EVENTS SECTION
+================================ */
+
 .latest-news .post-entry {
   position: relative;
-  overflow: hidden; }
-.latest-news .post-entry img {
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
+  overflow: hidden;
+  height: 240px;                         /* 🔥 unified card height */
+  border-radius: 6px;
+}
+
+/* Main image container */
+.latest-news .post-entry > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Main image */
+.latest-news .post-entry > a img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                    /* 🔥 perfect cropping */
   transition: .3s all ease;
-  -webkit-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1); }
+  transform: scale(1);
+}
+
+/* Red underline animation */
 .latest-news .post-entry:before {
   content: "";
   width: 0;
@@ -754,64 +775,97 @@ h1, h2, h3, h4, h5,
   position: absolute;
   bottom: 0;
   left: 0;
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
   transition: .3s all ease;
   background-color: #ee1e46;
-  z-index: 2; }
+  z-index: 2;
+}
+
+/* Caption overlay */
 .latest-news .post-entry .caption {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  z-index: 1; }
+  inset: 0;
+  z-index: 1;
+}
+
 .latest-news .post-entry .caption:before {
   content: "";
   position: absolute;
-  top: 0;
-  z-index: -1;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  -webkit-transition: .3s all ease;
-  -o-transition: .3s all ease;
+  inset: 0;
   transition: .3s all ease;
-  background: rgba(0, 0, 0, 0.4); }
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+/* Caption content */
 .latest-news .post-entry .caption .caption-inner {
   position: absolute;
-  bottom: 30px;
-  left: 30px;
-  right: 30px; }
+  bottom: 25px;
+  left: 25px;
+  right: 25px;
+}
+
 .latest-news .post-entry .caption .caption-inner h3 {
   font-size: 16px;
   font-weight: 700;
-  color: #fff; }
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* Author block */
+.latest-news .post-entry .author {
+  display: flex;
+  align-items: center;
+}
+
 .latest-news .post-entry .author .img {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 40px;
-  flex: 0 0 40px; }
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
 .latest-news .post-entry .author .img img {
-  max-width: 100%;
-  border-radius: 50%; }
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .latest-news .post-entry .author .text h4 {
   color: #fff;
-  font-weight: 700; }
-.latest-news .post-entry .author .text span {
-  color: rgba(255, 255, 255, 0.5); }
-.latest-news .post-entry .author .text h4, .latest-news .post-entry .author .text span {
+  font-weight: 700;
   margin: 0;
-  line-height: 1;
-  font-size: 14px; }
-.latest-news .post-entry:hover img {
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  transform: scale(1.1); }
+  line-height: 1.1;
+  font-size: 14px;
+}
+
+.latest-news .post-entry .author .text span {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+}
+
+/* Hover Effects */
+.latest-news .post-entry:hover > a img {
+  transform: scale(1.1);
+}
+
 .latest-news .post-entry:hover .caption:before {
-  background: rgba(0, 0, 0, 0.7); }
+  background: rgba(0, 0, 0, 0.7);
+}
+
 .latest-news .post-entry:hover:before {
-  width: 100%; }
+  width: 100%;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .latest-news .post-entry {
+    height: 200px;
+  }
+}
+
+
 
 .video-media {
   position: relative; }

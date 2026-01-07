@@ -271,6 +271,44 @@
         </div>
     </div>
 
+    @if($events->count())
+        <div class="latest-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 title-section">
+                        <h2 class="heading">Events</h2>
+                    </div>
+                </div>
+                <div class="row no-gutters">
+                    @foreach($events as $event)
+                        <div class="col-md-4 pl-2">
+                            <div class="post-entry" onclick="window.location.href='{{ url('/event/'.$event->event_id) }}'" style="cursor:pointer;">
+                                <a href="/event/{{ $event->event_id }}">
+                                    <img src="{{ asset('site/images/events/' . $event->event_image) }}" alt="{{ $event->event_name }}">
+                                </a>
+                                <div class="caption">
+                                    <div class="caption-inner">
+                                        <h3 class="mb-3">{{ $event->event_name }}</h3>
+                                        <div class="author d-flex align-items-center">
+                                            <div class="img mb-2 mr-3">
+                                                <img src="{{ asset('site/images/events/' . $event->event_image) }}" alt="">
+                                            </div>
+                                            <div class="text">
+                                                <h4>{{ $event->event_name }}</h4>
+                                                <span>{{ formatDate($event->event_date) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </div>
+    @endif
+
     <div class="latest-news">
         <div class="container">
             <div class="row">
@@ -448,45 +486,6 @@
 
     {{--</div>--}}
     {{--</div>--}}
-
-    @if($events->count())
-        <div class="latest-news">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 title-section">
-                        <h2 class="heading">Events</h2>
-                    </div>
-                </div>
-                <div class="row no-gutters">
-                    @foreach($events as $event)
-                        <div class="col-md-4 pl-2">
-                            <div class="post-entry" onclick="window.location.href='{{ url('/event/'.$event->event_id) }}'" style="cursor:pointer;">
-                                <a href="/event/{{ $event->event_id }}">
-                                    <img src="{{ asset('site/images/events/' . $event->event_image) }}" alt="{{ $event->event_name }}" class="img-fluid">
-                                </a>
-                                <div class="caption">
-                                    <div class="caption-inner">
-                                        <h3 class="mb-3">{{ $event->event_name }}</h3>
-                                        <div class="author d-flex align-items-center">
-                                            <div class="img mb-2 mr-3">
-                                                <img src="{{ asset('site/images/events/' . $event->event_image) }}" alt="">
-                                            </div>
-                                            <div class="text">
-                                                <h4>{{ $event->event_name }}</h4>
-                                                <span>{{ formatDate($event->event_date) }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-            </div>
-        </div>
-    @endif
-
 
     <div class="container site-section">
         <div class="row">
