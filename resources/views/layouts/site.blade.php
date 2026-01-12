@@ -22,6 +22,8 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
+    <input type="hidden" id="token" value="{{ csrf_token() }}">
+
     @include('site.partials.header')
 
     @yield('content')

@@ -38,7 +38,7 @@ Route::get('/event', 'HomeController@event')->name('event');
 Route::get('/event/{event_id}', 'HomeController@eventDetail');
 
 Route::get('/transfer-request', 'PlayerTransferController@index')->name('transfer.request.form');
-Route::post('/transfer-request', 'PlayerTransferController@store')->name('transfer.request.submit');
+Route::post('/transfer-request', 'PlayerTransferController@store');
 
 
 
@@ -172,6 +172,16 @@ Route::group(['middleware'=> ['auth']],function ()  {
     Route::post('/add/event', 'EventController@addEvent');
     Route::post('/edit/event', 'EventController@editEvent');
     Route::post('/delete/event', 'EventController@deleteEvent');
+
+
+
+    /*
+    * Player Transfer Routes
+    */
+
+    Route::get('/transfer-requests', 'PlayerTransferController@transferRequest')->name('transfer.request');
+
+    Route::get('/request-history', 'PlayerTransferController@requestHistory')->name('request.history');
 
 
 

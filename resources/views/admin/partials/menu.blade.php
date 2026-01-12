@@ -43,12 +43,27 @@
 
                 @can('admin')
                     <li>
-                        <a href="javascript: void(0);" class="has-arrow">
-                            <i class="mdi mdi-soccer mr-1"></i><span>Live Score</span>
+                        <a href="javascript:void(0);">
+                            <i class="mdi mdi-soccer"></i><span>Live Score</span><span class="menu-arrow"></span>
                         </a>
+
                         <ul class="nav-second-level" aria-expanded="false">
                             <li><a href="{{ route('admin.live.matches') }}">Live Matches</a></li>
                             <li><a href="{{ route('admin.finished.matches') }}">Update Finished</a></li>
+                        </ul>
+                    </li>
+                @endcan
+
+                @can('admin')
+                    <li>
+                        <a href="javascript:void(0);">
+                            <i class="mdi mdi-transit-transfer"></i>
+                            <span>Player Transfer</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li><a href="{{ route('transfer.request') }}">Transfer Request</a></li>
+                            <li><a href="{{ route('request.history') }}">Request History</a></li>
                         </ul>
                     </li>
                 @endcan

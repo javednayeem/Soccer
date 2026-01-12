@@ -12,59 +12,44 @@ $(document).on('click', '.player-detail-btn', function(e) {
 $(document).ready(function() {
 
     $('#from_team_id').change(function() {
-
         var from_team_id = $('#from_team_id').val();
         loadPlayers(from_team_id);
-
     });
 
-    $('#transferRequestForm').on('submit', function(e) {
-        e.preventDefault();
 
-        // Reset UI
-        $('#successMessage, #errorMessage, #pendingWarning').addClass('d-none');
-        $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Submitting...');
+    $("#submit_transfer_request").click(function(){
+
+        var player_id = $('#player_id').val();
+        var from_team_id = $('#from_team_id').val();
+        var to_team_id = $('#to_team_id').val();
+        var transfer_notes = $('#transfer_notes').val();
 
         $.ajax({
-            url: "{{ route('transfer.request.submit') }}",
-            type: "POST",
-            data: $(this).serialize(),
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            url: '/transfer-request',
+            type: 'POST',
+            data: {
+                player_id: player_id,
+                from_team_id: from_team_id,
+                to_team_id: to_team_id,
+                transfer_notes: transfer_notes,
+                "_token": $('#token').val()
             },
-            success: function(response) {
+            success: function (response) {
 
-                $('#submitBtn').prop('disabled', false).html('<i class="fas fa-paper-plane me-1"></i> Submit Transfer Request');
+                if (response.status === 'success') {
 
-                if (response.success) {
-                    $('#successText').text(response.message);
-                    $('#successMessage').removeClass('d-none');
-                    $('#transferRequestForm')[0].reset();
-                    $('#player_id').prop('disabled', true).html('<option selected disabled>-- Select Your Name --</option>');
+                    alert(response.message)
+
                 }
+
+                else alert(response.message);
+
             },
-
-            error: function(xhr) {
-
-                $('#submitBtn').prop('disabled', false).html('<i class="fas fa-paper-plane me-1"></i> Submit Transfer Request');
-
-                let response = xhr.responseJSON;
-
-                if (xhr.status === 409) {
-                    $('#pendingText').text(response.message);
-                    $('#pendingWarning').removeClass('d-none');
-                }
-                else if (xhr.status === 422) {
-                    let firstError = Object.values(response.errors)[0][0];
-                    $('#errorText').text(firstError);
-                    $('#errorMessage').removeClass('d-none');
-                }
-                else {
-                    $('#errorText').text(response.message ?? 'Something went wrong. Please try again.');
-                    $('#errorMessage').removeClass('d-none');
-                }
+            error: function (error) {
+                showErrorNotification();
             }
         });
+
     });
 
 });
@@ -72,10 +57,10 @@ $(document).ready(function() {
 
 $('#playerModal').on('hidden.bs.modal', function() {
 
-	var playerModalBodyContent = '<div class="text-center py-5">' +
-		'<div class="spinner-border text-primary" role="status">' +
-		'<span class="sr-only">Loading...</span>' +
-		'</div></div>';
+    var playerModalBodyContent = '<div class="text-center py-5">' +
+        '<div class="spinner-border text-primary" role="status">' +
+        '<span class="sr-only">Loading...</span>' +
+        '</div></div>';
 
     $('#playerModalBody').html(playerModalBodyContent);
 

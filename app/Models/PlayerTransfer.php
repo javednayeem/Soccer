@@ -9,6 +9,16 @@ class PlayerTransfer extends Model {
     protected $table = 'player_transfers';
     protected $primaryKey = 'id';
 
+    protected $fillable = [
+        'player_id',
+        'from_team_id',
+        'to_team_id',
+        'transfer_status',
+        'transfer_notes',
+        'approved_at',
+        'approved_by',
+    ];
+
 
     public function player() {
         return $this->belongsTo(Player::class, 'player_id', 'id');
