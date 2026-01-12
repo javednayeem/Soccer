@@ -34,13 +34,17 @@ Route::post('/team-registration', 'RegistrationController@storeTeam')->name('tea
 Route::get('/player-registration', 'RegistrationController@playerRegistrationLayout')->name('player.registration');
 Route::post('/player-registration', 'RegistrationController@storePlayer')->name('player.store');
 
-
-
 Route::get('/event', 'HomeController@event')->name('event');
 Route::get('/event/{event_id}', 'HomeController@eventDetail');
 
+Route::get('/transfer-request', 'PlayerTransferController@index')->name('transfer.request.form');
+Route::post('/transfer-request', 'PlayerTransferController@store')->name('transfer.request.submit');
+
+
+
 
 Auth::routes();
+
 
 
 

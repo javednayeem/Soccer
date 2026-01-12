@@ -35,7 +35,7 @@ class Match extends Model {
         return $this->belongsTo(Team::class, 'away_team_id');
     }
 
-        public function manOfTheMatch() {
+    public function manOfTheMatch() {
         return $this->belongsTo(Player::class, 'man_of_the_match', 'id');
     }
 
