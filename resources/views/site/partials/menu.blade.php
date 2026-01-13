@@ -23,7 +23,7 @@
                     </li>
 
                     {{--<li class="{{ request()->routeIs('matches.player') ? 'active' : '' }}">--}}
-                        {{--<a href="{{ route('matches.player') }}" class="nav-link">Player</a>--}}
+                    {{--<a href="{{ route('matches.player') }}" class="nav-link">Player</a>--}}
                     {{--</li>--}}
 
                     <li class="{{ request()->routeIs('top.scorers') ? 'active' : '' }}">
@@ -41,6 +41,10 @@
 
                 <li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">
                     <a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>
+                </li>
+
+                <li class="{{ request()->routeIs('transfer.request.form') ? 'active' : '' }}">
+                    <a href="{{ route('transfer.request.form') }}" class="nav-link">Team Transfer Request</a>
                 </li>
 
                 <li class="{{ request()->routeIs('login') ? 'active' : '' }}">
