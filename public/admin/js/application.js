@@ -1054,64 +1054,6 @@ function removeProfilePicture() {
 }
 
 
-function updateScore_old(matchId) {
-
-    var matches = JSON.parse($('#live_matches_json').val());
-    var match = null;
-
-    // Find match manually (ES5 compatible)
-    for (var i = 0; i < matches.length; i++) {
-        if (matches[i].id == matchId) {
-            match = matches[i];
-            break;
-        }
-    }
-
-    if (!match) {
-        console.error('Match not found:', matchId);
-        return;
-    }
-
-    $('#score_match_id').val(matchId);
-    $('#home_team_name').text(match.home_team.name);
-    $('#away_team_name').text(match.away_team.name);
-    $('#home_score').val(match.home_team_score ? match.home_team_score : 0);
-    $('#away_score').val(match.away_team_score ? match.away_team_score : 0);
-
-    $('#updateScoreModal').modal('show');
-}
-
-
-function saveScore_old() {
-
-    var matchId = $('#score_match_id').val();
-    var homeScore = $('#home_score').val();
-    var awayScore = $('#away_score').val();
-
-    showProcessingNotification();
-
-    $.ajax({
-        url: '/match/' + matchId + '/update-score',
-        type: 'POST',
-        data: {
-            home_team_score: homeScore,
-            away_team_score: awayScore,
-            "_token": $('#token').val()
-        },
-        success: function (response) {
-            showSuccessNotification(response.message);
-            $('#updateScoreModal').modal('hide');
-
-            $('#home_score_' + matchId).text(homeScore);
-            $('#away_score_' + matchId).text(awayScore);
-        },
-        error: function () {
-            showErrorNotification();
-        }
-    });
-}
-
-
 function addEvent(matchId) {
     $('#event_match_id').val(matchId);
     $('#event_team_id').val('');
@@ -1763,6 +1705,7 @@ function createNewEvent() {
     $('#add_event_modal').modal('show');
 }
 
+
 function editEvent(button) {
 
     var event_id = button.getAttribute('data-id');
@@ -1837,4 +1780,43 @@ function destroyEvent(event_id) {
 
     });
 
+}
+
+
+function updateTransferStatus(id, transfer_status) {
+
+    swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, ' +transfer_status,
+        cancelButtonText: 'No, cancel!',
+        confirmButtonClass: 'btn btn-success mr-2',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false
+    }).then(function () {
+
+        showProcessingNotification();
+
+        $.ajax({
+            url: '/update/transfer-status',
+            type: 'POST',
+            data: {
+                id: id,
+                transfer_status: transfer_status,
+                "_token": $('#token').val()
+            },
+            success: function (response) {
+                showSuccessNotification(response.message);
+                $('#player_transfer_' + id).remove();
+            },
+            error: function (error) {
+
+            }
+        });
+
+    });
 }

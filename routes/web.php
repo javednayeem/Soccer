@@ -180,9 +180,9 @@ Route::group(['middleware'=> ['auth']],function ()  {
     */
 
     Route::get('/transfer-requests', 'PlayerTransferController@transferRequest')->name('transfer.request');
+    Route::post('/update/transfer-status', 'PlayerTransferController@updateTransferStatus');
 
     Route::get('/request-history', 'PlayerTransferController@requestHistory')->name('request.history');
-
 
 
 });

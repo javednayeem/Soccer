@@ -24,6 +24,8 @@ $(document).ready(function() {
         var to_team_id = $('#to_team_id').val();
         var transfer_notes = $('#transfer_notes').val();
 
+        $('#responseBox').addClass('d-none');
+
         $.ajax({
             url: '/transfer-request',
             type: 'POST',
@@ -34,15 +36,20 @@ $(document).ready(function() {
                 transfer_notes: transfer_notes,
                 "_token": $('#token').val()
             },
+
+            beforeSend: function() {
+                $("#submit_transfer_request")
+                    .prop('disabled', true)
+                    .html('<i class="fas fa-spinner fa-spin me-1"></i> Submitting...');
+            },
+
             success: function (response) {
 
-                if (response.status === 'success') {
+                $("#submit_transfer_request")
+                    .prop('disabled', false)
+                    .html('<i class="fas fa-paper-plane me-1"></i> Submit Transfer Request');
 
-                    alert(response.message)
-
-                }
-
-                else alert(response.message);
+                showResponse(response.message, 'success');
 
             },
             error: function (error) {
@@ -129,4 +136,29 @@ function loadPlayers(teamId) {
             $('#noPlayers').show();
         }
     });
+}
+
+
+function showResponse(message, type) {
+
+    var box = $('#responseBox');
+    var icon = $('#responseIcon');
+    var text = $('#responseText');
+
+    box.removeClass('d-none alert-success alert-danger alert-warning');
+
+    if (type === 'success') {
+        box.addClass('alert-success');
+        icon.attr('class', 'fas fa-check-circle text-success');
+    }
+    else {
+        box.addClass('alert-danger');
+        icon.attr('class', 'fas fa-exclamation-circle text-danger');
+    }
+
+    text.text(message);
+
+    $('html, body').animate({
+        scrollTop: box.offset().top - 120
+    }, 500);
 }

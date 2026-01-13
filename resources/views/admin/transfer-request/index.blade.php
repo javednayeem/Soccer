@@ -13,7 +13,7 @@
                                 Pending Requests
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $pendingCount ?? '' }}
+                                {{ $pendingCount }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -32,7 +32,7 @@
                                 Approved Requests
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $approvedCount ?? '' }}
+                                {{ $approvedCount }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -51,7 +51,7 @@
                                 Rejected Requests
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $rejectedCount ?? '' }}
+                                {{ $rejectedCount }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -70,7 +70,7 @@
                                 Total Requests
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $totalCount ?? '' }}
+                                {{ $totalCount }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -85,49 +85,18 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
-                    <!-- Search and Filter -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="search-box">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="searchInput" placeholder="Search by player name, team, or notes...">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" id="searchButton">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-outline-secondary" onclick="refreshTable()" title="Refresh">
-                                    <i class="fas fa-redo"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary" onclick="exportTable()" title="Export">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-box p-2">
 
-                    <!-- Transfer Requests Table -->
                     <div class="table-responsive">
                         <table class="table table-hover table-centered mb-0">
                             <thead class="thead-light">
                             <tr>
-                                <th>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="selectAll">
-                                        <label class="custom-control-label" for="selectAll"></label>
-                                    </div>
-                                </th>
+                                <th>#</th>
                                 <th>Player Details</th>
                                 <th>Teams</th>
                                 <th>Request Details</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -137,26 +106,15 @@
                                     $fromTeam = $request->fromTeam;
                                     $toTeam = $request->toTeam;
                                 @endphp
-                                <tr id="transfer-row-{{ $request->id }}">
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input transfer-checkbox" id="transfer-{{ $request->id }}" value="{{ $request->id }}">
-                                            <label class="custom-control-label" for="transfer-{{ $request->id }}"></label>
-                                        </div>
-                                    </td>
+                                <tr id="player_transfer_{{ $request->id }}">
+                                    <td>{{ $loop->index+1 }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="avatar-sm mr-3">
-                                                <img src="{{ asset($player->photo) }}"
-                                                     alt="{{ $player->first_name }}"
-                                                     class="img-fluid rounded-circle"
-                                                     width="50"
-                                                     onerror="this.onerror=null; this.src='/site/images/players/default_player.jpg'">
+                                                <img src="{{ asset($player->photo) }}" alt="{{ $player->first_name }}" class="img-fluid rounded-circle" width="50" onerror="this.onerror=null; this.src='/site/images/players/default_player.jpg'">
                                             </div>
                                             <div>
-                                                <h6 class="mb-1 font-size-14">
-                                                    {{ $player->first_name }} {{ $player->last_name }}
-                                                </h6>
+                                                <h6 class="mb-1 font-size-14">{{ $player->first_name }} {{ $player->last_name }}</h6>
                                                 <p class="mb-0 text-muted">
                                                     <small>
                                                         <i class="fas fa-tag mr-1"></i>{{ $player->position }}
@@ -262,36 +220,14 @@
                                                 </span>
                                         @endif
                                     </td>
-                                    <td>
-                                        @if($request->transfer_status == 'pending')
-                                            <div class="btn-group" role="group">
-                                                <button type="button"
-                                                        class="btn btn-sm btn-success"
-                                                        onclick="processTransfer({{ $request->id }}, 'approved')"
-                                                        title="Approve Transfer">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-sm btn-danger"
-                                                        onclick="showRejectModal({{ $request->id }})"
-                                                        title="Reject Transfer">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-sm btn-info"
-                                                        onclick="viewTransferDetails({{ $request->id }})"
-                                                        title="View Details">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </div>
-                                        @else
-                                            <button type="button"
-                                                    class="btn btn-sm btn-outline-secondary"
-                                                    onclick="viewTransferDetails({{ $request->id }})"
-                                                    title="View Details">
-                                                <i class="fas fa-eye"></i> View
-                                            </button>
-                                        @endif
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-success" onclick="updateTransferStatus('{{ $request->id }}', 'approved')" title="Approve Transfer">
+                                            <i class="fas fa-check mr-1"></i>Approve
+                                        </button>
+
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="updateTransferStatus('{{ $request->id }}', 'rejected')" title="Reject Transfer">
+                                            <i class="fas fa-times mr-1"></i>Reject
+                                        </button>
                                     </td>
                                 </tr>
                             @empty
@@ -300,39 +236,13 @@
                                         <div class="empty-state">
                                             <i class="fas fa-exchange-alt fa-3x text-muted mb-3"></i>
                                             <h4 class="text-muted">No Transfer Requests</h4>
-                                            <p class="text-muted">There are no {{ request('status', 'pending') }} transfer requests at the moment.</p>
+                                            <p class="text-muted">There are no pending transfer requests at the moment.</p>
                                         </div>
                                     </td>
                                 </tr>
                             @endforelse
                             </tbody>
                         </table>
-                    </div>
-
-                    <!-- Bulk Actions (for multiple selections) -->
-                    <div class="row mt-3" id="bulkActions" style="display: none;">
-                        <div class="col-12">
-                            <div class="card border-primary">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="font-weight-bold" id="selectedCount">0</span> transfer requests selected
-                                        </div>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-success" onclick="bulkApprove()">
-                                                <i class="fas fa-check mr-1"></i> Approve Selected
-                                            </button>
-                                            <button type="button" class="btn btn-danger" onclick="bulkReject()">
-                                                <i class="fas fa-times mr-1"></i> Reject Selected
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="clearSelection()">
-                                                <i class="fas fa-times mr-1"></i> Clear Selection
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 </div>

@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mail;
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Player;
+use App\Mail\TransferRequestSubmitted;
+use App\Mail\TransferRequestNotification;
+use App\Mail\TransferStatusUpdated;
+
 use App\Models\Team;
+use App\Models\Player;
 use App\Models\PlayerTransfer;
 
 class PlayerTransferController extends Controller {
@@ -97,10 +103,10 @@ class PlayerTransferController extends Controller {
         ]);
 
         if ($player->email) {
-            #Mail::to($player->email)->send(new TransferRequestSubmitted($transfer, $player));
+            Mail::to($player->email)->send(new TransferRequestSubmitted($transfer, $player));
         }
 
-        #$this->sendTeamManagerNotifications($transfer, $player, $fromTeam, $toTeam);
+        $this->sendTeamManagerNotifications($transfer, $player, $fromTeam, $toTeam);
 
         return response()->json([
             'status' => 'success',
@@ -138,150 +144,78 @@ class PlayerTransferController extends Controller {
 
     public function transferRequest() {
 
-        $transfer_requests = PlayerTransfer::where('transfer_status', 'pending')
-            ->get();
-
-        return view('admin.transfer-request.index', [
-            'transfer_requests' => $transfer_requests,
-        ]);
-
-    }
-
-
-    public function transferRequests(Request $request) {
-
-        $status = $request->get('status', 'pending');
-
-        // Get counts for stats
         $pendingCount = PlayerTransfer::where('transfer_status', 'pending')->count();
         $approvedCount = PlayerTransfer::where('transfer_status', 'approved')->count();
         $rejectedCount = PlayerTransfer::where('transfer_status', 'rejected')->count();
         $totalCount = PlayerTransfer::count();
 
-        // Get transfers with relationships
-        $query = PlayerTransfer::with(['player', 'fromTeam', 'toTeam']);
-
-        // Filter by status if not 'all'
-        if ($status !== 'all') {
-            $query->where('transfer_status', $status);
-        }
-
-        // Search functionality
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->whereHas('player', function($q) use ($search) {
-                    $q->where('first_name', 'like', "%{$search}%")
-                        ->orWhere('last_name', 'like', "%{$search}%");
-                })->orWhereHas('fromTeam', function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })->orWhereHas('toTeam', function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })->orWhere('transfer_notes', 'like', "%{$search}%");
-            });
-        }
-
-        // Order by latest
-        $query->orderBy('created_at', 'desc');
-
-        // Paginate results
-        $transfer_requests = $query->get();
+        $transfer_requests = PlayerTransfer::with(['player', 'fromTeam', 'toTeam'])
+            ->where('transfer_status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('admin.transfer-request.index', [
-            'transfer_requests' => $transfer_requests,
             'pendingCount' => $pendingCount,
             'approvedCount' => $approvedCount,
             'rejectedCount' => $rejectedCount,
             'totalCount' => $totalCount,
-            'status' => $status
+            'transfer_requests' => $transfer_requests,
         ]);
     }
 
-    public function processTransfer(Request $request, $id) {
 
-        $transfer = PlayerTransfer::with(['player', 'fromTeam', 'toTeam'])->findOrFail($id);
+    public function updateTransferStatus(Request $request) {
 
-        $action = $request->input('action');
+        $approved_by = Auth::user()->id;
+        $id = $request->input('id');
+        $transfer_status = $request->input('transfer_status');
 
-        if ($action === 'approved') {
-            return $this->approveTransfer($transfer);
-        } elseif ($action === 'rejected') {
-            $request->validate([
-                'rejection_reason' => 'required|string|max:500'
-            ]);
-            return $this->rejectTransfer($transfer, $request->rejection_reason);
+        $player_transfer = PlayerTransfer::with('player', 'fromTeam', 'toTeam')->find($id);
+        $player_transfer->transfer_status = $transfer_status;
+        $player_transfer->approved_at = date('Y-m-d H:i:s');
+        $player_transfer->approved_by = $approved_by;
+        $player_transfer->save();
+
+        if ($transfer_status === 'approved') {
+
+            $player = Player::find($player_transfer->player_id);
+            $player->team_id = $player_transfer->to_team_id;
+            $player->save();
+
+        }
+
+        if ($player_transfer->player->email) {
+
+            $manager_emails = ['masudulsce@gmail.com'];
+
+            if ($player_transfer->fromTeam->manager_email) array_push($manager_emails, $player_transfer->fromTeam->manager_email);
+            if ($player_transfer->toTeam->manager_email) array_push($manager_emails, $player_transfer->toTeam->manager_email);
+
+            Mail::to($player_transfer->player->email)
+                ->cc($manager_emails)
+                ->bcc('explorerclepsydra@gmail.com')
+                ->send(new TransferStatusUpdated($player_transfer, $transfer_status));
+
         }
 
         return response()->json([
-            'success' => false,
-            'message' => 'Invalid action'
-        ], 400);
+            'status' => 'success',
+            'message' => 'Teams Transfer Request ' . ucfirst($transfer_status)
+        ]);
+
     }
 
 
-    private function approveTransfer($transfer) {
-        DB::beginTransaction();
-        try {
-            // Update transfer status
-            $transfer->update([
-                'transfer_status' => 'approved',
-                'approved_at' => now(),
-                'approved_by' => auth()->id()
-            ]);
+    public function requestHistory() {
 
-            // Update player's team
-            $transfer->player->update([
-                'team_id' => $transfer->to_team_id
-            ]);
+        $transfer_requests = PlayerTransfer::with(['player', 'fromTeam', 'toTeam', 'modifier'])
+            ->where('transfer_status', '<>', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-            // Send approval emails
-            $this->sendTransferResultEmails($transfer, 'approved');
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Transfer request approved successfully.'
-            ]);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Error approving transfer: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to approve transfer request.'
-            ], 500);
-        }
+        return view('admin.transfer-request.history', [
+            'transfer_requests' => $transfer_requests,
+        ]);
     }
-
-
-    private function rejectTransfer($transfer, $reason) {
-        try {
-            $transfer->update([
-                'transfer_status' => 'rejected',
-                'transfer_notes' => $transfer->transfer_notes . "\n\nRejection Reason: " . $reason
-            ]);
-
-            // Send rejection emails
-            $this->sendTransferResultEmails($transfer, 'rejected', $reason);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Transfer request rejected successfully.'
-            ]);
-
-        } catch (\Exception $e) {
-            \Log::error('Error rejecting transfer: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to reject transfer request.'
-            ], 500);
-        }
-    }
-
-
-
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class PlayerTransfer extends Model {
@@ -30,6 +31,10 @@ class PlayerTransfer extends Model {
 
     public function toTeam() {
         return $this->belongsTo(Team::class, 'to_team_id');
+    }
+
+    public function modifier() {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
 }
