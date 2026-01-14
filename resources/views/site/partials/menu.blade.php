@@ -39,17 +39,30 @@
 
             @guest
 
-                <li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">
-                    <a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>
-                </li>
+            {{--<li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">--}}
+                {{--<a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>--}}
+            {{--</li>--}}
 
-                <li class="{{ request()->routeIs('transfer.request.form') ? 'active' : '' }}">
-                    <a href="{{ route('transfer.request.form') }}" class="nav-link">Team Transfer Request</a>
-                </li>
+            {{--<li class="{{ request()->routeIs('transfer.request.form') ? 'active' : '' }}">--}}
+                {{--<a href="{{ route('transfer.request.form') }}" class="nav-link">Team Transfer Request</a>--}}
+            {{--</li>--}}
 
-                <li class="{{ request()->routeIs('login') ? 'active' : '' }}">
-                    <a href="{{ route('login') }}" class="nav-link">Login</a>
-                </li>
+
+            <li class="has-children">
+                <a href="#" class="nav-link">Player Services</a>
+                <ul class="dropdown">
+                    <li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">
+                        <a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>
+                    </li>
+                    <li class="{{ request()->routeIs('transfer.request.form') ? 'active' : '' }}">
+                        <a href="{{ route('transfer.request.form') }}" class="nav-link">Team Transfer Request</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{{ request()->routeIs('login') ? 'active' : '' }}">
+                <a href="{{ route('login') }}" class="nav-link">Login</a>
+            </li>
 
             @endguest
         </ul>
