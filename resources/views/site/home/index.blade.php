@@ -276,7 +276,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 title-section">
-                        <h2 class="heading">Events</h2>
+                        <h2 class="heading">Latest News</h2>
                     </div>
                 </div>
                 <div class="row no-gutters">
@@ -313,7 +313,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 title-section">
-                    <h2 class="heading">Latest News</h2>
+                    <h2 class="heading">Other News</h2>
                 </div>
             </div>
             <div class="row no-gutters">

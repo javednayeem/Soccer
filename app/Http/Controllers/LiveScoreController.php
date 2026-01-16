@@ -38,10 +38,15 @@ class LiveScoreController extends Controller {
 
         $leagues = League::where('is_active', true)->get();
 
+        $players = Player::where('player_status', '1')
+            ->where('payment_status', '1')
+            ->get();
+
         return view('admin.live-score.live-matches', [
             'liveMatches' => $liveMatches,
             'teams' => $teams,
             'leagues' => $leagues,
+            'players' => $players,
         ]);
     }
 

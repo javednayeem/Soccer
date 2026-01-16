@@ -1,6 +1,6 @@
 @extends('layouts.site')
 @section('title', 'Schedule')
-@section('subtitle', 'Stay updated with our latest matches, results, and upcoming fixtures. Follow our team\'s journey through the season.')
+@section('subtitle', 'Stay updated with our latest matches, results, and upcoming fixtures. Follow our team\'s journey through the season. Please make sure your all players are registered without registered player is not allowed to play')
 
 @section('content')
 
@@ -144,12 +144,12 @@
                                     <tr class="border-bottom">
 
                                         {{--<td class="align-middle py-3">--}}
-                                            {{--<div class="d-flex flex-column align-items-center">--}}
-                                                {{--<span class="badge badge-dark bg-dark text-white px-3 py-2 fw-bold" style="font-size: 0.9rem;">--}}
-                                                    {{--#{{ $loop->iteration }}--}}
-                                                {{--</span>--}}
-                                                {{--<small class="text-muted mt-1">Match</small>--}}
-                                            {{--</div>--}}
+                                        {{--<div class="d-flex flex-column align-items-center">--}}
+                                        {{--<span class="badge badge-dark bg-dark text-white px-3 py-2 fw-bold" style="font-size: 0.9rem;">--}}
+                                        {{--#{{ $loop->iteration }}--}}
+                                        {{--</span>--}}
+                                        {{--<small class="text-muted mt-1">Match</small>--}}
+                                        {{--</div>--}}
                                         {{--</td>--}}
 
                                         <td class="align-middle py-3">

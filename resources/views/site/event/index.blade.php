@@ -1,5 +1,5 @@
 @extends('layouts.site')
-@section('title', 'Football Events')
+@section('title', 'Football News')
 @section('subtitle', 'Stay updated with the latest football events, tournaments, and competitions')
 
 @section('content')
@@ -9,7 +9,7 @@
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="page-header">
-                        <h1 class="display-4 fw-bold text-primary mb-3">Football Events</h1>
+                        <h1 class="display-4 fw-bold text-primary mb-3">Football News</h1>
                         <p class="lead text-muted">Explore upcoming matches, tournaments, and football competitions from around the world.</p>
                         <div class="header-stats d-flex gap-4 mt-4">
                             <div class="stat-item">

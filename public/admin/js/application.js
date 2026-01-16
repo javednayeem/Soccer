@@ -446,6 +446,7 @@ $(document).ready(function() {
 
 
     $('#event_team_id').change(function() {
+
         var teamId = $(this).val();
 
         if (teamId) {
@@ -459,29 +460,33 @@ $(document).ready(function() {
                     'X-CSRF-TOKEN': $('#token').val()
                 },
                 success: function(response) {
+
                     if (response.success && response.players.length > 0) {
+
                         var options = '<option value="">Select Player</option>';
 
                         response.players.forEach(function(player) {
-                            options += '<option value="' + player.id + '">' +
-                                player.first_name + ' ' + player.last_name +
-                                ' (#' + (player.jersey_number || 'N/A') + ')' +
-                                '</option>';
+                            options += '<option value="' + player.id + '">' + player.first_name + ' ' + player.last_name + ' (#' + (player.jersey_number || 'N/A') + ')' + '</option>';
                         });
 
                         $('#event_player_id').html(options);
-                    } else {
+                    }
+
+                    else {
                         $('#event_player_id').html('<option value="">No active players found</option>');
                     }
+
                 },
                 error: function(error) {
-                    console.error('Error loading players:', error);
                     $('#event_player_id').html('<option value="">Error loading players</option>');
                 }
             });
-        } else {
+        }
+
+        else {
             $('#event_player_id').html('<option value="">Select Player</option>');
         }
+
     });
 
 
@@ -1055,6 +1060,7 @@ function removeProfilePicture() {
 
 
 function addEvent(matchId) {
+
     $('#event_match_id').val(matchId);
     $('#event_team_id').val('');
     $('#event_player_id').html('<option value="">Select Player</option>');
@@ -1105,12 +1111,13 @@ function saveEvent() {
 }
 
 
-function quickGoal(matchId, teamId) {
+function quickGoal(matchId, teamId, playerId, eventType) {
 
     var matches = JSON.parse($('#live_matches_json').val());
     var match = null;
+    if (playerId === undefined) playerId = 0;
+    if (eventType === undefined) eventType = 'goal';
 
-    // Manual find() replacement
     for (var i = 0; i < matches.length; i++) {
         if (matches[i].id == matchId) {
             match = matches[i];
@@ -1129,7 +1136,6 @@ function quickGoal(matchId, teamId) {
     $('#event_minute').val('');
     $('#event_description').val('');
 
-    // Load players for selected team
     $.ajax({
         url: '/get/team/' + teamId + '/players',
         type: 'GET',
@@ -1137,19 +1143,21 @@ function quickGoal(matchId, teamId) {
             'X-CSRF-TOKEN': $('#token').val()
         },
         success: function(response) {
+
             var options = '<option value="">Select Player</option>';
+            var selectedPlayerId = '';
 
             response.players.forEach(function(player) {
-                options += '<option value="' + player.id + '">' +
-                    player.first_name + ' ' + player.last_name +
-                    '</option>';
+                if (player.id === playerId) selectedPlayerId = 'selected';
+                options += '<option value="' + player.id + '" '+ selectedPlayerId +'>' + player.first_name + ' ' + player.last_name + '</option>';
             });
 
             $('#event_player_id').html(options);
+            $('#event_type').val(eventType).trigger('change');
             $('#addEventModal').modal('show');
         },
         error: function(error) {
-            console.error('Error loading players:', error);
+
         }
     });
 }

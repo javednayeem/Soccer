@@ -1,14 +1,14 @@
 @extends('layouts.site')
 @section('title', 'Players')
-@section('subtitle', 'Meet our talented players across all teams. Click on any player to view their detailed profile.')
+@section('subtitle', 'Meet our talented players across all teams. Click on any player to view their detailed profile. Without registration player is not allowed to play on the Match')
 
 @section('content')
 
     <div class="site-section bg-light">
         <div class="container">
 
-        @foreach($teams as $team)
-            @if($team->players->count() > 0)
+            @foreach($teams as $team)
+                @if($team->players->count() > 0)
 
                     <div class="row mb-4 align-items-center">
                         <div class="col-md-8">
@@ -115,7 +115,7 @@
 
     <script>
         jQuery(document).ready(function($) {
-                @foreach($teams as $team)
+                    @foreach($teams as $team)
             var slider{{ $team->id }} = $('.team-slider-{{ $team->id }}').owlCarousel({
                     items: 4,
                     loop: true,
