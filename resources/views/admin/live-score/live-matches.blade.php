@@ -357,13 +357,13 @@
                                                                                     </td>
                                                                                     <td class="align-middle">
                                                                                         <div class="btn-group btn-group-sm">
-                                                                                            <button class="btn btn-outline-success btn-sm" onclick="quickGoal({{ $match->id }}, {{ $match->home_team_id }}, {{ $player->id }})" title="Goal">
+                                                                                            <button class="btn btn-outline-success btn-sm" onclick="quickGoal('{{ $match->id }}', '{{ $match->home_team_id }}', '{{ $player->id }}')" title="Goal">
                                                                                                 <i class="fas fa-futbol"></i>
                                                                                             </button>
-                                                                                            <button class="btn btn-outline-warning btn-sm" onclick="addCard({{ $match->id }}, {{ $match->home_team_id }}, {{ $player->id }}, 'yellow_card')" title="Yellow Card">
+                                                                                            <button class="btn btn-outline-warning btn-sm" onclick="quickGoal('{{ $match->id }}', '{{ $match->home_team_id }}', '{{ $player->id }}', 'yellow_card')" title="Yellow Card">
                                                                                                 <i class="fas fa-square"></i>
                                                                                             </button>
-                                                                                            <button class="btn btn-outline-danger btn-sm" onclick="addCard({{ $match->id }}, {{ $match->home_team_id }}, {{ $player->id }}, 'red_card')" title="Red Card">
+                                                                                            <button class="btn btn-outline-danger btn-sm" onclick="quickGoal('{{ $match->id }}', '{{ $match->home_team_id }}', '{{ $player->id }}', 'red_card')" title="Red Card">
                                                                                                 <i class="fas fa-square"></i>
                                                                                             </button>
                                                                                         </div>
@@ -445,13 +445,13 @@
                                                                                     </td>
                                                                                     <td class="align-middle">
                                                                                         <div class="btn-group btn-group-sm">
-                                                                                            <button class="btn btn-outline-success btn-sm" onclick="quickGoal({{ $match->id }}, {{ $match->away_team_id }}, {{ $player->id }})" title="Goal">
+                                                                                            <button class="btn btn-outline-success btn-sm" onclick="quickGoal('{{ $match->id }}', '{{ $match->away_team_id }}', '{{ $player->id }}')" title="Goal">
                                                                                                 <i class="fas fa-futbol"></i>
                                                                                             </button>
-                                                                                            <button class="btn btn-outline-warning btn-sm" onclick="addCard({{ $match->id }}, {{ $match->away_team_id }}, {{ $player->id }}, 'yellow_card')" title="Yellow Card">
+                                                                                            <button class="btn btn-outline-warning btn-sm" onclick="quickGoal('{{ $match->id }}', '{{ $match->away_team_id }}', '{{ $player->id }}', 'yellow_card')" title="Yellow Card">
                                                                                                 <i class="fas fa-square"></i>
                                                                                             </button>
-                                                                                            <button class="btn btn-outline-danger btn-sm" onclick="addCard({{ $match->id }}, {{ $match->away_team_id }}, {{ $player->id }}, 'red_card')" title="Red Card">
+                                                                                            <button class="btn btn-outline-danger btn-sm" onclick="quickGoal('{{ $match->id }}', '{{ $match->away_team_id }}', '{{ $player->id }}', 'red_card')" title="Red Card">
                                                                                                 <i class="fas fa-square"></i>
                                                                                             </button>
                                                                                         </div>

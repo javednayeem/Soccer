@@ -12,14 +12,14 @@ class PlayerTransfers extends Migration {
 
             $table->increments('id');
 
-            $table->integer('player_id')->unsigned();
+            $table->bigInteger('player_id')->unsigned();
             $table->foreign('player_id')->references('id')->on('players');
 
-            $table->integer('from_team_id')->unsigned();
-            $table->foreign('from_team_id')->references('team_id')->on('teams');
+            $table->bigInteger('from_team_id')->unsigned();
+            $table->foreign('from_team_id')->references('id')->on('teams');
 
-            $table->integer('to_team_id')->unsigned();
-            $table->foreign('to_team_id')->references('team_id')->on('teams');
+            $table->bigInteger('to_team_id')->unsigned();
+            $table->foreign('to_team_id')->references('id')->on('teams');
 
             $table->enum('transfer_status', ['pending', 'approved', 'rejected']);
             $table->text('transfer_notes')->nullable();

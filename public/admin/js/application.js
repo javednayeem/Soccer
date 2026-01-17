@@ -1119,15 +1119,15 @@ function quickGoal(matchId, teamId, playerId, eventType) {
     if (eventType === undefined) eventType = 'goal';
 
     for (var i = 0; i < matches.length; i++) {
-        if (matches[i].id == matchId) {
+        if (matches[i].id === matchId) {
             match = matches[i];
             break;
         }
     }
 
     if (!match) {
-        console.error('Match not found:', matchId);
-        return;
+        //console.error('Match not found:', matchId);
+        //return;
     }
 
     $('#event_match_id').val(matchId);
@@ -1145,10 +1145,17 @@ function quickGoal(matchId, teamId, playerId, eventType) {
         success: function(response) {
 
             var options = '<option value="">Select Player</option>';
-            var selectedPlayerId = '';
+
 
             response.players.forEach(function(player) {
-                if (player.id === playerId) selectedPlayerId = 'selected';
+
+                //console.log('Player ID: ' + player.id + ' ===== Sent Player ID: ' + playerId);
+
+                var selectedPlayerId = '';
+
+                if (player.id == playerId) {
+                    selectedPlayerId = 'selected';
+                }
                 options += '<option value="' + player.id + '" '+ selectedPlayerId +'>' + player.first_name + ' ' + player.last_name + '</option>';
             });
 
