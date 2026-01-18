@@ -420,12 +420,17 @@ class LiveScoreController extends Controller {
             ->pluck('player_id');
 
         foreach ($playersInMatch as $playerId) {
-            $statistic = PlayerStatistic::firstOrCreate([
-                'player_id' => $playerId,
-                'league_id' => $match->league_id,
-                'team_id' => Player::find($playerId)->team_id,
-                'season' => $match->league->season,
-            ]);
+
+            $statistic = PlayerStatistic::updateOrCreate(
+                [
+                    'player_id' => $playerId,
+                    'league_id' => $match->league_id,
+                    'season' => $match->league->season,
+                ],
+                [
+                    'team_id' => Player::find($playerId)->team_id,
+                ]
+            );
 
             $statistic->increment('appearances');
         }
