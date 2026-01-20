@@ -320,4 +320,77 @@ class HomeController extends Controller {
 
     }
 
+
+    public function matchDetails($id) {
+
+        $match = Match::with([
+            'league',
+            'homeTeam',
+            'awayTeam',
+            'events.player.team',
+            'events.team',
+            'manOfTheMatch'
+        ])->findOrFail($id);
+
+        $homeTeamPlayers = Player::where('team_id', $match->home_team_id)
+            ->where('player_status', '1')
+            ->where('payment_status', '1')
+            ->orderBy('position')
+            ->orderBy('jersey_number')
+            ->get();
+
+        $awayTeamPlayers = Player::where('team_id', $match->away_team_id)
+            ->where('player_status', '1')
+            ->where('payment_status', '1')
+            ->orderBy('position')
+            ->orderBy('jersey_number')
+            ->get();
+
+        $goals = $match->events->where('type', 'goal')->sortBy('minute');
+        $yellowCards = $match->events->where('type', 'yellow_card')->sortBy('minute');
+        $redCards = $match->events->where('type', 'red_card')->sortBy('minute');
+        $otherEvents = $match->events->whereNotIn('type', ['goal', 'yellow_card', 'red_card'])->sortBy('minute');
+
+        $result = 'upcoming';
+        $winner = null;
+        $isDraw = false;
+
+        if ($match->status === 'finished') {
+
+            if ($match->home_team_score > $match->away_team_score) {
+                $result = 'home_win';
+                $winner = $match->homeTeam;
+            }
+
+            elseif ($match->away_team_score > $match->home_team_score) {
+                $result = 'away_win';
+                $winner = $match->awayTeam;
+            }
+            else {
+                $result = 'draw';
+                $isDraw = true;
+            }
+
+        }
+
+        elseif ($match->status === 'live') {
+            $result = 'live';
+        }
+
+        return view('site.match.index', [
+            'match' => $match,
+            'homeTeamPlayers' => $homeTeamPlayers,
+            'awayTeamPlayers' => $awayTeamPlayers,
+            'goals' => $goals,
+            'yellowCards' => $yellowCards,
+            'redCards' => $redCards,
+            'otherEvents' => $otherEvents,
+            'result' => $result,
+            'winner' => $winner,
+            'isDraw' => $isDraw
+        ]);
+
+
+    }
+
 }

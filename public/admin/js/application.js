@@ -1081,6 +1081,8 @@ function saveEvent() {
     var minute = $('#event_minute').val();
     var description = $('#event_description').val();
 
+    //console.log('matchId: ' + matchId);
+
     if (!playerId || !teamId) {
         showErrorNotification('Please fill all required fields!');
         return;
@@ -1108,6 +1110,7 @@ function saveEvent() {
             showErrorNotification();
         }
     });
+
 }
 
 

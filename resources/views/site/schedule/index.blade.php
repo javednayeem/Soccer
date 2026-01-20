@@ -70,7 +70,7 @@
                                             <div class="vs-section text-center mx-4">
                                                 <span class="vs bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle"
                                                       style="width: 60px; height: 60px; font-size: 14px; font-weight: bold;">
-                                                    VS
+                                                    <a href="/match/{{ $match->id }}" target="_blank">VS</a>
                                                 </span>
                                                 <div class="mt-2">
                                                     <small class="text-muted">Upcoming</small>
@@ -156,7 +156,7 @@
                                             @if($match->match_week)
                                                 <div class="d-flex flex-column align-items-center">
                                                     <span class="badge badge-warning bg-warning text-dark px-3 py-2 fw-bold">
-                                                        Match# {{ $match->match_week }}
+                                                        <a href="/match/{{ $match->id }}" target="_blank">Match# {{ $match->match_week }}</a>
                                                     </span>
                                                 </div>
                                             @else

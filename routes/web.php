@@ -41,6 +41,8 @@ Route::get('/transfer-request', 'PlayerTransferController@index')->name('transfe
 Route::post('/transfer-request', 'PlayerTransferController@store');
 
 
+Route::get('/match/{id}', 'HomeController@matchDetails');
+
 
 
 Auth::routes();
