@@ -30,9 +30,9 @@
                         <a href="{{ route('top.scorers') }}" class="nav-link">Top Scorers</a>
                     </li>
 
-                    <li class="{{ request()->routeIs('matches.standing') ? 'active' : '' }}">
-                        <a href="{{ route('matches.standing') }}" class="nav-link">Standing</a>
-                    </li>
+{{--                    <li class="{{ request()->routeIs('matches.standing') ? 'active' : '' }}">--}}
+{{--                        <a href="{{ route('matches.standing') }}" class="nav-link">Standing</a>--}}
+{{--                    </li>--}}
 
                 </ul>
             </li>
