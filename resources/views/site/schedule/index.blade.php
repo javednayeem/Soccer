@@ -40,7 +40,9 @@
                                             </span>
                                         @endif
                                         <span class="badge badge-info px-3 py-2 bg-info text-white mb-2">
+                                            <a href="/match/{{ $match->id }}" target="_blank">
                                             {{ isset($match->competition) ? $match->competition : 'Friendly Match' }}
+                                            </a>
                                         </span>
                                         <h5 class="text-muted mb-1">{{ $match->match_date->format('l, F j, Y') }}</h5>
                                         <h4 class="text-primary fw-bold">{{ $match->match_date->format('g:i A') }}</h4>

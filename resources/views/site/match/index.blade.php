@@ -199,7 +199,6 @@
                                                 <th class="py-2" style="width: 50px;">#</th>
                                                 <th class="py-2">Player</th>
                                                 <th class="py-2" style="width: 100px;">Position</th>
-                                                <th class="py-2" style="width: 80px;">Nationality</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -228,9 +227,6 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <span class="badge badge-secondary">{{ $player->position }}</span>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <small class="text-muted">{{ $player->nationality }}</small>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -265,7 +261,6 @@
                                                 <th class="py-2" style="width: 50px;">#</th>
                                                 <th class="py-2">Player</th>
                                                 <th class="py-2" style="width: 100px;">Position</th>
-                                                <th class="py-2" style="width: 80px;">Nationality</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -294,9 +289,6 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <span class="badge badge-secondary">{{ $player->position }}</span>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <small class="text-muted">{{ $player->nationality }}</small>
                                                     </td>
                                                 </tr>
                                             @endforeach
