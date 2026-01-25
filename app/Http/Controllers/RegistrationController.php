@@ -119,7 +119,7 @@ class RegistrationController extends Controller {
 
         try {
 
-            Mail::send('emails.player-registration', ['player' => $player], function($message) use ($player) {
+            Mail::send('email.player-registration', ['player' => $player], function($message) use ($player) {
                 $message->to($player->email)->subject('Player Registration Confirmation');
             });
 

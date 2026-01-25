@@ -36,7 +36,7 @@ class TransferStatusUpdated extends Mailable {
 
         $subject = $this->status === 'approved' ? 'Your Team Transfer Request Has Been Approved' : 'Your Team Transfer Request Has Been Rejected';
 
-        return $this->subject($subject)->markdown('emails.transfer-status-updated');
+        return $this->subject($subject)->markdown('email.transfer-status-updated');
 
     }
 }

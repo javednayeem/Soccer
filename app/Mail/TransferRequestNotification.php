@@ -31,7 +31,7 @@ class TransferRequestNotification extends Mailable {
     public function build() {
 
         return $this->subject('New Player Transfer Request - Requires Your Attention')
-            ->markdown('emails.transfer-request-notification')
+            ->markdown('email.transfer-request-notification')
             ->with([
                 'playerName' => $this->player->first_name . ' ' . $this->player->last_name,
                 'fromTeam' => $this->fromTeam->name,

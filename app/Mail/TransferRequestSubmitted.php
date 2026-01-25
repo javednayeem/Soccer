@@ -26,7 +26,7 @@ class TransferRequestSubmitted extends Mailable {
     public function build() {
 
         return $this->subject('Your Team Transfer Request Has Been Submitted')
-            ->markdown('emails.transfer-request-submitted')
+            ->markdown('email.transfer-request-submitted')
             ->with([
                 'playerName' => $this->player->first_name . ' ' . $this->player->last_name,
                 'fromTeam' => $this->transfer->fromTeam->name,
