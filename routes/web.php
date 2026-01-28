@@ -39,6 +39,7 @@ Route::get('/event/{event_id}', 'HomeController@eventDetail');
 
 Route::get('/transfer-request', 'PlayerTransferController@index')->name('transfer.request.form');
 Route::post('/transfer-request', 'PlayerTransferController@store');
+Route::get('/transfer-history', 'PlayerTransferController@transferHistory')->name('transfer.history');
 
 
 Route::get('/match/{id}', 'HomeController@matchDetails');

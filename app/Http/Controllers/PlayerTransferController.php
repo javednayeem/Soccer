@@ -218,4 +218,16 @@ class PlayerTransferController extends Controller {
         ]);
     }
 
+
+    public function transferHistory() {
+
+        $transfer_requests = PlayerTransfer::with(['player', 'fromTeam', 'toTeam', 'modifier'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('site.transfer-request.history', [
+            'transfer_requests' => $transfer_requests,
+        ]);
+    }
+
 }
