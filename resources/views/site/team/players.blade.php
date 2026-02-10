@@ -27,7 +27,7 @@
 
                     <!-- Team Info Cards -->
                     <div class="row mb-4">
-                        <div class="col-md-3 col-6 mb-3">
+                        <div class="col-lg-2 col-md-4 col-6 mb-3">
                             <div class="card border-0 shadow-sm text-center">
                                 <div class="card-body py-3">
                                     <h4 class="text-primary mb-1">{{ $players->where('position', 'Goalkeeper')->count() }}</h4>
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6 mb-3">
+                        <div class="col-lg-2 col-md-4 col-6 mb-3">
                             <div class="card border-0 shadow-sm text-center">
                                 <div class="card-body py-3">
                                     <h4 class="text-success mb-1">{{ $players->where('position', 'Defender')->count() }}</h4>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6 mb-3">
+                        <div class="col-lg-2 col-md-4 col-6 mb-3">
                             <div class="card border-0 shadow-sm text-center">
                                 <div class="card-body py-3">
                                     <h4 class="text-info mb-1">{{ $players->where('position', 'Midfielder')->count() }}</h4>
@@ -51,11 +51,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6 mb-3">
+                        <div class="col-lg-2 col-md-4 col-6 mb-3">
                             <div class="card border-0 shadow-sm text-center">
                                 <div class="card-body py-3">
                                     <h4 class="text-warning mb-1">{{ $players->where('position', 'Forward')->count() }}</h4>
                                     <small class="text-muted">Forwards</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6 mb-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body py-3">
+                                    <h4 class="text-success mb-1">{{ $players->where('payment_status', '1')->count() }}</h4>
+                                    <small class="text-muted">Paid Players</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-6 mb-3">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-body py-3">
+                                    <h4 class="text-danger mb-1">{{ $players->where('payment_status', '!=', '1')->count() }}</h4>
+                                    <small class="text-muted">Not Paid Players</small>
                                 </div>
                             </div>
                         </div>
