@@ -34,6 +34,8 @@
 
 @include('site.partials.post-scripts')
 
+@stack('scripts')
+
 </body>
 
 </html>

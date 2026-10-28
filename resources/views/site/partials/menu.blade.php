@@ -51,6 +51,10 @@
                         <a href="{{ route('matches.player') }}" class="nav-link">Player</a>
                     </li>
 
+                    <li class="{{ request()->routeIs('team.registration') ? 'active' : '' }}">
+                        <a href="{{ route('team.registration') }}" class="nav-link">Team Registration</a>
+                    </li>
+
                     <li class="{{ request()->routeIs('player.registration') ? 'active' : '' }}">
                         <a href="{{ route('player.registration') }}" class="nav-link">Player Registration</a>
                     </li>
