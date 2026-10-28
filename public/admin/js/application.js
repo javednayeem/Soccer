@@ -1537,7 +1537,7 @@ function editTeam(button) {
     }
 
     // Set team image preview
-    if (teamImagePath && teamImagePath !== 'default_team_image.png') {
+    if (teamImagePath && teamImagePath !== 'default_team.png') {
         // Check if path already contains the full URL
         if (teamImagePath.startsWith('http') || teamImagePath.startsWith('/')) {
             $("#edit_team_image_preview").attr("src", teamImagePath);
@@ -1545,7 +1545,7 @@ function editTeam(button) {
             $("#edit_team_image_preview").attr("src", '/site/images/teams/' + teamImagePath);
         }
     } else {
-        $("#edit_team_image_preview").attr("src", '/site/images/teams/default_team_image.png');
+        $("#edit_team_image_preview").attr("src", '/site/images/teams/default_team.png');
     }
 
     $('#edit_team_modal').modal('show');

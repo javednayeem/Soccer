@@ -290,7 +290,7 @@
                         </div>
 
                         <div class="col-md-6 text-center">
-                            <img id="add_team_image_preview" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team_image.png') }}'">
+                            <img id="add_team_image_preview" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}'">
                             <p class="small text-muted mt-1">Team Image</p>
                         </div>
 
@@ -395,7 +395,7 @@
                         </div>
 
                         <div class="col-md-6 text-center">
-                            <img id="edit_team_image_preview" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team_image.png') }}'">
+                            <img id="edit_team_image_preview" src="{{ asset('site/images/teams/default_team.png') }}" alt="Team Image" class="img-fluid rounded" style="max-height: 150px" onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}'">
                             <p class="small text-muted mt-1">Team Image</p>
                         </div>
 

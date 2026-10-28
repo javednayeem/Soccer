@@ -35,15 +35,15 @@ class TeamController extends Controller {
         if ($request->hasFile('logo')) {
             $logoFile = $request->file('logo');
             $logoName = time() . '_' . uniqid() . '.' . $logoFile->getClientOriginalExtension();
-            $logoPath = 'site/images/teams/' . $logoName;
+            $logoPath = $logoName;
             $logoFile->move(public_path('site/images/teams/'), $logoName);
         }
 
-        $teamImagePath = 'default_team_image.png';
+        $teamImagePath = 'default_team.png';
         if ($request->hasFile('team_image')) {
             $teamImageFile = $request->file('team_image');
             $teamImageName = time() . '_' . uniqid() . '.' . $teamImageFile->getClientOriginalExtension();
-            $teamImagePath = 'site/images/teams/' . $teamImageName;
+            $teamImagePath = $teamImageName;
             $teamImageFile->move(public_path('site/images/teams/'), $teamImageName);
         }
 
@@ -79,17 +79,15 @@ class TeamController extends Controller {
         if ($request->hasFile('logo')) {
             $logoFile = $request->file('logo');
             $logoName = time() . '_' . uniqid() . '.' . $logoFile->getClientOriginalExtension();
-            $logoPath = 'site/images/teams/' . $logoName;
             $logoFile->move(public_path('site/images/teams'), $logoName);
-            $team->logo = $logoPath;
+            $team->logo = $logoName;
         }
 
         if ($request->hasFile('team_image')) {
             $teamImageFile = $request->file('team_image');
             $teamImageName = time() . '_' . uniqid() . '.' . $teamImageFile->getClientOriginalExtension();
-            $teamImagePath = 'site/images/teams/' . $teamImageName;
             $teamImageFile->move(public_path('site/images/teams'), $teamImageName);
-            $team->team_image = $teamImagePath;
+            $team->team_image = $teamImageName;
         }
 
         $team->update([
