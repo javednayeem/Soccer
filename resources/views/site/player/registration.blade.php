@@ -162,16 +162,16 @@
 
                                 {{-- 4. Photo --}}
                                 <div class="reg-section">
-                                    <div class="reg-section-title"><span class="reg-step">4</span>Player Photo</div>
+                                    <div class="reg-section-title"><span class="reg-step">4</span>Player Photo <span class="req">*</span></div>
 
                                     <div class="form-group">
                                         <label class="photo-drop" for="photo">
                                             <div class="photo-preview" id="photoPreview"><span>&#128100;</span></div>
                                             <div class="photo-text">
                                                 <strong id="photoName">Click to upload a photo</strong>
-                                                <span>Optional &middot; JPG or PNG &middot; max 2MB</span>
+                                                <span>Required &middot; JPG or PNG &middot; max 2MB</span>
                                             </div>
-                                            <input type="file" id="photo" name="photo" accept="image/*">
+                                            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png" required>
                                         </label>
                                         @error('photo')
                                         <small class="text-danger">{{ $message }}</small>

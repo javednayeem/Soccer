@@ -1120,8 +1120,23 @@ select.form-control option:disabled {
         background: rgba(238, 30, 70, 0.05);
     }
 
+    .photo-drop {
+        position: relative;
+    }
+
+    /* visually hidden (not display:none) so a required file input can still show the browser's validation bubble */
     .photo-drop input[type="file"] {
-        display: none;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .reg-section-title .req {
+        color: #ee1e46;
     }
 
     .photo-preview {

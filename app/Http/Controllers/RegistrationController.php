@@ -91,16 +91,14 @@ class RegistrationController extends Controller {
             'height' => 'nullable|numeric|min:1.50|max:2.20',
             'weight' => 'nullable|numeric|min:40|max:120',
             'date_of_birth' => 'required|date|before:today',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'photo.required' => 'Please upload a player photo.',
         ]);
 
-        $photoName = 'default_player.jpg';
-
-        if ($request->hasFile('photo')) {
-            $photoFile = $request->file('photo');
-            $photoName = time() . '_' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
-            $photoFile->move(public_path('site/images/players'), $photoName);
-        }
+        $photoFile = $request->file('photo');
+        $photoName = time() . '_' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
+        $photoFile->move(public_path('site/images/players'), $photoName);
 
         $player = Player::create([
             'team_id' => $request->team_id,
