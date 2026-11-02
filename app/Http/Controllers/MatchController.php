@@ -10,9 +10,17 @@ use App\Models\Team;
 
 class MatchController extends Controller {
 
-    public function index() {
+    public function index(Request $request) {
+
+        $teamId = $request->query('team_id');
 
         $matches = Match::with(['league', 'homeTeam', 'awayTeam'])
+            ->when($teamId, function ($query) use ($teamId) {
+                $query->where(function ($q) use ($teamId) {
+                    $q->where('home_team_id', $teamId)
+                        ->orWhere('away_team_id', $teamId);
+                });
+            })
             ->orderBy('match_date')
             ->get();
 
@@ -23,6 +31,7 @@ class MatchController extends Controller {
             'matches' => $matches,
             'leagues' => $leagues,
             'teams' => $teams,
+            'selectedTeamId' => $teamId,
         ]);
     }
 

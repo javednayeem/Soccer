@@ -8,7 +8,22 @@
             <div class="card-box p-2">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="text-right mb-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+
+                            <form method="GET" action="{{ route('admin.match') }}" class="form-inline">
+                                <label for="filter_team_id" class="mr-2">Team</label>
+                                <select class="form-control mr-2" id="filter_team_id" name="team_id" onchange="this.form.submit()">
+                                    <option value="">All Teams</option>
+                                    @foreach($teams as $team)
+                                        <option value="{{ $team->id }}" {{ (string) $selectedTeamId === (string) $team->id ? 'selected' : '' }}>{{ $team->name }}</option>
+                                    @endforeach
+                                </select>
+                                @if($selectedTeamId)
+                                    <a href="{{ route('admin.match') }}" class="btn btn-light waves-effect">Clear</a>
+                                @endif
+                            </form>
+
+                            <div>
 
                             <button type="button" class="btn btn-warning waves-effect waves-light" onclick="calculatePlayerStatistics();">
                                 <i class="mdi mdi-calculator"></i> Calculate Player Statistics
@@ -22,6 +37,7 @@
                                 <i class="mdi mdi-swim mr-1"></i> Add New Match
                             </button>
 
+                            </div>
                         </div>
 
                         <div class="table-responsive">
@@ -47,7 +63,7 @@
                                         <td>{{ $match->league->name }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset($match->homeTeam->logo) }}" alt="{{ $match->homeTeam->name }}"
+                                                <img src="{{ asset('site/images/teams/' . $match->homeTeam->logo) }}" alt="{{ $match->homeTeam->name }}"
                                                      class="rounded-circle mr-2" width="30" height="30"
                                                      onerror="this.onerror=null; this.src='/site/images/teams/default_team.png'">
                                                 <span>{{ $match->homeTeam->name }}</span>
@@ -55,7 +71,7 @@
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset($match->awayTeam->logo) }}" alt="{{ $match->awayTeam->name }}"
+                                                <img src="{{ asset('site/images/teams/' . $match->awayTeam->logo) }}" alt="{{ $match->awayTeam->name }}"
                                                      class="rounded-circle mr-2" width="30" height="30"
                                                      onerror="this.onerror=null; this.src='/site/images/teams/default_team.png'">
                                                 <span>{{ $match->awayTeam->name }}</span>
