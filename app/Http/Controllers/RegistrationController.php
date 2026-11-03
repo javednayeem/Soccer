@@ -27,8 +27,8 @@ class RegistrationController extends Controller {
             'team_manager' => 'required|string|max:191',
             'manager_email' => 'required|email',
             'manager_phone' => 'nullable|string|max:20',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'team_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'team_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'note' => 'nullable|string',
             'payment_reference_number' => 'nullable|string|max:255',
         ]);
@@ -91,7 +91,7 @@ class RegistrationController extends Controller {
             'height' => 'nullable|numeric|min:1.50|max:2.20',
             'weight' => 'nullable|numeric|min:40|max:120',
             'date_of_birth' => 'required|date|before:today',
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:10240',
         ], [
             'photo.required' => 'Please upload a player photo.',
         ]);

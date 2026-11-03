@@ -14,7 +14,7 @@
                         <div class="row no-gutters">
 
                             <!-- Brand panel -->
-                            <div class="col-lg-5 d-none d-lg-flex login-brand">
+                            <div class="col-lg-5 pl-4 d-none d-lg-flex login-brand">
                                 <div class="login-brand-inner">
                                     <div class="login-ball">
                                         <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
