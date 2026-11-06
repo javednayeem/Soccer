@@ -164,7 +164,7 @@ class LiveScoreController extends Controller {
         $request->validate([
             'player_id' => 'required|exists:players,id',
             'team_id' => 'required|exists:teams,id',
-            'type' => 'required|in:goal,assist,yellow_card,red_card,substitution_in,substitution_out,man_of_the_match',
+            'type' => 'required|in:goal,assist,yellow_card,red_card,substitution_in,substitution_out,own_goal,man_of_the_match',
             #'minute' => 'required|integer|min:1|max:120',
             #'description' => 'nullable|string',
         ]);
@@ -195,7 +195,7 @@ class LiveScoreController extends Controller {
 
             $this->updatePlayerStatistics($match, $event);
 
-            if ($request->type === 'goal') {
+            if (in_array($request->type, ['goal', 'own_goal'])) {
                 $this->updateGoalScore($match);
             }
 
@@ -218,6 +218,12 @@ class LiveScoreController extends Controller {
             // If it's a goal, adjust the score
             if ($event->type === 'goal') {
                 $this->adjustGoalScore($match, $event->team_id, -1);
+            }
+
+            // An own goal is credited to the opposing team of the player who scored it
+            elseif ($event->type === 'own_goal') {
+                $beneficiaryId = $event->team_id == $match->home_team_id ? $match->away_team_id : $match->home_team_id;
+                $this->adjustGoalScore($match, $beneficiaryId, -1);
             }
 
             // Remove from player statistics
@@ -256,14 +262,20 @@ class LiveScoreController extends Controller {
 
         $match_events = DB::table('match_events')
             ->where('match_id', $match->id)
-            ->where('type', 'goal')
+            ->whereIn('type', ['goal', 'own_goal'])
             ->get();
+
+        // Own goals (event team = team of the player who scored it) count for the opponent
+        $home = $match_events->where('type', 'goal')->where('team_id', $match->home_team_id)->count()
+            + $match_events->where('type', 'own_goal')->where('team_id', $match->away_team_id)->count();
+        $away = $match_events->where('type', 'goal')->where('team_id', $match->away_team_id)->count()
+            + $match_events->where('type', 'own_goal')->where('team_id', $match->home_team_id)->count();
 
         DB::table('matches')
             ->where('id', $match->id)
             ->update([
-                'home_team_score' => $match_events->where('team_id', $match->home_team_id)->count(),
-                'away_team_score' => $match_events->where('team_id', $match->away_team_id)->count(),
+                'home_team_score' => $home,
+                'away_team_score' => $away,
             ]);
 
     }

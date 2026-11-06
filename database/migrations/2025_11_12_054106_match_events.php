@@ -15,7 +15,7 @@ class MatchEvents extends Migration {
             $table->foreignId('match_id')->constrained()->onDelete('cascade');
             $table->foreignId('player_id')->constrained()->onDelete('cascade');
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['goal', 'assist', 'yellow_card', 'red_card', 'substitution_in', 'substitution_out']);
+            $table->enum('type', ['goal', 'assist', 'yellow_card', 'red_card', 'substitution_in', 'substitution_out', 'own_goal']);
             $table->integer('minute');
             $table->text('description')->nullable();
 

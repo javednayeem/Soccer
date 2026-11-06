@@ -306,10 +306,11 @@
                                                                                         <div class="d-flex align-items-center">
                                                                                         <span class="badge mr-2
                                                                                             @if($event->type == 'goal') badge-success
+                                                                                            @elseif($event->type == 'own_goal') badge-dark
                                                                                             @elseif($event->type == 'yellow_card') badge-warning
                                                                                             @elseif($event->type == 'red_card') badge-danger
                                                                                             @else badge-info @endif">
-                                                                                            {{ strtoupper(substr($event->type, 0, 1)) }}
+                                                                                            {{ $event->type == 'own_goal' ? 'OG' : strtoupper(substr($event->type, 0, 1)) }}
                                                                                         </span>
                                                                                             <strong>{{ $event->player->first_name }} {{ $event->player->last_name }}</strong>
                                                                                             <small class="text-muted mx-2">({{ $event->minute }}')</small>
@@ -464,6 +465,7 @@
                                 <label>Event Type</label>
                                 <select class="form-control" id="event_type">
                                     <option value="goal">Goal</option>
+                                    <option value="own_goal">Own Goal</option>
                                     <option value="assist">Assist</option>
                                     <option value="yellow_card">Yellow Card</option>
                                     <option value="red_card">Red Card</option>

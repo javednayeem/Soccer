@@ -1419,6 +1419,10 @@ function viewMatchEvents(matchId) {
                                 badgeClass = 'badge-success';
                                 eventText = 'Goal';
                                 break;
+                            case 'own_goal':
+                                badgeClass = 'badge-dark';
+                                eventText = 'Own Goal';
+                                break;
                             case 'assist':
                                 badgeClass = 'badge-info';
                                 eventText = 'Assist';
