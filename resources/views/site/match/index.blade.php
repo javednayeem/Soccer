@@ -461,7 +461,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="p-3 border rounded">
-                                    <h3 class="text-primary">{{ $goals->count() }}</h3>
+                                    <h3 class="text-primary">{{ ($match->home_team_score ?? 0) + ($match->away_team_score ?? 0) }}</h3>
                                     <p class="text-muted mb-0">Total Goals</p>
                                     <small class="text-muted">in the match</small>
                                 </div>

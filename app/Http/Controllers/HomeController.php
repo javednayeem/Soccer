@@ -240,18 +240,26 @@ class HomeController extends Controller {
     private function getStanding() {
 
         $league = League::where('is_active', true)
-            ->with(['standings.team' => function($query) {
-                $query->where('active', '1');
-            }])
+            ->with('standings.team')
             ->first();
 
         if ($league) {
-            // Filter out standings with inactive teams
-            $league->standings = $league->standings->filter(function($standing) {
-                return $standing->team && $standing->team->active == '1';
+
+            // Only approved, active teams are listed (pending / rejected / inactive teams are not)
+            $standings = $league->standings->filter(function($standing) {
+                return $standing->team
+                    && $standing->team->active == '1'
+                    && $standing->team->team_status == 'approved';
             });
 
-            foreach ($league->standings as $standing) {
+            // Number the listed teams 1..n here: hidden teams would leave gaps in the stored positions and
+            // a stored position of 0 would be shown (and sorted) as the first row
+            $standings = LeagueStanding::sortForTable($standings);
+
+            foreach ($standings as $index => $standing) {
+
+                $standing->position = $index + 1;
+
                 $standing->next_match = Match::with(['homeTeam', 'awayTeam'])
                     ->where('league_id', $league->id)
                     ->where(function ($q) use ($standing) {
@@ -262,7 +270,10 @@ class HomeController extends Controller {
                     ->where('status', 'scheduled')
                     ->orderBy('match_date', 'asc')
                     ->first();
+
             }
+
+            $league->setRelation('standings', $standings);
         }
 
         return $league;

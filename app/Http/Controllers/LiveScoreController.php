@@ -101,7 +101,7 @@ class LiveScoreController extends Controller {
             ]);
 
             if ($match->status === 'finished') {
-                $this->updateLeagueStandings($match);
+                LeagueStanding::rebuild($match->league_id);
             }
 
         });
@@ -184,7 +184,8 @@ class LiveScoreController extends Controller {
             $match = Match::findOrFail($matchId);
             $player = Player::findOrFail($request->player_id);
 
-            $event = MatchEvent::create([
+            // For an own goal team_id is the team of the player who scored it (the goal counts for the opponent)
+            MatchEvent::create([
                 'match_id' => $matchId,
                 'player_id' => $request->player_id,
                 'team_id' => $player->team_id,
@@ -193,10 +194,15 @@ class LiveScoreController extends Controller {
                 'description' => $request->description,
             ]);
 
-            $this->updatePlayerStatistics($match, $event);
+            PlayerStatistic::recalculate($match->league_id, [$player->id]);
 
             if (in_array($request->type, ['goal', 'own_goal'])) {
+
                 $this->updateGoalScore($match);
+
+                // Events can still be added after the match was finished
+                if ($match->status === 'finished') LeagueStanding::rebuild($match->league_id);
+
             }
 
         });
@@ -226,11 +232,15 @@ class LiveScoreController extends Controller {
                 $this->adjustGoalScore($match, $beneficiaryId, -1);
             }
 
-            // Remove from player statistics
-            $this->removePlayerStatistics($event);
-
             // Delete the event
             $event->delete();
+
+            // Player statistics are recalculated from the remaining events
+            PlayerStatistic::recalculate($match->league_id, [$event->player_id]);
+
+            if (in_array($event->type, ['goal', 'own_goal']) && $match->status === 'finished') {
+                LeagueStanding::rebuild($match->league_id);
+            }
         });
 
         return response()->json(['success' => true, 'message' => 'Event deleted successfully!']);
@@ -245,12 +255,12 @@ class LiveScoreController extends Controller {
 
             $match->update(['status' => 'finished']);
 
-            if ($match->home_team_score !== null && $match->away_team_score !== null) {
-                $this->updateLeagueStandings($match);
-            }
+            // A match without a score is skipped by rebuild()
+            LeagueStanding::rebuild($match->league_id);
 
-            $this->updatePlayerAppearances($match);
-            $this->updateAllPlayerStatistics($match);
+            // Goals, assists and cards were already counted when the events were added - finishing the
+            // match only adds the appearances, so recalculate instead of incrementing again
+            PlayerStatistic::recalculate($match->league_id, MatchEvent::where('match_id', $match->id)->pluck('player_id')->all());
 
         });
 
@@ -289,177 +299,6 @@ class LiveScoreController extends Controller {
     }
 
 
-    private function updatePlayerStatistics($match, $event) {
-        $season = $match->league->season;
-
-        // Use updateOrCreate to handle both creation and update
-        $statistic = PlayerStatistic::updateOrCreate(
-            [
-                'player_id' => $event->player_id,
-                'league_id' => $match->league_id,
-                'season' => $season,
-            ],
-            [
-                'team_id' => $event->team_id,
-                // Initialize default values for new records
-                #'goals' => 0,
-                #'assists' => 0,
-                #'yellow_cards' => 0,
-                #'red_cards' => 0,
-                #'minutes_played' => 0,
-                #'appearances' => 0,
-            ]
-        );
-
-        // Update the specific statistics based on event type
-        switch ($event->type) {
-            case 'goal':
-                $statistic->increment('goals');
-                break;
-            case 'assist':
-                $statistic->increment('assists');
-                break;
-            case 'yellow_card':
-                $statistic->increment('yellow_cards');
-                break;
-            case 'red_card':
-                $statistic->increment('red_cards');
-                break;
-        }
-
-        // Update minutes played for relevant event types
-        if (in_array($event->type, ['goal', 'assist', 'yellow_card', 'red_card'])) {
-            $statistic->increment('minutes_played', 90);
-        }
-
-        // Save the changes
-        $statistic->save();
-    }
-
-
-    private function removePlayerStatistics($event) {
-
-        $statistic = PlayerStatistic::where('player_id', $event->player_id)
-            ->where('league_id', $event->match->league_id)
-            ->first();
-
-        if ($statistic) {
-            switch ($event->type) {
-                case 'goal':
-                    $statistic->decrement('goals');
-                    break;
-                case 'assist':
-                    $statistic->decrement('assists');
-                    break;
-                case 'yellow_card':
-                    $statistic->decrement('yellow_cards');
-                    break;
-                case 'red_card':
-                    $statistic->decrement('red_cards');
-                    break;
-            }
-        }
-    }
-
-
-    private function updateLeagueStandings($match) {
-
-        if (!$match->home_team_score || !$match->away_team_score) {
-            return;
-        }
-
-        $homeStanding = LeagueStanding::firstOrCreate([
-            'league_id' => $match->league_id,
-            'team_id' => $match->home_team_id,
-        ]);
-
-        $awayStanding = LeagueStanding::firstOrCreate([
-            'league_id' => $match->league_id,
-            'team_id' => $match->away_team_id,
-        ]);
-
-        // Update both teams' standings
-        $this->updateTeamStanding($homeStanding, $match->home_team_score, $match->away_team_score);
-        $this->updateTeamStanding($awayStanding, $match->away_team_score, $match->home_team_score);
-
-        // Recalculate positions
-        $this->recalculatePositions($match->league_id);
-
-    }
-
-
-    private function updateTeamStanding($standing, $goalsFor, $goalsAgainst) {
-
-        $standing->increment('played');
-        $standing->increment('goals_for', $goalsFor);
-        $standing->increment('goals_against', $goalsAgainst);
-
-        $goalDifference = $goalsFor - $goalsAgainst;
-        $standing->goal_difference = $standing->goals_for - $standing->goals_against;
-
-        if ($goalsFor > $goalsAgainst) {
-            $standing->increment('won');
-            $standing->increment('points', 3);
-        } elseif ($goalsFor == $goalsAgainst) {
-            $standing->increment('drawn');
-            $standing->increment('points', 1);
-        } else {
-            $standing->increment('lost');
-        }
-
-        $standing->save();
-    }
-
-
-    private function recalculatePositions($leagueId) {
-
-        $standings = LeagueStanding::where('league_id', $leagueId)
-            ->orderBy('points', 'desc')
-            ->orderBy('goal_difference', 'desc')
-            ->orderBy('goals_for', 'desc')
-            ->get();
-
-        foreach ($standings as $index => $standing) {
-            $standing->update(['position' => $index + 1]);
-        }
-    }
-
-
-    private function updatePlayerAppearances($match) {
-
-        $playersInMatch = MatchEvent::where('match_id', $match->id)
-            ->distinct('player_id')
-            ->pluck('player_id');
-
-        foreach ($playersInMatch as $playerId) {
-
-            $statistic = PlayerStatistic::updateOrCreate(
-                [
-                    'player_id' => $playerId,
-                    'league_id' => $match->league_id,
-                    'season' => $match->league->season,
-                ],
-                [
-                    'team_id' => Player::find($playerId)->team_id,
-                ]
-            );
-
-            $statistic->increment('appearances');
-        }
-    }
-
-
-    private function updateAllPlayerStatistics($match) {
-
-        $events = MatchEvent::where('match_id', $match->id)->get();
-
-        foreach ($events as $event) {
-            $this->updatePlayerStatistics($match, $event);
-        }
-
-    }
-
-
     public function calculatePTS() {
 
         $league = League::where('is_active', '1')->first();
@@ -468,159 +307,9 @@ class LiveScoreController extends Controller {
             return response()->json(['success' => false, 'message' => 'No active league found']);
         }
 
-        DB::table('league_standings')->where('league_id', $league->id)->delete();
-
-        $matches = DB::table('matches')
-            ->where('league_id', $league->id)
-            ->where('status', 'finished')
-            ->get();
-
-        $teamStats = [];
-
-        foreach ($matches as $match) {
-
-            if ($match->home_team_score === null || $match->away_team_score === null) continue;
-
-            $matchEvents = DB::table('match_events')
-                ->where('match_id', $match->id)
-                ->exists();
-
-            if ($matchEvents) $this->calculateFromMatchEvents($match, $teamStats);
-            else $this->calculateFromMatchScores($match, $teamStats);
-
-        }
-
-        // Insert calculated standings
-        foreach ($teamStats as $teamId => $stats) {
-            $goalDifference = $stats['goals_for'] - $stats['goals_against'];
-
-            DB::table('league_standings')->insert([
-                'league_id' => $league->id,
-                'team_id' => $teamId,
-                'played' => $stats['played'],
-                'won' => $stats['won'],
-                'drawn' => $stats['drawn'],
-                'lost' => $stats['lost'],
-                'goals_for' => $stats['goals_for'],
-                'goals_against' => $stats['goals_against'],
-                'goal_difference' => $goalDifference,
-                'points' => $stats['points'],
-                'position' => 0, // Will be updated after sorting
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
-        // Recalculate positions
-        $this->recalculatePositions($league->id);
+        LeagueStanding::rebuild($league->id);
 
         return response()->json(['success' => true, 'message' => 'League standings recalculated successfully!']);
-    }
-
-
-    private function calculateFromMatchEvents($match, &$teamStats) {
-
-        $goalEvents = DB::table('match_events')
-            ->where('match_id', $match->id)
-            ->where('type', 'goal')
-            ->get();
-
-        $homeTeamGoals = 0;
-        $awayTeamGoals = 0;
-
-        foreach ($goalEvents as $event) {
-            if ($event->team_id == $match->home_team_id) $homeTeamGoals++;
-            elseif ($event->team_id == $match->away_team_id) $awayTeamGoals++;
-        }
-
-        if (!isset($teamStats[$match->home_team_id])) {
-            $teamStats[$match->home_team_id] = $this->initializeTeamStats();
-        }
-        if (!isset($teamStats[$match->away_team_id])) {
-            $teamStats[$match->away_team_id] = $this->initializeTeamStats();
-        }
-
-        // Update home team stats
-        $teamStats[$match->home_team_id]['played']++;
-        $teamStats[$match->home_team_id]['goals_for'] += $homeTeamGoals;
-        $teamStats[$match->home_team_id]['goals_against'] += $awayTeamGoals;
-
-        // Update away team stats
-        $teamStats[$match->away_team_id]['played']++;
-        $teamStats[$match->away_team_id]['goals_for'] += $awayTeamGoals;
-        $teamStats[$match->away_team_id]['goals_against'] += $homeTeamGoals;
-
-        // Determine result and update points
-        if ($homeTeamGoals > $awayTeamGoals) {
-            // Home win
-            $teamStats[$match->home_team_id]['won']++;
-            $teamStats[$match->home_team_id]['points'] += 3;
-            $teamStats[$match->away_team_id]['lost']++;
-        } elseif ($awayTeamGoals > $homeTeamGoals) {
-            // Away win
-            $teamStats[$match->away_team_id]['won']++;
-            $teamStats[$match->away_team_id]['points'] += 3;
-            $teamStats[$match->home_team_id]['lost']++;
-        } else {
-            // Draw
-            $teamStats[$match->home_team_id]['drawn']++;
-            $teamStats[$match->home_team_id]['points'] += 1;
-            $teamStats[$match->away_team_id]['drawn']++;
-            $teamStats[$match->away_team_id]['points'] += 1;
-        }
-    }
-
-
-    private function calculateFromMatchScores($match, &$teamStats) {
-
-        if (!isset($teamStats[$match->home_team_id])) {
-            $teamStats[$match->home_team_id] = $this->initializeTeamStats();
-        }
-        if (!isset($teamStats[$match->away_team_id])) {
-            $teamStats[$match->away_team_id] = $this->initializeTeamStats();
-        }
-
-        // Update home team stats
-        $teamStats[$match->home_team_id]['played']++;
-        $teamStats[$match->home_team_id]['goals_for'] += $match->home_team_score;
-        $teamStats[$match->home_team_id]['goals_against'] += $match->away_team_score;
-
-        // Update away team stats
-        $teamStats[$match->away_team_id]['played']++;
-        $teamStats[$match->away_team_id]['goals_for'] += $match->away_team_score;
-        $teamStats[$match->away_team_id]['goals_against'] += $match->home_team_score;
-
-        // Determine result and update points
-        if ($match->home_team_score > $match->away_team_score) {
-            // Home win
-            $teamStats[$match->home_team_id]['won']++;
-            $teamStats[$match->home_team_id]['points'] += 3;
-            $teamStats[$match->away_team_id]['lost']++;
-        } elseif ($match->away_team_score > $match->home_team_score) {
-            // Away win
-            $teamStats[$match->away_team_id]['won']++;
-            $teamStats[$match->away_team_id]['points'] += 3;
-            $teamStats[$match->home_team_id]['lost']++;
-        } else {
-            // Draw
-            $teamStats[$match->home_team_id]['drawn']++;
-            $teamStats[$match->home_team_id]['points'] += 1;
-            $teamStats[$match->away_team_id]['drawn']++;
-            $teamStats[$match->away_team_id]['points'] += 1;
-        }
-    }
-
-
-    private function initializeTeamStats() {
-        return [
-            'played' => 0,
-            'won' => 0,
-            'drawn' => 0,
-            'lost' => 0,
-            'goals_for' => 0,
-            'goals_against' => 0,
-            'points' => 0,
-        ];
     }
 
 
@@ -632,16 +321,7 @@ class LiveScoreController extends Controller {
             return response()->json(['success' => false, 'message' => 'No active league found']);
         }
 
-        DB::table('player_statistics')->where('league_id', $league->id)->delete();
-
-        $matches = Match::where('league_id', $league->id)
-            ->where('status', 'finished')
-            ->get();
-
-        foreach ($matches as $match) {
-            $this->updatePlayerAppearances($match);
-            $this->updateAllPlayerStatistics($match);
-        }
+        PlayerStatistic::recalculate($league->id);
 
         return response()->json(['success' => true, 'message' => 'Player Statistics Calculation Done!']);
     }

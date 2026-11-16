@@ -164,7 +164,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($league->standings as $standing)
+                                @php($homeStandings = $league ? $league->standings : collect())
+                                @foreach($homeStandings as $standing)
                                     <tr class="align-middle">
                                         <td class="text-center fw-bold">{{ $standing->position }}</td>
                                         <td>
@@ -198,7 +199,7 @@
                                     </tr>
                                 @endforeach
 
-                                @if($standings->count() == 0)
+                                @if($homeStandings->isEmpty())
                                     <tr>
                                         <td colspan="10" class="text-center py-3">
                                             <div class="text-muted" style="font-size: 0.9rem;">

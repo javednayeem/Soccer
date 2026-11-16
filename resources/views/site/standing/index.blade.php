@@ -4,6 +4,13 @@
 
 @section('content')
 
+    <style>
+        /* One continuous header bar. The site's .thead-light th rule paints a separate gradient in every
+           cell (visible seams between the columns) and tr:first-child (the "top scorer" rule) also hits this row. */
+        thead.standings-head tr { background: #0069d9 linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important; }
+        thead.standings-head th { background: transparent !important; color: #fff !important; white-space: nowrap; }
+    </style>
+
     <div class="site-section bg-light">
         <div class="container">
 
@@ -38,21 +45,19 @@
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover table-borderless mb-0">
-                                <thead class="thead-light">
-                                <tr class="bg-primary text-white">
-                                    <th class="text-center py-3 border-0" style="width: 60px;">#</th>
-                                    <th class="py-3 border-0">Team</th>
-                                    <th class="text-center py-3 border-0" style="width: 80px;">MP</th>
-                                    <th class="text-center py-3 border-0" style="width: 60px;">W</th>
-                                    <th class="text-center py-3 border-0" style="width: 60px;">D</th>
-                                    <th class="text-center py-3 border-0" style="width: 60px;">L</th>
-                                    <th class="text-center py-3 border-0" style="width: 70px;">GF</th>
-                                    <th class="text-center py-3 border-0" style="width: 70px;">GA</th>
-                                    <th class="text-center py-3 border-0" style="width: 70px;">GD</th>
-                                    <th class="text-center py-3 border-0" style="width: 80px;">
-                                        <strong>PTS</strong>
-                                    </th>
-                                    <th class="text-center py-3 border-0" style="width: 80px;">Next</th>
+                                <thead class="thead-light standings-head">
+                                <tr>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 60px;" title="Position">#</th>
+                                    <th scope="col" class="py-3 border-0">Team</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 80px;" title="Matches played">MP</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 60px;" title="Won">W</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 60px;" title="Drawn">D</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 60px;" title="Lost">L</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 70px;" title="Goals for">GF</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 70px;" title="Goals against">GA</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 70px;" title="Goal difference">GD</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 80px;" title="Points">PTS</th>
+                                    <th scope="col" class="text-center py-3 border-0" style="width: 80px;" title="Next match">Next</th>
                                 </tr>
                                 </thead>
 

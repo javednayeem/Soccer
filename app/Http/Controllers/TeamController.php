@@ -60,7 +60,7 @@ class TeamController extends Controller {
             'team_status' => $request->team_status,
         ]);
 
-        $this->createLeagueStandingForTeam($team->id);
+        $this->syncLeagueStandings();
 
         return response()->json(['success' => true, 'team_id' => $team->id]);
     }
@@ -101,7 +101,7 @@ class TeamController extends Controller {
             'team_status' => $request->team_status,
         ]);
 
-        $this->createLeagueStandingForTeam($team->id);
+        $this->syncLeagueStandings();
 
 
         return response()->json(['success' => true]);
@@ -123,38 +123,23 @@ class TeamController extends Controller {
         LeagueStanding::where('team_id', $team->id)->delete();
         $team->delete();
 
+        $this->syncLeagueStandings();
+
         return response()->json(['success' => true]);
     }
 
 
-    private function createLeagueStandingForTeam($teamId) {
+    /**
+     * Keeps the standings of the active league in line with the teams: approved + active teams are listed
+     * (with their positions), pending / rejected / inactive teams are not. Positions are always recalculated,
+     * so a team added or edited never ends up with position 0.
+     */
+    private function syncLeagueStandings() {
 
         $activeLeague = League::where('is_active', true)->first();
 
-        if ($activeLeague) {
+        if ($activeLeague) LeagueStanding::rebuild($activeLeague->id);
 
-            $standing = LeagueStanding::firstOrCreate(
-                [
-                    'league_id' => $activeLeague->id,
-                    'team_id' => $teamId
-                ],
-                [
-                    'position' => 0,
-                    'played' => 0,
-                    'won' => 0,
-                    'drawn' => 0,
-                    'lost' => 0,
-                    'goals_for' => 0,
-                    'goals_against' => 0,
-                    'goal_difference' => 0,
-                    'points' => 0
-                ]
-            );
-
-            return $standing;
-        }
-
-        return null;
     }
 
 
@@ -167,6 +152,8 @@ class TeamController extends Controller {
 
         $team = Team::findOrFail($request->team_id);
         $team->update(['team_status' => $request->status]);
+
+        $this->syncLeagueStandings();
 
         return response()->json(['success' => true]);
     }
@@ -181,6 +168,8 @@ class TeamController extends Controller {
 
         $team = Team::findOrFail($request->team_id);
         $team->update(['active' => $request->active]);
+
+        $this->syncLeagueStandings();
 
         return response()->json(['success' => true]);
     }

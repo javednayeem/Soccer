@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Match;
 use App\Models\League;
 use App\Models\Team;
+use App\Models\LeagueStanding;
+use App\Models\PlayerStatistic;
 
 class MatchController extends Controller {
 
@@ -65,6 +67,8 @@ class MatchController extends Controller {
             'match_week' => $request->match_week,
         ]);
 
+        $this->recalculate([$match->league_id], [$match->status]);
+
         return response()->json(['success' => true, 'match_id' => $match->id]);
     }
 
@@ -87,6 +91,9 @@ class MatchController extends Controller {
 
         $match = Match::findOrFail($request->id);
 
+        $oldLeagueId = $match->league_id;
+        $oldStatus = $match->status;
+
         $matchDateTime = $request->match_date . ' ' . $request->match_time;
 
         $match->update([
@@ -101,6 +108,8 @@ class MatchController extends Controller {
             'match_week' => $request->match_week,
         ]);
 
+        $this->recalculate([$oldLeagueId, $match->league_id], [$oldStatus, $match->status]);
+
         return response()->json(['success' => true]);
     }
 
@@ -109,7 +118,25 @@ class MatchController extends Controller {
         $match = Match::findOrFail($request->match_id);
         $match->delete();
 
+        $this->recalculate([$match->league_id], [$match->status]);
+
         return response()->json(['success' => true]);
+    }
+
+
+    /**
+     * Standings (finished matches) and player statistics (live + finished matches) are calculated from the
+     * matches, so recalculate them when a match that counts - or used to count - is added, edited or deleted.
+     */
+    private function recalculate(array $leagueIds, array $statuses) {
+
+        if (!array_intersect($statuses, ['live', 'finished'])) return;
+
+        foreach (array_unique($leagueIds) as $leagueId) {
+            LeagueStanding::rebuild($leagueId);
+            PlayerStatistic::recalculate($leagueId);
+        }
+
     }
 
 }

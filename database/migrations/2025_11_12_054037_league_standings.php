@@ -14,7 +14,7 @@ class LeagueStandings extends Migration {
 
             $table->foreignId('league_id')->constrained()->onDelete('cascade');
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
-            $table->integer('position');
+            $table->integer('position')->default(0);
             $table->integer('played')->default(0);
             $table->integer('won')->default(0);
             $table->integer('drawn')->default(0);
