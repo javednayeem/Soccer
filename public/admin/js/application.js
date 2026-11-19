@@ -507,6 +507,7 @@ $(document).ready(function() {
             formData.append("note", $('#note').val());
             formData.append("payment_reference_number", $('#payment_reference_number').val());
             formData.append("team_status", team_status);
+            formData.append("payment_status", $('#payment_status').val());
             formData.append("logo", $('#logo')[0].files[0]);
             formData.append("team_image", $('#team_image')[0].files[0]);
 
@@ -555,6 +556,7 @@ $(document).ready(function() {
             formData.append("note", $('#edit_note').val());
             formData.append("payment_reference_number", $('#edit_payment_reference_number').val());
             formData.append("team_status", team_status);
+            formData.append("payment_status", $('#edit_payment_status').val());
             formData.append("logo", $('#edit_logo')[0].files[0]);
             formData.append("team_image", $('#edit_team_image')[0].files[0]);
 
@@ -1524,6 +1526,7 @@ function editTeam(button) {
     $("#edit_note").val(button.getAttribute('data-note') || '');
     $("#edit_payment_reference_number").val(button.getAttribute('data-payment-reference-number') || '');
     $("#edit_team_status").val(button.getAttribute('data-team-status'));
+    $("#edit_payment_status").val(button.getAttribute('data-payment-status') || '0');
 
     var logoPath = button.getAttribute('data-logo');
     var teamImagePath = button.getAttribute('data-team-image');

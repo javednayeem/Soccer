@@ -19,10 +19,19 @@
                                      style="width: 60px; height: 60px; object-fit: cover;"
                                      onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                 <div>
-                                    <h2 class="heading text-dark mb-1">
+                                    <h2 class="heading text-dark mb-1 d-flex align-items-center flex-wrap">
                                         <a href="/team/{{ $team->id }}/players" class="text-dark" style="text-decoration: none">
                                             {{ $team->name }}
                                         </a>
+                                        @if($team->payment_status == '1')
+                                            <span class="badge badge-success ml-3" style="font-size: 13px; padding: 6px 14px; border-radius: 50px; font-weight: 600;">
+                                                <span style="margin-right:4px;">&#10003;</span>Paid
+                                            </span>
+                                        @else
+                                            <span class="badge badge-danger ml-3" style="font-size: 13px; padding: 6px 14px; border-radius: 50px; font-weight: 600;">
+                                                <span style="margin-right:4px;">&#10007;</span>Non Paid
+                                            </span>
+                                        @endif
                                     </h2>
                                     @if($team->short_name)
                                         <p class="text-muted mb-0">{{ $team->short_name }}</p>

@@ -58,6 +58,7 @@ class TeamController extends Controller {
             'note' => $request->note,
             'payment_reference_number' => $request->payment_reference_number,
             'team_status' => $request->team_status,
+            'payment_status' => $request->payment_status == '1' ? '1' : '0',
         ]);
 
         $this->syncLeagueStandings();
@@ -99,6 +100,7 @@ class TeamController extends Controller {
             'note' => $request->note,
             'payment_reference_number' => $request->payment_reference_number,
             'team_status' => $request->team_status,
+            'payment_status' => $request->payment_status == '1' ? '1' : '0',
         ]);
 
         $this->syncLeagueStandings();

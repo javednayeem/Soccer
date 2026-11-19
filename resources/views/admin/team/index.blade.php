@@ -3,6 +3,22 @@
 
 @section('content')
 
+    <style>
+        #teamsTable thead th { vertical-align: middle; font-size: 12px; letter-spacing: .5px; text-transform: uppercase; white-space: nowrap; }
+        #teamsTable tbody td { vertical-align: middle; }
+        #teamsTable tbody tr { transition: background .15s ease; }
+        #teamsTable .team-logo { width: 44px; height: 44px; object-fit: cover; border: 2px solid #e9ecef; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+        .pay-badge, .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; letter-spacing: .3px; }
+        .pay-paid { background: #e3f8ec; color: #11833f; border: 1px solid #b6e8cb; }
+        .pay-unpaid { background: #fdeaea; color: #c0392b; border: 1px solid #f5c2c0; }
+        .pay-ref { margin-top: 6px; font-size: 12px; color: #6c757d; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .status-pending { background: #fff4de; color: #b87503; border: 1px solid #f7dfa6; }
+        .status-approved { background: #e3f8ec; color: #11833f; border: 1px solid #b6e8cb; }
+        .status-rejected { background: #fdeaea; color: #c0392b; border: 1px solid #f5c2c0; }
+        .status-inactive { background: #eceff1; color: #596268; border: 1px solid #d5dade; }
+        .manager-info a { color: inherit; }
+    </style>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card-box p-2">
@@ -28,7 +44,8 @@
                             <th>#</th>
                             <th>Team Info</th>
                             <th>Manager Info</th>
-                            <th>Payment & Status</th>
+                            <th>Payment</th>
+                            <th>Status</th>
                             <th>Registration</th>
                             <th class="text-center">Actions</th>
                         </tr>
@@ -47,8 +64,7 @@
                                             @if($team->logo && $team->logo != 'default_team.png')
                                                 <img src="{{ asset('site/images/teams/' . $team->logo) }}"
                                                      alt="{{ $team->name }}"
-                                                     class="rounded-circle me-3"
-                                                     width="40" height="40"
+                                                     class="rounded-circle team-logo"
                                                      onerror="this.onerror=null; this.src='{{ asset('site/images/teams/default_team.png') }}';">
                                             @else
                                                 <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
@@ -84,32 +100,33 @@
                                 </td>
 
                                 <td>
-                                    <div class="d-flex flex-column">
-                                        @if($team->payment_reference_number)
-                                            <span class="badge badge-info font-14 mb-2">
-                                        <i class="mdi mdi-receipt me-1"></i>
-                                        {{ $team->payment_reference_number }}
-                                    </span>
+                                    <div class="team-pay-cell">
+                                        @if($team->payment_status == '1')
+                                            <span class="pay-badge pay-paid"><i class="mdi mdi-check-circle"></i> Paid</span>
+                                        @else
+                                            <span class="pay-badge pay-unpaid"><i class="mdi mdi-close-circle"></i> Unpaid</span>
                                         @endif
 
-                                        <div class="status-section">
-                                    <span class="badge
-                                        @if($team->team_status == 'pending') badge-warning
-                                        @elseif($team->team_status == 'approved') badge-success
-                                        @elseif($team->team_status == 'rejected') badge-danger
-                                        @else badge-secondary @endif font-14 me-2">
-                                        {{ ucfirst($team->team_status) }}
-                                    </span>
-
-                                            <div class="form-check form-switch d-inline-block">
-                                                <input class="form-check-input" type="checkbox"
-                                                       id="active_{{ $team->id }}"
-                                                       {{ $team->active == '1' ? 'checked' : '' }}
-                                                       onchange="updateTeamActiveStatus({{ $team->id }});">
-                                                <label class="form-check-label small" for="active_{{ $team->id }}">
-                                                    {{ $team->active == '1' ? 'Active' : 'Inactive' }}
-                                                </label>
+                                        @if($team->payment_reference_number)
+                                            <div class="pay-ref" title="Payment reference">
+                                                <i class="mdi mdi-receipt"></i> {{ $team->payment_reference_number }}
                                             </div>
+                                        @endif
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="team-status-cell">
+                                        <span class="status-pill status-{{ $team->team_status }}">{{ ucfirst($team->team_status) }}</span>
+
+                                        <div class="custom-control custom-switch mt-2">
+                                            <input class="custom-control-input" type="checkbox"
+                                                   id="active_{{ $team->id }}"
+                                                   {{ $team->active == '1' ? 'checked' : '' }}
+                                                   onchange="updateTeamActiveStatus({{ $team->id }});">
+                                            <label class="custom-control-label small" for="active_{{ $team->id }}">
+                                                {{ $team->active == '1' ? 'Active' : 'Inactive' }}
+                                            </label>
                                         </div>
                                     </div>
                                 </td>
@@ -140,6 +157,7 @@
                                                 data-note="{{ $team->note }}"
                                                 data-payment-reference-number="{{ $team->payment_reference_number }}"
                                                 data-team-status="{{ $team->team_status }}"
+                                                data-payment-status="{{ $team->payment_status }}"
                                                 data-logo="{{ asset('site/images/teams/' . $team->logo) }}"
                                                 data-team-image="{{ asset('site/images/teams/' . $team->team_image) }}"
                                                 title="Edit Team">
@@ -272,6 +290,16 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="payment_status" class="control-label">Payment Status <span class="text-danger">*</span></label>
+                                <select class="form-control" id="payment_status">
+                                    <option value="0">Unpaid</option>
+                                    <option value="1">Paid</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="logo" class="control-label">Team Logo</label>
                                 <input type="file" class="form-control" id="logo" name="logo" accept="image/*" onchange="viewSelectedImage(this, 'add_team_logo');">
                             </div>
@@ -371,6 +399,16 @@
                                     <option value="approved">Approved</option>
                                     <option value="rejected">Rejected</option>
                                     <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edit_payment_status" class="control-label">Payment Status <span class="text-danger">*</span></label>
+                                <select class="form-control" id="edit_payment_status">
+                                    <option value="0">Unpaid</option>
+                                    <option value="1">Paid</option>
                                 </select>
                             </div>
                         </div>

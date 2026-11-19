@@ -27,6 +27,7 @@ class Teams extends Migration {
 
             $table->enum('active', ['0', '1'])->default('1');
             $table->enum('team_status', ['pending', 'approved', 'rejected', 'inactive'])->default('pending');
+            $table->enum('payment_status', ['0', '1'])->default('0');
 
             $table->timestamps();
 

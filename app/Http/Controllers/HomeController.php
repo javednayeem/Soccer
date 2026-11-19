@@ -71,7 +71,17 @@ class HomeController extends Controller {
             ->orderBy('event_date', 'desc')
             ->get();
 
+        $galleryImages = collect(glob(public_path('images/gallery/image_*.jpg')))
+            ->map(function ($path) {
+                return basename($path);
+            })
+            ->sort(function ($a, $b) {
+                return strnatcmp($a, $b);
+            })
+            ->values();
+
         return view('site.home.index', [
+            'galleryImages' => $galleryImages,
             'activeLeague' => $activeLeague,
             'liveMatch' => $liveMatch,
             'nextMatch' => $nextMatch,

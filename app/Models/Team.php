@@ -18,6 +18,7 @@ class Team extends Model {
         'payment_reference_number',
         'active',
         'team_status',
+        'payment_status',
     ];
 
     public function players() {
