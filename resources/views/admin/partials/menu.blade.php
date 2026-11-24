@@ -92,6 +92,14 @@
 
                 @can('admin')
                     <li>
+                        <a href="{{ route('admin.gallery') }}">
+                            <i class="mdi mdi-image-multiple mr-1"></i><span>Gallery</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('admin')
+                    <li>
                         <a href="{{ route('admin.user') }}">
                             <i class="mdi mdi-account-details mr-1"></i><span>Users</span>
                         </a>

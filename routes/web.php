@@ -179,6 +179,16 @@ Route::group(['middleware'=> ['auth']],function ()  {
 
 
     /*
+    * Gallery Routes (admin only - enforced in GalleryController)
+    */
+
+    Route::get('/gallery', 'GalleryController@index')->name('admin.gallery');
+    Route::post('/gallery/upload', 'GalleryController@upload')->name('admin.gallery.upload');
+    Route::post('/gallery/delete', 'GalleryController@delete')->name('admin.gallery.delete');
+
+
+
+    /*
     * Player Transfer Routes
     */
 
